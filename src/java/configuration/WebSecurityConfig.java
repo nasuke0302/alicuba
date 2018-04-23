@@ -5,18 +5,21 @@
  */
 package configuration;
 
+import controllers.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import services.ServicioInicioSesion;
 
 /**
@@ -25,6 +28,7 @@ import services.ServicioInicioSesion;
  */
 @EnableWebSecurity
 @Configuration
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -32,6 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     MessageSource messageSource;
+
+    @Autowired
+    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,11 +51,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/addUsuarios").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
-                .antMatchers("/alimentos/**", "/index/**", "/cna/**").hasAnyAuthority("Administrador", "Colaborador")
-                .antMatchers("/editarPerfil").authenticated()
+                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", "/categorias/**")
+                .hasAnyAuthority("Editor", "Colaborador")
+                .antMatchers("/editarPerfil/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .successHandler(new CustomAuthenticationSuccessHandler())
                 .loginPage("/login").defaultSuccessUrl("/index")
                 .permitAll()
                 .and()
@@ -63,8 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-           .ignoring()
-           .antMatchers("/static/**");
+                .ignoring()
+                .antMatchers("/static/**");
     }
 
     @Bean(name = "authenticationManager")
@@ -80,5 +89,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder;
+    }
+
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
     }
 }

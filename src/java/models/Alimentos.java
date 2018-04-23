@@ -32,6 +32,10 @@ import javax.persistence.Table;
     @NamedQuery(name = "Alimentos.findAll", query = "SELECT a FROM Alimentos a")})
 public class Alimentos implements Serializable {
 
+    @Column(name = "proceso")
+    private String proceso;
+    @Column(name = "mezcla")
+    private String mezcla;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -172,6 +176,22 @@ public class Alimentos implements Serializable {
     @Override
     public String toString() {
         return "model.Alimentos[ idAlimento=" + idAlimento + " ]";
+    }
+
+    public String getProceso() {
+        return proceso;
+    }
+
+    public void setProceso(String proceso) {
+        this.proceso = proceso;
+    }
+
+    public String getMezcla() {
+        return mezcla;
+    }
+
+    public void setMezcla(String mezcla) {
+        this.mezcla = mezcla;
     }
     
 }

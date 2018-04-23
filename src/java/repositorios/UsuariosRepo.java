@@ -19,5 +19,7 @@ public interface UsuariosRepo extends JpaRepository<Usuarios, Integer> {
     public Usuarios findByNombre(String string);
     
     public Usuarios findByEmail(String string);
+
+    public Object findByNombreIgnoreCase(String username);
     
 }

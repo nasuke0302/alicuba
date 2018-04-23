@@ -5,7 +5,9 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,8 +19,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -30,24 +33,22 @@ import javax.persistence.Table;
     @NamedQuery(name = "MetadatosAlimentosG.findAll", query = "SELECT m FROM MetadatosAlimentosG m")})
 public class MetadatosAlimentosG implements Serializable {
 
+//    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
+    private List<TablaCnaGeneral> tablaCnaGeneralList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_metadatos_alimentos_g")
     private Integer idMetadatosAlimentosG;
-    @Column(name = "proceso")
-    private String proceso;
-    @Column(name = "mezcla")
-    private String mezcla;
     @Column(name = "riego")
     private Integer riego;
     @Column(name = "n")
     private Integer n;
     @Column(name = "npk")
     private String npk;
-    @Column(name = "fert_org")
-    private Integer fertOrg;
     @Column(name = "edad")
     private Integer edad;
     @Column(name = "corte")
@@ -93,8 +94,6 @@ public class MetadatosAlimentosG implements Serializable {
     @JoinColumn(name = "id_referencia", referencedColumnName = "id_referencia")
     @ManyToOne(optional = false)
     private Referencias idReferencia;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
-    private TablaCnaGeneral tablaCnaGeneral;
 
     public MetadatosAlimentosG() {
     }
@@ -109,22 +108,6 @@ public class MetadatosAlimentosG implements Serializable {
 
     public void setIdMetadatosAlimentosG(Integer idMetadatosAlimentosG) {
         this.idMetadatosAlimentosG = idMetadatosAlimentosG;
-    }
-
-    public String getProceso() {
-        return proceso;
-    }
-
-    public void setProceso(String proceso) {
-        this.proceso = proceso;
-    }
-
-    public String getMezcla() {
-        return mezcla;
-    }
-
-    public void setMezcla(String mezcla) {
-        this.mezcla = mezcla;
     }
 
     public Integer getRiego() {
@@ -149,14 +132,6 @@ public class MetadatosAlimentosG implements Serializable {
 
     public void setNpk(String npk) {
         this.npk = npk;
-    }
-
-    public Integer getFertOrg() {
-        return fertOrg;
-    }
-
-    public void setFertOrg(Integer fertOrg) {
-        this.fertOrg = fertOrg;
     }
 
     public Integer getEdad() {
@@ -295,14 +270,6 @@ public class MetadatosAlimentosG implements Serializable {
         this.idReferencia = idReferencia;
     }
 
-    public TablaCnaGeneral getTablaCnaGeneral() {
-        return tablaCnaGeneral;
-    }
-
-    public void setTablaCnaGeneral(TablaCnaGeneral tablaCnaGeneral) {
-        this.tablaCnaGeneral = tablaCnaGeneral;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -327,5 +294,14 @@ public class MetadatosAlimentosG implements Serializable {
     public String toString() {
         return "model.MetadatosAlimentosG[ idMetadatosAlimentosG=" + idMetadatosAlimentosG + " ]";
     }
-    
+
+    @XmlTransient
+    public List<TablaCnaGeneral> getTablaCnaGeneralList() {
+        return tablaCnaGeneralList;
+    }
+
+    public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
+        this.tablaCnaGeneralList = tablaCnaGeneralList;
+    }
+
 }

@@ -35,9 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Referencias.findAll", query = "SELECT r FROM Referencias r")})
 public class Referencias implements Serializable {
 
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ManyToOne
+    private Usuarios idUsuario;
     @Column(name = "url")
     private String url;
-
     @ManyToMany
     @JoinTable(name = "categorias_por_referencias", joinColumns = {
         @JoinColumn(name = "id_referencia", referencedColumnName = "id_referencia")}, inverseJoinColumns = {
@@ -322,6 +324,14 @@ public class Referencias implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
 }

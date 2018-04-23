@@ -1,5 +1,7 @@
-var appCna = angular.module("AppCna", []);
+var appCna = angular.module("AppCna", ['ui.select']);
 appCna.controller("CnaController", function ($scope, $http, $window) {
+    $scope.selectedAutores = {};
+    $scope.selectedCategoria = {};
     $scope.referencia = {
         idReferencia: "",
         idFuente: "",
@@ -25,6 +27,39 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         autoresList: "",
         categoriaList: ""
     };
+    $scope.lastReferencia = {
+        idReferencia: "",
+        idFuente: "",
+        url: "http://",
+        nota: "",
+        title: "",
+        informeNum: "",
+        informeTipo: "",
+        informeSerie: "",
+        informeInstitution: "",
+        arcPublication: "",
+        volumen: "",
+        numVol: "",
+        edition: "",
+        lugar: "",
+        editorial: "",
+        secclTitle: "",
+        tesisUniversidad: "",
+        pages: "",
+        fecha: "",
+        fechaAd: "",
+        fechaMod: "",
+        autoresList: "",
+        categoriaList: ""
+    };
+    $scope.estudioPorReferencia = {};
+    $scope.tablaCnaGeneral = {};
+
+    $scope.estudiosPorReferencia = function (idReferencia) {
+        $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
+            $scope.estudioPorReferencia = data.data.data;
+        });
+    };
     //Obtener Listado de Categorias
     $http.get("../index/getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
@@ -40,32 +75,30 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     //Obtener la ultima referencia insertada
     $http.get("getLastReferencia").then(function (data) {
         $scope.lastReferencia = data.data.data;
-        console.log($scope.lastReferencia);
+        $scope.selectedAutores.selected = $scope.lastReferencia.autoresList;
     });
-
     $scope.saveReferencia = function () {
         $scope.referencia.idFuente = parseInt($scope.selectedFuente);
         $scope.referencia.fechaMod = new Date();
-        $scope.referencia.autoresList = $scope.selectedAutores;
-        $scope.referencia.categoriaList = $scope.selectedCategoria;
+        $scope.referencia.autoresList = $scope.selectedAutores.selected;
+        $scope.referencia.categoriaList = $scope.selectedCategoria.selected;
         $http.post("../index/editReferencia", $scope.referencia, {}).then(function (r) {
             console.log(r.data.mensaje);
             //Obtener la ultima referencia insertada
             $http.get("getLastReferencia").then(function (data) {
                 $scope.lastReferencia = data.data.data;
-                console.log($scope.lastReferencia);
             });
         });
         $("#modalNuevaReferencia").modal("toggle");
     };
-
     //NUEVO ESTUDIO
     $scope.nuevoEstudio = function () {
         $window.location.href = "../estudio/gestionar";
     };
-
     //Enviar Referencia al Modal
     $scope.abrirEditarModal = function () {
+        $scope.selectedAutores.selected = $scope.lastReferencia.autoresList;
+        $scope.selectedCategoria.selected = $scope.lastReferencia.categoriaList;
         var a = $scope.lastReferencia;
         $scope.referencia = {
             idReferencia: a.idReferencia,
@@ -90,5 +123,37 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             fechaAd: a.fechaAd,
             fechaMod: new Date()
         };
+    };
+    $scope.abrirModalAddAutor = function () {
+        $scope.autor = {
+            nombre: "",
+            segundoNombre: "",
+            apellidos: ""
+        };
+    };
+    $scope.addAutor = function () {
+        $http.post("../index/addAutor", $scope.autor, {}).then(function (r) {
+            $window.alert(r.data.mensaje);
+            //Obtener Lista de Autores
+            $http.get("../index/getAutores").then(function (data) {
+                $scope.allAutores = data.data.data;
+            });
+            $("#modalAddOrEditAutor").modal("toggle");
+        });
+    };
+    $scope.abrirModalAddCategoria = function () {
+        $scope.categoria = {
+            categoria: ""
+        };
+    };
+    $scope.addCategoria = function () {
+        $http.post("../index/addCategoria", $scope.categoria, {}).then(function (r) {
+            $window.alert(r.data.mensaje);
+            //Obtener Lista de Categorias
+            $http.get("../index/getCategorias").then(function (data) {
+                $scope.allCategorias = data.data.data;
+            });
+            $("#modalAddOrEditCategoria").modal("toggle");
+        });
     };
 });

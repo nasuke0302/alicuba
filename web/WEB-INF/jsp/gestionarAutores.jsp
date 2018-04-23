@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html data-ng-app="appAlimentos">
+<html data-ng-app="appAutores">
     <head>
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
         <!-- PAGE LEVEL STYLES -->
@@ -19,10 +19,10 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
-        <script src="${pageContext.request.contextPath}/static/AngularJs/Alimentos.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/Autores.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
-    <body class="padTop53" data-ng-controller="AlimentosController">
+    <body class="padTop53" data-ng-controller="AutoresController">
         <!--MAIN WRAP-->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -41,30 +41,26 @@
                             <div class="panel panel-default">
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
-                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
-                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAutorModal()"
+                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Autor</button>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
-                                <!--TABLA Alimentos-->
+                                <!--TABLA AUTORES-->
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table  datatable="ng" id="tablaAlimentos" class="table table-striped table-hover">
+                                        <table  datatable="ng" id="tablaAutores" class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Acciones</th>
-                                                    <th>Nombre Cient&iacute;fico</th>
                                                     <th>Nombre</th>
-                                                    <th>Variedad</th>
-                                                    <th>Parte</th>
-                                                    <th>Proceso</th>
-                                                    <th>Mezcla</th>
-                                                    <th>Usuario</th>
+                                                    <th>Segundo Nombre</th>
+                                                    <th>Apellidos</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-ng-repeat="alimento in allAlimentos track by $index">
+                                                <tr data-ng-repeat="a in allAutores track by $index">
                                                     <td>
-                                                        <input type="hidden" value="{{alimento.idAlimento}}"/>
+                                                        <input type="hidden" value="{{a.idAutor}}"/>
                                                         <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                                 data-ng-click="abrirEditarModal($index)">
                                                             <i class="glyphicon glyphicon-pencil"></i></button>
@@ -72,20 +68,16 @@
                                                                 data-ng-click="abrirEliminarModal($index)">
                                                             <i class="glyphicon glyphicon-trash"></i></button>
                                                     </td>
-                                                    <td>{{alimento.nombreCient}}</td>
-                                                    <td>{{alimento.nombre}}</td>
-                                                    <td>{{alimento.variedad}}</td>
-                                                    <td>{{alimento.parte}}</td>
-                                                    <td>{{alimento.proceso}}</td>
-                                                    <td>{{alimento.mezcla}}</td>
-                                                    <td>{{alimento.idUsuario.nombre}}</td>
+                                                    <td>{{a.nombre}}</td>
+                                                    <td>{{a.segundoNombre}}</td>
+                                                    <td>{{a.apellidos}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-default">
-                                    <a>Alimentos</a>
+                                    <a>Autores</a>
                                 </div>
                             </div>
                         </div>
@@ -98,56 +90,26 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="H2">Alimento</h4>
+                                        <h4 class="modal-title" id="H2">Autor</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditAlimento()" method="post">
+                                        <form role="form" data-ng-submit="createOrEditAutor()" method="post">
                                             <div class="form-group">
-                                                <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.nombreCient"
-                                                       style="text-transform: capitalize"/>
                                                 <label>Nombre</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.nombre"
+                                                       required="" data-ng-model="autor.nombre"
                                                        style=" text-transform: capitalize"/>
-                                                <label>Variedad</label>
+                                                <label>Segundo Nombre</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.variedad"
+                                                       required="" data-ng-model="autor.segundoNombre"
                                                        style=" text-transform: capitalize"/>
-                                                <label>Parte</label>
+                                                <label>Apellidos</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.parte"
+                                                       required="" data-ng-model="autor.apellidos"
                                                        style=" text-transform: capitalize"/>
-                                                <label>Proceso</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.proceso"
-                                                       style=" text-transform: capitalize"/>
-                                                <label>Mezcla</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.mezcla"
-                                                       style=" text-transform: capitalize"/>
-                                                <label>Tipo en Cuba</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoCuba" 
-                                                        ng-options="tipoCuba.idTipoCuba as tipoCuba.tipoCuba for tipoCuba in allTipoCuba">
-                                                </select>
-                                                <label>Tipo en FAO</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoFao" 
-                                                        ng-options="tipoFao.idTipoFao as tipoFao.tipoFao for tipoFao in allTipoFao">
-                                                </select>
-                                                <label>Tipo en NRC</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoNrc" 
-                                                        ng-options="tipoNrc.idTipoNrc as tipoNrc.tipoNrc for tipoNrc in allTipoNrc">
-                                                </select>
                                             </div>
                                             <div class="text-right">
-                                                <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
+                                                <input type="hidden" data-ng-model="autor.idAutor"/>
                                                 <button type="submit" class="btn btn-success">Guardar</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             </div>
@@ -167,7 +129,7 @@
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
                                         <div class="modal-body">
-                                            <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
+                                            <form role="form" method="post" data-ng-submit="eliminarAutor()" id="delete_data" class="text-right">
                                                 <button type="submit" class="btn btn-danger">Eliminar</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             </form>

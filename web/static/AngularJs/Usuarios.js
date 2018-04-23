@@ -1,5 +1,5 @@
-var appUsuarios = angular.module("appUsuarios", []);
-appUsuarios.controller("UsuariosController", function ($scope, $http) {
+var appUsuarios = angular.module("appUsuarios", ['datatables', 'datatables.bootstrap']);
+appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
     $scope.selectedRol = {};
     $scope.indiceRegistro = {
         idUsuario: "",
@@ -8,39 +8,46 @@ appUsuarios.controller("UsuariosController", function ($scope, $http) {
         apellidos: "",
         idRol: ""
     };
-
     //Obtener Lista de usuarios
     $http.get("get").then(function (data) {
         $scope.allUsuarios = data.data.data;
     });
-
     //Obtener Lista de Roles
     $http.get("../roles/get").then(function (data) {
         $scope.allRoles = data.data.data;
     });
-
     //Enviar Usuario editado al Servidor
     $scope.addOrEditUsuario = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         $scope.indiceRegistro.idRol = $scope.selectedRol;
         if ($scope.indiceRegistro.idUsuario === "") {
             $http.post("add", $scope.indiceRegistro, {}).then(function (r) {
-                //Mostrar Mensaje o algo
+                $window.alert(r.data.mensaje);
+                //Obtener Lista de usuarios
+                $http.get("get").then(function (data) {
+                    $scope.allUsuarios = data.data.data;
+                });
             });
         } else {
             $http.post("edit", $scope.indiceRegistro, {}).then(function (r) {
-                //Mostrar Mensaje o algo
+                $window.alert(r.data.mensaje);
+                //Obtener Lista de usuarios
+                $http.get("get").then(function (data) {
+                    $scope.allUsuarios = data.data.data;
+                });
             });
         }
     };
-
     // Eliminar Usuario
     $scope.eliminarUsuario = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.post("delete", $scope.indiceRegistro, {}).then(function (r) {
+        $http.post("delete/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
+            $window.alert(r.data.mensaje);
+            $http.get("get").then(function (data) {
+                $scope.allUsuarios = data.data.data;
+            });
         });
     };
-
     //Enviar Usuarios al Modal Editar
     $scope.abrirEditarModal = function (indice) {
         var a = $scope.allUsuarios[indice];
@@ -48,10 +55,11 @@ appUsuarios.controller("UsuariosController", function ($scope, $http) {
             idUsuario: a.idUsuario,
             email: a.email,
             nombre: a.nombre,
-            apellidos: a.apellidos
+            apellidos: a.apellidos,
+            idRol: a.idRol
         };
+        $scope.selectedRol = $scope.indiceRegistro.idRol.idRoles;
     };
-
     //Enviar Usuario al Modal Eliminar
     $scope.abrirEliminarModal = function (indice) {
         var a = $scope.allUsuarios[indice];

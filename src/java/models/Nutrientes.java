@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,6 +32,10 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Nutrientes.findAll", query = "SELECT n FROM Nutrientes n")})
 public class Nutrientes implements Serializable {
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nutrientes")
+    private List<TablaCnaGeneral> tablaCnaGeneralList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,13 +49,11 @@ public class Nutrientes implements Serializable {
     private String nombre;
     @JoinColumn(name = "id_tipos_datos_alimentos", referencedColumnName = "id_tipos_datos_alimentos")
     @ManyToOne(optional = false)
+//    @JsonIgnore
     private TiposDatosAlimentos idTiposDatosAlimentos;
     @JoinColumn(name = "id_unidad_medida", referencedColumnName = "id_unidad_medida")
     @ManyToOne(optional = false)
     private UnidadesMedida idUnidadMedida;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idNutriente")
-    @JsonIgnore
-    private List<TablaCnaGeneral> tablaCnaGeneralList;
 
     public Nutrientes() {
     }
@@ -99,14 +102,6 @@ public class Nutrientes implements Serializable {
         this.idUnidadMedida = idUnidadMedida;
     }
 
-    public List<TablaCnaGeneral> getTablaCnaGeneralList() {
-        return tablaCnaGeneralList;
-    }
-
-    public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
-        this.tablaCnaGeneralList = tablaCnaGeneralList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -131,5 +126,14 @@ public class Nutrientes implements Serializable {
     public String toString() {
         return "model.Nutrientes[ idNutriente=" + idNutriente + " ]";
     }
-    
+
+    @XmlTransient
+    public List<TablaCnaGeneral> getTablaCnaGeneralList() {
+        return tablaCnaGeneralList;
+    }
+
+    public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
+        this.tablaCnaGeneralList = tablaCnaGeneralList;
+    }
+
 }

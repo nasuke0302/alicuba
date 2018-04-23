@@ -14,12 +14,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -28,13 +27,14 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "autores")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Autores.findAll", query = "SELECT a FROM Autores a")})
+    @NamedQuery(name = "Autores.findAll", query = "SELECT a FROM Autores a")
+    , @NamedQuery(name = "Autores.findByIdAutor", query = "SELECT a FROM Autores a WHERE a.idAutor = :idAutor")
+    , @NamedQuery(name = "Autores.findByApellidos", query = "SELECT a FROM Autores a WHERE a.apellidos = :apellidos")
+    , @NamedQuery(name = "Autores.findByNombre", query = "SELECT a FROM Autores a WHERE a.nombre = :nombre")
+    , @NamedQuery(name = "Autores.findBySegundoNombre", query = "SELECT a FROM Autores a WHERE a.segundoNombre = :segundoNombre")})
 public class Autores implements Serializable {
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "autoresList")
-    private List<Referencias> referenciasList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,6 +48,9 @@ public class Autores implements Serializable {
     private String nombre;
     @Column(name = "segundo_nombre")
     private String segundoNombre;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "autoresList")
+    private List<Referencias> referenciasList;
 
     public Autores() {
     }
@@ -110,7 +113,7 @@ public class Autores implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Autores[ idAutor=" + idAutor + " ]";
+        return "models.Autores[ idAutor=" + idAutor + " ]";
     }
 
     @XmlTransient
@@ -121,4 +124,5 @@ public class Autores implements Serializable {
     public void setReferenciasList(List<Referencias> referenciasList) {
         this.referenciasList = referenciasList;
     }
+
 }

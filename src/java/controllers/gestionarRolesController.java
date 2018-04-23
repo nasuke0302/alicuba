@@ -9,11 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 import models.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import repositorios.RolesRepo;
 
 /**
@@ -26,14 +25,10 @@ public class gestionarRolesController {
     @Autowired
     RolesRepo repo;
 
-    @RequestMapping(value = "/roles/gestionar")
-    public ModelAndView showGestionarRoles() {
-        return new ModelAndView("gestionarRoles");
-    }
-
+    @Secured(value= "Administrador")
     @RequestMapping(value = "/roles/get")
     public @ResponseBody
-    Map<String, ? extends Object> getUsuarios(Roles r) {
+    Map<String, ? extends Object> getRoles(Roles r) {
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("data", repo.findAll());
@@ -42,27 +37,5 @@ public class gestionarRolesController {
             map.put("success", Boolean.FALSE);
         }
         return map;
-    }
-
-    @RequestMapping(value = "/roles/add")
-    public ModelAndView addRoles(@RequestBody Roles r) {
-        repo.saveAndFlush(r);
-        return showGestionarRoles();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/roles/edit")
-    public ModelAndView editRoles(@RequestBody Roles r) {
-        Roles r1 = repo.findOne(r.getIdRoles());
-        r1.setTipoRol(r.getTipoRol());
-        repo.saveAndFlush(r1);
-        return showGestionarRoles();
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/roles/delete")
-    public ModelAndView leteRoles(@RequestBody Roles r) {
-        repo.delete(r);
-        return showGestionarRoles();
     }
 }

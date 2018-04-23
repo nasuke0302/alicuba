@@ -5,14 +5,15 @@
  */
 package repositorios;
 
-import models.TablaCnaGeneral;
-import models.TablaCnaGeneralPK;
+import models.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author albert
  */
-public interface TablaCnaGeneralRepo extends JpaRepository<TablaCnaGeneral, TablaCnaGeneralPK>{
+@Repository
+public interface CategoriaRepo extends JpaRepository<Categoria, Integer>{
     
 }
