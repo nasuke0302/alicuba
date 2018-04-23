@@ -8,19 +8,20 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 import models.Referencias;
+import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
-import repositorios.CategoriasRepo;
+import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
 import repositorios.ReferenciasRepo;
 
@@ -29,15 +30,15 @@ public class IndexController {
 
     @Autowired
     ReferenciasRepo referenciasRepo;
-    
+
     @Autowired
     AutoresRepo autoresRepo;
 
     @Autowired
     FuenteInfRepo fuenteInfRepo;
-    
+
     @Autowired
-    CategoriasRepo categoriasRepo;
+    CategoriaRepo categoriasRepo;
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
@@ -48,9 +49,11 @@ public class IndexController {
     public String showCreateOrEditReferencia() {
         return "createOrEditReferencia";
     }
-    
+
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getReferencias")
-    public @ResponseBody Map<String, ? extends Object> getReferencias() {
+    public @ResponseBody
+    Map<String, ? extends Object> getReferencias() {
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("data", referenciasRepo.findAll());
@@ -61,8 +64,10 @@ public class IndexController {
         return map;
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getFuentes")
-    public @ResponseBody Map<String, ? extends Object> getFuentes() {
+    public @ResponseBody
+    Map<String, ? extends Object> getFuentes() {
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("data", fuenteInfRepo.findAll());
@@ -72,41 +77,20 @@ public class IndexController {
         }
         return map;
     }
-    
-    @RequestMapping(value = "/index/getCategorias")
-    public @ResponseBody Map<String, ? extends Object> getCategorias() {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("data", categoriasRepo.findAll());
-            map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
-        }
-        return map;
-    }
-    
-    @RequestMapping(value = "/index/getAutores")
-    public @ResponseBody Map<String, ? extends Object> getAutores() {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("data", autoresRepo.findAll());
-            map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
-        }
-        return map;
-    }
 
+    @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/index/addReferencia")
     public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map) {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        r.setIdUsuario((Usuarios) principal);
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-     @RequestMapping(value = "/index/editReferencia")
+
+    @Secured(value = "Colaborador, Editor")
+    @RequestMapping(value = "/index/editReferencia")
     public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
         r1.setAutoresList(r.getAutoresList());
@@ -135,11 +119,17 @@ public class IndexController {
         map.put("mensaje", "Referencia editada correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-    @DeleteMapping(value = "/index/delete/{id}")
-    public ModelAndView deleteReferencia(@PathVariable Integer id, ModelMap map) {
-        referenciasRepo.delete(id);
-        map.put("mensaje", "Objeto Eliminado");
+
+    @Secured(value = "Colaborador")
+    @RequestMapping(value = "/index/delete", method = RequestMethod.POST)
+    public ModelAndView deleteReferencia(@RequestBody Referencias r, ModelMap map) {
+        try {
+            referenciasRepo.delete(r);
+            map.put("mensaje", "Referencia eliminada correctamente");
+        } catch (Exception e) {
+            map.put("Error", e);
+            map.put("mensaje", "Error al eliminar la referencia");
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

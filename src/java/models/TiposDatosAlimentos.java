@@ -38,8 +38,8 @@ public class TiposDatosAlimentos implements Serializable {
     private Integer idTiposDatosAlimentos;
     @Column(name = "nombre_tipo_dato")
     private String nombreTipoDato;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTiposDatosAlimentos")
     @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTiposDatosAlimentos")
     private List<Nutrientes> nutrientesList;
 
     public TiposDatosAlimentos() {

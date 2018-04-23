@@ -37,7 +37,6 @@ public class LoginController {
 
     @RequestMapping(value = "/addUsuarios", method = RequestMethod.POST)
     public String addUsuarios(@ModelAttribute Usuarios u, Model m, Roles rol, BindingResult result) {
-        Usuarios u1 = repo.findByEmail(u.getEmail());
         u.setIdRol(new Roles(2));
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         repo.saveAndFlush(u);

@@ -8,13 +8,19 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 import models.Alimentos;
+import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AlimentosRepo;
 import repositorios.TipoCubaRepo;
 import repositorios.TipoFaoRepo;
@@ -36,17 +42,19 @@ public class AlimentosController {
     @Autowired
     TipoNrcRepo tipoNrcRepo;
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarAlimentos");
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/get")
     public @ResponseBody
-    Map<String, ? extends Object> getAlimentos(Pageable pageable) {
+    Map<String, ? extends Object> getAlimentos() {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", alimentosRepo.findAll(pageable).getContent());
+            map.put("data", alimentosRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
@@ -54,6 +62,7 @@ public class AlimentosController {
         return map;
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoCuba")
     public @ResponseBody
     Map<String, ? extends Object> getAllTipoCuba() {
@@ -67,6 +76,7 @@ public class AlimentosController {
         return map;
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoFao")
     public @ResponseBody
     Map<String, ? extends Object> getAllTipoFao() {
@@ -80,6 +90,7 @@ public class AlimentosController {
         return map;
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoNrc")
     public @ResponseBody
     Map<String, ? extends Object> getallTipoNrc() {
@@ -93,33 +104,43 @@ public class AlimentosController {
         return map;
     }
 
+    @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/alimentos/add")
-    public ModelAndView addRoles(@RequestBody Alimentos r) {
+    public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        r.setIdUsuario((Usuarios) principal);
         alimentosRepo.saveAndFlush(r);
-        return showGestionarAlimentos();
+        map.put("mensaje", "Alimento insertado correctamente");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/alimentos/edit")
-    public ModelAndView editAlimentos(@RequestBody Alimentos r) {
+    public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Alimentos r1 = alimentosRepo.findOne(r.getIdAlimento());
         r1.setIdTipoCuba(r.getIdTipoCuba());
         r1.setIdTipoFao(r.getIdTipoFao());
         r1.setIdTipoNrc(r.getIdTipoNrc());
-        r1.setIdUsuario(r.getIdUsuario());
         r1.setNombre(r.getNombre());
         r1.setNombreCient(r.getNombreCient());
         r1.setParte(r.getParte());
+        r1.setProceso(r.getProceso());
+        r1.setMezcla(r.getMezcla());
         r1.setVariedad(r.getVariedad());
+        r1.setIdUsuario((Usuarios) principal);
         alimentosRepo.saveAndFlush(r1);
-        return showGestionarAlimentos();
+        map.put("mensaje", "Alimento editado correctamente");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/alimentos/delete")
-    public ModelAndView deleteAlimento(@RequestBody Alimentos r) {
-        alimentosRepo.delete(r);
-        return showGestionarAlimentos();
+    @Secured(value = "Colaborador")
+    @RequestMapping(value = "/alimentos/delete/{id}", method = RequestMethod.DELETE)
+    public ModelAndView deleteAlimento(@PathVariable Integer id, ModelMap map) {
+        alimentosRepo.delete(id);
+        map.put("mensaje", "Alimento eliminado correctamente");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

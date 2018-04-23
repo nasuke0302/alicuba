@@ -4,21 +4,22 @@
     Author     : albert
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html>
+<html data-ng-app="appEditarPerfil">
     <head>
         <!--GLOBAL STYLES-->
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
-
         <!-- PAGE LEVEL STYLES -->
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/bootstrap-fileupload.min.css" />
         <!--END PAGE LEVEL STYLES-->
+        <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>        
+        <script src="${pageContext.request.contextPath}/static/AngularJs/ui-validate_1.2.3.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/EditarPerfil.js"></script>
     </head>
 
-    <body class="padTop53">
+    <body class="padTop53" data-ng-controller="EditarPerfilController">
         <!--MAIN WRAP-->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -33,43 +34,76 @@
                     <div>
                         <h1>Editar Perfil</h1>
                     </div>
-                    <form action="updatePerfil" method="post">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Nombre</label>
-
-                                <input class="form-control"/>
-                                <label>Apellidos</label>
-                                <input class="form-control"/>
-                                <h2>Modificar Contraseña</h2>
-                                <label>Contraseña Actual</label>
-                                <input class="form-control">
-                                <label>Contraseña Nueva</label>
-                                <input class="form-control">
-                                <label>Repetir Contraseña Nueva</label>
-                                <input class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label col-lg-4">Foto de Perfil(Opcional)</label>
-                                    <div class="col-lg-8">
-                                        <div class="fileupload fileupload-new" data-provides="fileupload">
-                                            <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;"><img src="${pageContext.request.contextPath}/static/img/demoUpload.jpg" alt=""></div>
-                                            <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
-                                            <div>
-                                                <span class="btn btn-file btn-primary"><span class="fileupload-new">Seleccionar imagen</span><span class="fileupload-exists">Cambiar</span><input type="file"></span>
-                                                <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload">Eliminar</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form data-ng-submit="updatePerfil()" method="post" name="formEditarPerfil">
+                                <label>Email</label>
+                                <input name="email" class="form-control" type="email" required=""
+                                       id="email" data-ng-model="usuario.email"/>
+                                <div data-ng-show="formEditarPerfil.email.$invalid">
+                                    <small style="color:red; display: block; text-align: center;">
+                                        ¡Este campo es requerido!
+                                    </small>
                                 </div>
+
+                                <label>Nombre</label>
+                                <input name="nombre" class="form-control" type="text" required=""
+                                       data-ng-model="usuario.nombre"/>
+                                <div data-ng-show="formEditarPerfil.nombre.$invalid">
+                                    <small style="color:red; display: block; text-align: center;">
+                                        ¡Este campo es requerido!
+                                    </small>
+                                </div>
+
+                                <label>Apellidos</label>
+                                <input name="apellidos" class="form-control" type="text" required=""
+                                       data-ng-model="usuario.apellidos"/>
+                                <div data-ng-show="formEditarPerfil.apellidos.$invalid">
+                                    <small style="color:red; display: block; text-align: center;">
+                                        ¡Este campo es requerido!
+                                    </small>
+                                </div>
+                                <div class="text-right">
+                                    <input class="btn btn-success" type="submit" value="Guardar Cambios"
+                                           data-ng-disabled="formEditarPerfil.$invalid"/>
+                                </div>
+                            </form>
+                            <br />
+                            <div class="checkbox">
+                                <label style="font-size: larger">
+                                    <input class="checkbox" type="checkbox" id="changePass"
+                                           data-ng-click="changePass()"/>Cambiar contrase&ntilde;a
+                                </label>
                             </div>
+                            <div id="divPasswordGroup" class="ng-hide">
+                                <form name="FormCambiarPassword" data-ng-submit="cambiarPassword()">
+                                    <label>Contrase&ntilde;a nueva</label>
+                                    <input type="password" name="newPass" id="newPass" 
+                                           data-ng-model="usuarioPassword.newPass"
+                                           placeholder="Contrase&ntilde;a nueva" class="form-control" required=""/>
+                                    <div data-ng-show="FormCambiarPassword.newPass.$touched && FormCambiarPassword.newPass.$invalid">
+                                        <small style="color:red; display: block; text-align: center;">El campo contraseña es requerido</small>
+                                    </div>
+
+                                    <label>Confirmar contrase&ntilde;a nueva</label>
+                                    <input type="password" name="confirmNewPass" id="confirmNewPass" 
+                                           data-ng-model="usuarioPassword.confirmNewPass"
+                                           placeholder="Confirmar Contrase&ntilde;a nueva" class="form-control" required=""
+                                           ui-validate='"validarPasswords($value)"'
+                                           ui-validate-watch="'usuario.newPass'"/>
+                                    <div data-ng-show="FormCambiarPassword.confirmNewPass.$invalid
+                                                            && !FormCambiarPassword.confirmNewPass.$validValidator">
+                                        <small style="color:red; display: block; text-align: center;">Las contraseñas no coinciden</small>
+                                    </div>
+                                    <div class="text-right">
+                                        <input class="btn btn-success" type="submit" value="Actualizar contrase&ntilde;a"
+                                               data-ng-disabled="FormCambiarPassword.$invalid"/>
+                                    </div>
+                                </form>
+                            </div>
+                            <br />
                         </div>
-                        <br/><br/><br/>
-                        <div class="text-right">
-                            <input class="btn btn-success" type="submit" value="Guardar Cambios"/>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,9 +116,7 @@
 
     <!--GLOBAL SCRIPTS-->
     <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
-
     <!--END PAGE LEVEL SCRIPTS-->
-    <script src="${pageContext.request.contextPath}/static/plugins/jasny/js/bootstrap-fileupload.js"></script>
     <!--END PAGE LEVEL SCRIPTS-->
 </body>
 </html>

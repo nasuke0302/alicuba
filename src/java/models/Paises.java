@@ -30,16 +30,17 @@ import javax.persistence.Table;
     @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
 public class Paises implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Column(name = "nombre")
-    private String nombre;
+    @Column(name = "pais")
+    private String pais;
+    @Column(name = "alpha3")
+    private String alpha3;
+    @Column(name = "alpha2")
+    private String alpha2;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_paises")
     private Integer idPaises;
-    @Column(name = "etiqueta")
-    private String etiqueta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "import1")
     @JsonIgnore
     private List<MetadatosAlimentosG> metadatosAlimentosGList;
@@ -51,28 +52,12 @@ public class Paises implements Serializable {
         this.idPaises = idPaises;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
     public Integer getIdPaises() {
         return idPaises;
     }
 
     public void setIdPaises(Integer idPaises) {
         this.idPaises = idPaises;
-    }
-
-    public String getEtiqueta() {
-        return etiqueta;
-    }
-
-    public void setEtiqueta(String etiqueta) {
-        this.etiqueta = etiqueta;
     }
 
     public List<MetadatosAlimentosG> getMetadatosAlimentosGList() {
@@ -106,6 +91,30 @@ public class Paises implements Serializable {
     @Override
     public String toString() {
         return "model.Paises[ idPaises=" + idPaises + " ]";
+    }
+
+    public String getPais() {
+        return pais;
+    }
+
+    public void setPais(String pais) {
+        this.pais = pais;
+    }
+
+    public String getAlpha3() {
+        return alpha3;
+    }
+
+    public void setAlpha3(String alpha3) {
+        this.alpha3 = alpha3;
+    }
+
+    public String getAlpha2() {
+        return alpha2;
+    }
+
+    public void setAlpha2(String alpha2) {
+        this.alpha2 = alpha2;
     }
     
 }

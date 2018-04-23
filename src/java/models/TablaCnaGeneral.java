@@ -5,17 +5,17 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -23,30 +23,45 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tabla_cna_general")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "TablaCnaGeneral.findAll", query = "SELECT t FROM TablaCnaGeneral t")})
+    @NamedQuery(name = "TablaCnaGeneral.findAll", query = "SELECT t FROM TablaCnaGeneral t")
+    , @NamedQuery(name = "TablaCnaGeneral.findByIdMetadatosAlimentosG", query = "SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK.idMetadatosAlimentosG = :idMetadatosAlimentosG")
+    , @NamedQuery(name = "TablaCnaGeneral.findByIdNutriente", query = "SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK.idNutriente = :idNutriente")
+    , @NamedQuery(name = "TablaCnaGeneral.findByValor", query = "SELECT t FROM TablaCnaGeneral t WHERE t.valor = :valor")})
 public class TablaCnaGeneral implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected TablaCnaGeneralPK tablaCnaGeneralPK;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
     private Float valor;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "id_metadatos_alimentos_g")
-    private Integer idMetadatosAlimentosG;
+    @JsonIgnore
     @JoinColumn(name = "id_metadatos_alimentos_g", referencedColumnName = "id_metadatos_alimentos_g", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private MetadatosAlimentosG metadatosAlimentosG;
-    @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente")
     @ManyToOne(optional = false)
-    private Nutrientes idNutriente;
+    private MetadatosAlimentosG metadatosAlimentosG;
+    @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Nutrientes nutrientes;
 
     public TablaCnaGeneral() {
     }
 
-    public TablaCnaGeneral(Integer idMetadatosAlimentosG) {
-        this.idMetadatosAlimentosG = idMetadatosAlimentosG;
+    public TablaCnaGeneral(TablaCnaGeneralPK tablaCnaGeneralPK) {
+        this.tablaCnaGeneralPK = tablaCnaGeneralPK;
+    }
+
+    public TablaCnaGeneral(int idMetadatosAlimentosG, int idNutriente) {
+        this.tablaCnaGeneralPK = new TablaCnaGeneralPK(idMetadatosAlimentosG, idNutriente);
+    }
+
+    public TablaCnaGeneralPK getTablaCnaGeneralPK() {
+        return tablaCnaGeneralPK;
+    }
+
+    public void setTablaCnaGeneralPK(TablaCnaGeneralPK tablaCnaGeneralPK) {
+        this.tablaCnaGeneralPK = tablaCnaGeneralPK;
     }
 
     public Float getValor() {
@@ -57,14 +72,6 @@ public class TablaCnaGeneral implements Serializable {
         this.valor = valor;
     }
 
-    public Integer getIdMetadatosAlimentosG() {
-        return idMetadatosAlimentosG;
-    }
-
-    public void setIdMetadatosAlimentosG(Integer idMetadatosAlimentosG) {
-        this.idMetadatosAlimentosG = idMetadatosAlimentosG;
-    }
-
     public MetadatosAlimentosG getMetadatosAlimentosG() {
         return metadatosAlimentosG;
     }
@@ -73,18 +80,18 @@ public class TablaCnaGeneral implements Serializable {
         this.metadatosAlimentosG = metadatosAlimentosG;
     }
 
-    public Nutrientes getIdNutriente() {
-        return idNutriente;
+    public Nutrientes getNutrientes() {
+        return nutrientes;
     }
 
-    public void setIdNutriente(Nutrientes idNutriente) {
-        this.idNutriente = idNutriente;
+    public void setNutrientes(Nutrientes nutrientes) {
+        this.nutrientes = nutrientes;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMetadatosAlimentosG != null ? idMetadatosAlimentosG.hashCode() : 0);
+        hash += (tablaCnaGeneralPK != null ? tablaCnaGeneralPK.hashCode() : 0);
         return hash;
     }
 
@@ -95,7 +102,7 @@ public class TablaCnaGeneral implements Serializable {
             return false;
         }
         TablaCnaGeneral other = (TablaCnaGeneral) object;
-        if ((this.idMetadatosAlimentosG == null && other.idMetadatosAlimentosG != null) || (this.idMetadatosAlimentosG != null && !this.idMetadatosAlimentosG.equals(other.idMetadatosAlimentosG))) {
+        if ((this.tablaCnaGeneralPK == null && other.tablaCnaGeneralPK != null) || (this.tablaCnaGeneralPK != null && !this.tablaCnaGeneralPK.equals(other.tablaCnaGeneralPK))) {
             return false;
         }
         return true;
@@ -103,7 +110,7 @@ public class TablaCnaGeneral implements Serializable {
 
     @Override
     public String toString() {
-        return "model.TablaCnaGeneral[ idMetadatosAlimentosG=" + idMetadatosAlimentosG + " ]";
+        return "models.TablaCnaGeneral[ tablaCnaGeneralPK=" + tablaCnaGeneralPK + " ]";
     }
     
 }

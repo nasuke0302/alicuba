@@ -23,6 +23,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -62,6 +63,11 @@ public class Usuarios implements Serializable, UserDetails {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     @JsonIgnore
     private List<Alimentos> alimentosList;
+    @Column(name = "usuario")
+    private String usuario;
+    @JsonIgnore
+    @OneToMany(mappedBy = "idUsuario")
+    private List<Referencias> referenciasList;
 
     public Usuarios() {
     }
@@ -178,7 +184,7 @@ public class Usuarios implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       List<Roles> authority = new ArrayList<>();
+        List<Roles> authority = new ArrayList<>();
         authority.add(idRol);
         return authority;
     }
@@ -206,5 +212,22 @@ public class Usuarios implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    @XmlTransient
+    public List<Referencias> getReferenciasList() {
+        return referenciasList;
+    }
+
+    public void setReferenciasList(List<Referencias> referenciasList) {
+        this.referenciasList = referenciasList;
     }
 }
