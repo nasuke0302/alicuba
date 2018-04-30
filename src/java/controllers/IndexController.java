@@ -8,6 +8,7 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 import models.Referencias;
+import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -25,6 +26,8 @@ import repositorios.AutoresRepo;
 import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
 import repositorios.ReferenciasRepo;
+import repositorios.RolesRepo;
+import repositorios.UsuariosRepo;
 
 @Controller
 public class IndexController {
@@ -40,6 +43,11 @@ public class IndexController {
 
     @Autowired
     CategoriaRepo categoriasRepo;
+    
+    @Autowired
+    UsuariosRepo  usuariosRepo;
+    
+    RolesRepo rolesRepo;
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
@@ -55,12 +63,15 @@ public class IndexController {
     @RequestMapping(value = "/index/getReferencias")
     public @ResponseBody
     Map<String, ? extends Object> getReferencias() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", referenciasRepo.findAll());
+            map.put("data", referenciasRepo.findAllByIdUsuario((Usuarios) principal));
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }

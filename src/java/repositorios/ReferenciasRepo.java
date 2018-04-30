@@ -5,7 +5,9 @@
  */
 package repositorios;
 
+import java.util.List;
 import models.Referencias;
+import models.Usuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +19,6 @@ import org.springframework.stereotype.Repository;
 public interface ReferenciasRepo extends JpaRepository<Referencias, Integer> {
     
     public Referencias findTopByOrderByIdReferenciaDesc();
+
+    public List<Referencias> findAllByIdUsuario(Usuarios u);
 }
