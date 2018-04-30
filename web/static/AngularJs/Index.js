@@ -43,7 +43,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         autoresList: "",
         categoriaList: ""
     };
-
+    
     //Obtener Listado de Referencias
     $http.get("index/getReferencias").then(function (data) {
         $scope.allReferencias = data.data.data;

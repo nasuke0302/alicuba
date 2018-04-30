@@ -1,4 +1,4 @@
-var appCna = angular.module("AppCna", ['ui.select']);
+var appCna = angular.module("AppCna", ['ui.select', 'AppIndex']);
 appCna.controller("CnaController", function ($scope, $http, $window) {
     $scope.selectedAutores = {};
     $scope.selectedCategoria = {};
@@ -53,7 +53,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         categoriaList: ""
     };
     $scope.estudioPorReferencia = {};
-
+    
     $scope.estudiosPorReferencia = function (idReferencia) {
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;
