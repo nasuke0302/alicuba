@@ -45,6 +45,7 @@
                                 <div class="col-lg-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
+                                            <p>{{referencia}}</p>
                                             <sec:authorize access="hasAuthority('Colaborador')">
                                                 <div class="btn-group">
                                                     <button class="icon-plus btn btn-success" data-ng-click="abrirNuevoModal()"

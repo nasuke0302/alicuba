@@ -1,5 +1,5 @@
-var appCna = angular.module("AppCna", ['ui.select', 'AppIndex']);
-appCna.controller("CnaController", function ($scope, $http, $window) {
+var appCna = angular.module("AppCna", ['ui.select']);
+appCna.controller("CnaController", function ($scope, $http, $window, sharedData) {
     $scope.selectedAutores = {};
     $scope.selectedCategoria = {};
     $scope.referencia = {
@@ -53,7 +53,9 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         categoriaList: ""
     };
     $scope.estudioPorReferencia = {};
-    
+
+    $scope.referencia = sharedData.getData();
+
     $scope.estudiosPorReferencia = function (idReferencia) {
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;

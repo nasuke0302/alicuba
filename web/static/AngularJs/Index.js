@@ -1,5 +1,15 @@
 var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
-appIndex.controller("IndexController", function ($scope, $http, $window) {
+appIndex.service("sharedData", function () {
+    this.data = {};
+    this.getData = function () {
+        return this.data;
+    };
+    this.setData = function (newData) {
+        this.data = newData;
+    };
+});
+
+appIndex.controller("IndexController", function ($scope, $http, $window, sharedData) {
 //    $scope.BootstrapIntegrationCtrl = function (DTOptionsBuilder) {
 //        var vm = this;
 //        vm.dtOptions = DTOptionsBuilder.withBootstrap();
@@ -43,7 +53,9 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         autoresList: "",
         categoriaList: ""
     };
-    
+
+    sharedData.setData($scope.referencia);
+
     //Obtener Listado de Referencias
     $http.get("index/getReferencias").then(function (data) {
         $scope.allReferencias = data.data.data;
@@ -179,7 +191,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
             fecha: a.fecha
         };
     };
-    
+
     $scope.abrirModalAddAutor = function () {
         $scope.autor = {
             nombre: "",

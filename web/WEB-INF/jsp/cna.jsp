@@ -54,6 +54,8 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     Referencia 
+
+                                    <p>{{referencia}}</p>
                                 </div>
                                 <div class="panel-body">
                                     <em id="pAutores" data-ng-repeat="autor in lastReferencia.autoresList">
@@ -119,7 +121,7 @@
                                                     <tr data-ng-repeat="nut in e.tablaCnaGeneralList">
                                                         <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
                                                         <td>
-                                                             <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                            <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
                                                             {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                         <td> {{nut.valor}}</td>
                                                     </tr>
