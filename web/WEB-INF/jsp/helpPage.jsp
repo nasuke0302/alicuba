@@ -19,17 +19,6 @@
             <h2 style="color: #00cc33" >P&aacute;gina de ayuda y contacto</h2>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
         <sec:authorize access="hasAnyAuthority('Colaborador', 'Editor')">
             <a class="btn btn-primary" href="${pageContext.request.contextPath}/index">Go to index page!</a>
         </sec:authorize>
