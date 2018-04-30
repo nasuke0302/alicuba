@@ -14,6 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -121,10 +122,10 @@ public class IndexController {
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/index/delete", method = RequestMethod.POST)
-    public ModelAndView deleteReferencia(@RequestBody Referencias r, ModelMap map) {
+    @RequestMapping(value = "/index/delete/{idReferencia}", method = RequestMethod.POST)
+    public ModelAndView deleteReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         try {
-            referenciasRepo.delete(r);
+            referenciasRepo.delete(idReferencia);
             map.put("mensaje", "Referencia eliminada correctamente");
         } catch (Exception e) {
             map.put("Error", e);

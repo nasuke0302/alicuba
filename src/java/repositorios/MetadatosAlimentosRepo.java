@@ -29,4 +29,6 @@ public interface MetadatosAlimentosRepo extends JpaRepository<MetadatosAlimentos
    
     @Query("SELECT mat FROM MetadatosAlimentosG mat WHERE mat.idReferencia = ?1")
     List<MetadatosAlimentosG> findEstudioByReferencia(Referencias IdReferencia);
+    
+    public MetadatosAlimentosG findTopByOrderByIdMetadatosAlimentosGDesc();
 }
