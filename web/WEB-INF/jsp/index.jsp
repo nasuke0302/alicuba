@@ -3,7 +3,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-
 <html data-ng-app="AppIndex">
     <head>
         <!--GLOBAL STYLES AND TITLE-->
@@ -27,7 +26,6 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/Index.js"></script>
         <!--END PAGE LEVEL SCRIPTS-->
     </head>
-
     <body class="padTop53" data-ng-controller="IndexController">
         <!--MAIN WRAP-->
         <div id="wrap">
@@ -227,7 +225,7 @@
                                                                 <input class="form-control" style="text-transform: capitalize"
                                                                        data-ng-model="referencia.informeSerie"/>
                                                             </div>
-                                                            <div class="form-group" data-ng-show="selectedFuente === '2'">
+                                                            <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 2">
                                                                 <label>Publicaci&oacute;n</label>
                                                                 <input class="form-control" data-ng-model="referencia.arcPublication"/>
                                                             </div>
@@ -391,9 +389,7 @@
         <!-- FOOTER -->
         <jsp:include page="/WEB-INF/includes/footer.jsp"/>
         <!--END FOOTER -->
-
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
-
     </body>
 </html>

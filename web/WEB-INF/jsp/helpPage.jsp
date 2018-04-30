@@ -13,7 +13,23 @@
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
     </head>
     <body>
-        <h1>This is the help page</h1>
+        <br />
+        <div class="text-center"> 
+            <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 105px;">
+            <h2 style="color: #00cc33" >P&aacute;gina de ayuda y contacto</h2>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
         <sec:authorize access="hasAnyAuthority('Colaborador', 'Editor')">
             <a class="btn btn-primary" href="${pageContext.request.contextPath}/index">Go to index page!</a>
         </sec:authorize>

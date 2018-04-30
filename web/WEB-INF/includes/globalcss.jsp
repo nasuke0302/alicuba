@@ -8,6 +8,8 @@
 
 <!--TITLE-->
 <title>Alicuba</title>
+<link rel="icon" href="${pageContext.request.contextPath}/static/favicon.png" type="image/png">
+
 <!--END TITLE-->
 <!--GLOBAL STYLES-->
 <link rel="stylesheet" href="<c:url value="/static/plugins/bootstrap/css/bootstrap.css"/>">

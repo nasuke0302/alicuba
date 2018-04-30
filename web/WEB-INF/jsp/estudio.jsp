@@ -62,7 +62,7 @@
                                                 Categor&iacute;a (s):<em data-ng-repeat="categoria in lastReferencia.categoriaList">{{categoria.categoria}} </em>
                                             </p>
                                             <div class="form-group">
-                                                <h4>Seleccione un alimento:</h4>
+                                                <h4>Primero seleccione un alimento:</h4>
                                                 <ui-select data-ng-model="selectedAlimento.selected" 
                                                            theme="bootstrap">
                                                     <ui-select-match placeholder="Elija un alimento...">
@@ -99,8 +99,8 @@
                                             </h4>
                                         </div>    
                                     </div>
-                                    <form role="form" method="POST" data-ng-submit="addEstudio()">
-                                        <div class="row">
+                                    <div class="row" data-ng-show="selectedAlimento.selected">
+                                        <form name="formAddEstudio" role="form" method="POST" data-ng-submit="addEstudio()">
                                             <div class="col-lg-12">
                                                 <div class="box dark">
                                                     <header>
@@ -217,61 +217,61 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <button class="icon-pencil btn btn-success" 
+                                                    type="submit" 
+                                                    data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
+                                        </form>
+                                        <div data-ng-show="estudioInsertado">
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
-                                                <ui-select data-ng-model="selectedTDA.selected" 
-                                                           theme="bootstrap">
-                                                    <ui-select-match placeholder="Elija un Tipo de Datos...">
-                                                        {{$select.selected.nombreTipoDato}}
+                                                <ui-select data-ng-model="selectedNutriente.selected" 
+                                                           theme="bootstrap" name="selectNutriente">
+                                                    <ui-select-match placeholder="Elija un Nutriente...">
+                                                        {{$select.selected.nombre}} 
+                                                        <small><strong>Tipo de Dato: </strong>
+                                                            {{$select.selected.idTiposDatosAlimentos.nombreTipoDato}}
+                                                        </small>
                                                     </ui-select-match>
-                                                    <ui-select-choices repeat="a in allTipoDatosAlimentos| filter: $select.search">
-                                                        {{a.nombreTipoDato}}
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                        <strong>{{a.abreviatura}}</strong>
+                                                        <small><strong>Nombre: </strong>{{a.nombre}}</small>
+                                                        <small><strong>Tipo de Dato: </strong>
+                                                            {{a.idTiposDatosAlimentos.nombreTipoDato}}
+                                                        </small>
                                                     </ui-select-choices>
                                                 </ui-select> 
                                             </div>
-                                            <div data-ng-repeat="nut in allNutrientes">
-                                                <div data-ng-show="nut.abreviatura==='zzzzzzz'">{{tablaCnaGeneral.idNutriente = nut}}</div>
-                                                <div data-ng-show="selectedTDA.selected.idTiposDatosAlimentos === nut.idTiposDatosAlimentos.idTiposDatosAlimentos"
-                                                     class="input-group tooltip-demo">
-                                                    <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{nut.nombre}}">{{nut.abreviatura}}</span>
-                                                    <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor"/>
-                                                    <span class="input-group-addon">{{nut.idUnidadMedida.unidadMedida}}</span>
-                                                </div>
+                                            <br/>
+                                            <div data-ng-show="selectedNutriente.selected">
+                                                <form data-ng-submit="addTablaCnaGeneral()" method="post" name="formAddTablaCnaGeneral">
+                                                    <div class="input-group tooltip-demo">
+                                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
+                                                              title="{{selectedNutriente.selected.nombre}}">{{selectedNutriente.selected.abreviatura}}</span>
+                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""/>
+                                                        <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
+                                                    </div>
+                                                    <button class="icon-pencil btn btn-success" 
+                                                            type="submit" 
+                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid"> Guardar</button> 
+                                                </form>
                                             </div>
-                                            <!--                                            <div class="col-lg-12" data-ng-repeat="tda in allTipoDatosAlimentos track by $index">
-                                                                                            <div class="box dark">
-                                                                                                <header>
-                                                                                                    <div class="icons"><i class="icon-edit"></i></div>
-                                                                                                    <h5>
-                                                                                                        <a class="accordion-toggle minimize-box" data-toggle="collapse" 
-                                                                                                           href="#div{{tda.idTiposDatosAlimentos}}">{{tda.nombreTipoDato}}
-                                                                                                        </a>
-                                                                                                    </h5>
-                                                                                                    <div class="toolbar">
-                                                                                                        <ul class="nav"> 
-                                                                                                            <li>
-                                                                                                                <a class="accordion-toggle minimize-box" data-toggle="collapse" href="#div{{tda.idTiposDatosAlimentos}}">
-                                                                                                                    <i id="flecha" class="icon-chevron-down"></i>
-                                                                                                                </a>
-                                                                                                            </li>
-                                                                                                        </ul>
-                                                                                                    </div>
-                                                                                                </header>
-                                                                                                <div id="{{'div' + tda.idTiposDatosAlimentos}}" class="accordion-body collapse body">
-                                                                                                    <div data-ng-repeat="nut in tda.nutrientesList" class="input-group tooltip-demo">
-                                                                                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{nut.nombre}}">{{nut.abreviatura}}</span>
-                                                                                                        <input type="text" class="form-control"/>
-                                                                                                        <span class="input-group-addon">{{nut.idUnidadMedida.unidadMedida}}</span>
-                                                                                                    </div>
-                                                                                                    <br />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>-->
                                         </div>
-                                        <button class="icon-pencil btn btn-success" type="submit"> Guardar</button>
-                                    </form> 
+                                    </div>
                                 </div>                            
                             </div>
+                            <!--BEGIN REFERENCIAS INSERTADAS-->
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Valores Insertados</div>
+                                <div class="panel-body">
+                                    <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada">
+                                        <span class="input-group-addon">{{tCGI.nutriente.idTiposDatosAlimentos.nombreTipoDato}}</span>
+                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutriente.nombre}}">{{tCGI.nutriente.abreviatura}}</span>
+                                        <input type="text" class="form-control" data-ng-model="tCGI.valor.valor"/>
+                                        <span class="input-group-addon">{{tCGI.nutriente.idUnidadMedida.unidadMedida}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END REFERENCIAS INSERTADAS-->
                         </div>
                     </div>              		
                     <!--MODAL NUEVO ALIMENTO-->
@@ -375,9 +375,9 @@
         <!--PAGE LEVEL SCRIPTS-->
         <script src="${pageContext.request.contextPath}/static/js/notifications.js"></script>
         <script>
-                                                $(function () {
-                                                Notifications();
-                                                });
+                                                        $(function () {
+                                                            Notifications();
+                                                        });
         </script>
         <!--END PAGE LEVEL SCRIPTS-->
     </body>

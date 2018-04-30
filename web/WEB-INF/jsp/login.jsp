@@ -28,7 +28,8 @@
     <body data-ng-controller="LoginController">
         <div class="container">
             <div class="text-center">
-                <h1 class="text-success">AliCuba</h1>
+                <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 200px; height: 70px;"/>
+                <br />
                 <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com"><i class="icon-facebook"></i></a>
                 <a class="btn btn-social-icon btn-google-plus" href="http://www.plus.google.com"><i class="icon-google-plus"></i></a>
                 <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com"><i class="icon-linkedin"></i></a>
@@ -62,14 +63,14 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </div>
-                <div id="forgot" class="tab-pane">
+<!--                <div id="forgot" class="tab-pane">
                     <form action="index.html" class="form-signin">                
                         <p class="text-muted text-center btn-block btn btn-primary btn-rect">Usuario o correo electr&oacute;nico</p>
                         <input type="email"  required="required" placeholder=""  class="form-control" />
                         <br />
                         <button class="btn text-muted text-center btn-success" type="submit">Obtener una contrase&ntilde;a nueva</button>
                     </form>
-                </div>
+                </div>-->
                 <div id="signup" class="tab-pane">
                     <form action="addUsuarios" class="form-signin" method="post" name="registerForm">
                         <p class="text-muted text-center btn-block btn btn-primary btn-rect">Por favor llene los datos para el registro</p>
@@ -105,8 +106,8 @@
                         <div data-ng-show="registerForm.password2.$empty">
                             <small style="color:red; display: block; text-align: center;">Este campo es requerido</small>
                         </div>
-                        <div data-ng-show="registerForm.password2.$invalid 
-                             && !registerForm.password2.$validValidator">
+                        <div data-ng-show="registerForm.password2.$invalid
+                                                && !registerForm.password2.$validValidator">
                             <small style="color:red; display: block; text-align: center;">Las contraseñas no coinciden</small>
                         </div>
 
@@ -117,9 +118,9 @@
             </div>
             <div class="text-center">
                 <ul class="list-inline">
-                    <li><a class="text-muted" href="#login" data-toggle="tab">Acceder</a></li>
-                    <li><a class="text-muted" href="#forgot" data-toggle="tab">¿Has olvidado tu contrase&ntilde;a?</a></li>
-                    <li><a class="text-muted" href="#signup" data-toggle="tab">Crear cuenta</a></li>
+                    <li><a href="#login" data-toggle="tab">Acceder</a></li>
+                    <!--<li><a class="text-muted" href="#forgot" data-toggle="tab">¿Has olvidado tu contrase&ntilde;a?</a></li>-->
+                    <li><a href="#signup" data-toggle="tab">Crear cuenta</a></li>
                 </ul>
             </div>
 

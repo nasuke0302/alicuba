@@ -52,8 +52,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Acciones</th>
-                                                    <th>Nombre</th>
-                                                    <th>Segundo Nombre</th>
+                                                    <th>Nombre (y Segundo Nombre)</th>
                                                     <th>Apellidos</th>
                                                 </tr>
                                             </thead>
@@ -68,8 +67,7 @@
                                                                 data-ng-click="abrirEliminarModal($index)">
                                                             <i class="glyphicon glyphicon-trash"></i></button>
                                                     </td>
-                                                    <td>{{a.nombre}}</td>
-                                                    <td>{{a.segundoNombre}}</td>
+                                                    <td>{{a.nombre}} {{a.segundoNombre}}</td>
                                                     <td>{{a.apellidos}}</td>
                                                 </tr>
                                             </tbody>
@@ -97,16 +95,13 @@
                                             <div class="form-group">
                                                 <label>Nombre</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="autor.nombre"
-                                                       style=" text-transform: capitalize"/>
+                                                       required="" data-ng-model="autor.nombre"/>
                                                 <label>Segundo Nombre</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="autor.segundoNombre"
-                                                       style=" text-transform: capitalize"/>
+                                                       data-ng-model="autor.segundoNombre"/>
                                                 <label>Apellidos</label>
                                                 <input class="form-control" type="text" 
-                                                       required="" data-ng-model="autor.apellidos"
-                                                       style=" text-transform: capitalize"/>
+                                                       required="" data-ng-model="autor.apellidos"/>
                                             </div>
                                             <div class="text-right">
                                                 <input type="hidden" data-ng-model="autor.idAutor"/>

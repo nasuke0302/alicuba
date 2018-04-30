@@ -49,11 +49,11 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         $scope.allReferencias = data.data.data;
     });
     //Obtener Lista de Autores
-    $http.get("../autores/get").then(function (data) {
+    $http.get("autores/get").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Obtener Listado de Categorias
-    $http.get("../categorias/get").then(function (data) {
+    $http.get("categorias/get").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Obtener Lista de Fuentes de Informacion
@@ -84,7 +84,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     // Eliminar Referencia
     $scope.eliminarReferencia = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.post("index/delete", $scope.referencia).then(function (r) {
+        $http.post("index/delete/" + $scope.referencia.idReferencia).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Listado de Referencias
             $http.get("index/getReferencias").then(function (data) {
@@ -188,10 +188,10 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
-        $http.post("../autores/add", $scope.autor, {}).then(function (r) {
+        $http.post("autores/add", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("./autores/get").then(function (data) {
+            $http.get("autores/get").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
             $("#modalAddOrEditAutor").modal("toggle");
@@ -203,10 +203,10 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
-        $http.post("../categorias/add", $scope.categoria, {}).then(function (r) {
+        $http.post("categorias/add", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("../categorias/get").then(function (data) {
+            $http.get("categorias/get").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
             $("#modalAddOrEditCategoria").modal("toggle");

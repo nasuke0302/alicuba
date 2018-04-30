@@ -53,7 +53,6 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         categoriaList: ""
     };
     $scope.estudioPorReferencia = {};
-    $scope.tablaCnaGeneral = {};
 
     $scope.estudiosPorReferencia = function (idReferencia) {
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
@@ -61,7 +60,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         });
     };
     //Obtener Listado de Categorias
-    $http.get("../index/getCategorias").then(function (data) {
+    $http.get("../categorias/get").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Obtener Lista de Fuentes de Informacion
@@ -69,7 +68,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.allFuentes = data.data.data;
     });
     //Obtener Lista de Autores
-    $http.get("../index/getAutores").then(function (data) {
+    $http.get("../autores/get").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Obtener la ultima referencia insertada
@@ -132,10 +131,10 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
-        $http.post("../index/addAutor", $scope.autor, {}).then(function (r) {
+        $http.post("../autor/add", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("../index/getAutores").then(function (data) {
+            $http.get("../autor/get").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
             $("#modalAddOrEditAutor").modal("toggle");
@@ -147,10 +146,10 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
-        $http.post("../index/addCategoria", $scope.categoria, {}).then(function (r) {
+        $http.post("../categorias/add", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("../index/getCategorias").then(function (data) {
+            $http.get("../categorias/get").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
             $("#modalAddOrEditCategoria").modal("toggle");

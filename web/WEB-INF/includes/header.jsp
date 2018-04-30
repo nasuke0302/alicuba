@@ -17,7 +17,9 @@
         </a>
         <!--LOGO SECTION--> 
         <header class="navbar-header">
-            <a href="${pageContext.request.contextPath}/index" class="navbar-brand">AliCuba</a>
+            <a href="${pageContext.request.contextPath}/helpPage" class="navbar-brand">
+                <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 100px; height: 36px;"/>
+            </a>
         </header>
         <!--END LOGO SECTION--> 
         <ul class="nav navbar-top-links navbar-right">
@@ -28,11 +30,13 @@
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="${pageContext.request.contextPath}/editarPerfil/show"><i class="icon-user"></i> Editar mi perfil </a></li>
-                    <li class="divider"></li>
+                    <!--<li class="divider"></li>-->
                     <li><a href="${pageContext.request.contextPath}/logout"><i class="icon-signout"></i> Cerrar Sesi&oacute;n</a></li>
+                    <li class="divider"></li>
+                    <li><a href="${pageContext.request.contextPath}/helpPage"><i class="icon-question"></i> Acerca de...</a></li>
                 </ul>
             </li>
-            <!--END ADMIN SETTINGS--> 
+            <!--END ADMIN SETTINGS SECTIONS--> 
         </ul>
     </nav>
 </div>

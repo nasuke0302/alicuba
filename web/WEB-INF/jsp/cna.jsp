@@ -86,10 +86,10 @@
                                     <div class="toolbar">
                                         <ul class="nav">  
                                             <li><a data-ng-click="estudiosPorReferencia(lastReferencia.idReferencia)" class="btn btn-primary">
-                                                    <span class="glyphicon glyphicon-eye-open"></span> Ver</a>
+                                                    <span class="glyphicon glyphicon-eye-open"></span> Ver estudios de la referencia</a>
                                             </li>
                                             <li><a data-ng-click="nuevoEstudio()" class="btn btn-primary">
-                                                    <span class="glyphicon glyphicon-plus"></span> Nuevo Estudio</a>
+                                                    <span class="glyphicon glyphicon-plus"></span> Nuevo estudio</a>
                                             </li>
                                             <li>
                                                 <a class="accordion-toggle minimize-box" data-toggle="collapse" href="#div-1">
@@ -102,13 +102,11 @@
                                 <div id="div-1" class="accordion-body collapse in body">
                                     <table class="table table-striped">
                                         <tr>
-                                            <td><strong>#</strong></td>
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
                                             <td><strong>Acciones</strong></td>
                                         </tr>
                                         <tr data-ng-repeat="e in estudioPorReferencia">
-                                            <td>{{e.idMetadatosAlimentosG}}</td>
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
                                                 <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, {{e.tratamiento}}, 
                                                 <abbr title="{{e.idProvincia.idRegion.region}}">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
@@ -120,7 +118,9 @@
                                                 <table class="table">
                                                     <tr data-ng-repeat="nut in e.tablaCnaGeneralList">
                                                         <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
-                                                        <td>{{nut.nutrientes.abreviatura}}, {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
+                                                        <td>
+                                                             <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                            {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                         <td> {{nut.valor}}</td>
                                                     </tr>
                                                 </table>
@@ -391,18 +391,6 @@
                 <!--END CREATE CATEGORIA-->
             </div>
             <!--END PAGE CONTENT -->
-
-            <!-- RIGHT STRIP  SECTION -->
-            <div id="right">            
-                <div class="well well-small">
-                    <ul class="list-unstyled">
-                        <li>Visitor &nbsp; : <span>23,000</span></li>
-                        <li>Users &nbsp; : <span>53,000</span></li>
-                        <li>Registrations &nbsp; : <span>3,000</span></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- END RIGHT STRIP  SECTION -->
         </div>
         <!--END MAIN WRAPPER -->
         <!-- FOOTER -->
