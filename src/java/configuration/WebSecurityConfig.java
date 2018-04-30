@@ -37,9 +37,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MessageSource messageSource;
 
-    @Autowired
-    CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
@@ -53,12 +50,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
                 .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", "/categorias/**")
                 .hasAnyAuthority("Editor", "Colaborador")
-                .antMatchers("/editarPerfil/**").authenticated()
+                .antMatchers("/editarPerfil/**", "/helpPage").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .successHandler(new CustomAuthenticationSuccessHandler())
-                .loginPage("/login").defaultSuccessUrl("/index")
+                .loginPage("/login").successHandler(authenticationSuccessHandler())
                 .permitAll()
                 .and()
                 .logout()
@@ -94,5 +90,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
+    }
+    
+    @Bean
+    public CustomAuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new CustomAuthenticationSuccessHandler();
     }
 }

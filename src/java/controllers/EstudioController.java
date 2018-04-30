@@ -10,6 +10,8 @@ import java.util.Map;
 import models.Alimentos;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
+import models.TablaCnaGeneral;
+import models.TablaCnaGeneralPK;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +34,7 @@ import repositorios.NutrientesRepo;
 import repositorios.PaisesRepo;
 import repositorios.ProvinciaRepo;
 import repositorios.RangoEdadesRepo;
+import repositorios.TablaCnaGeneralRepo;
 import repositorios.TiposDatosAlimentosRepo;
 import repositorios.UnidadesMedidaRepo;
 
@@ -80,7 +83,10 @@ public class EstudioController {
 
     @Autowired
     AlimentosRepo alimentosRepo;
-    
+
+    @Autowired
+    TablaCnaGeneralRepo tablaCnaGeneralRepo;
+
     @RequestMapping(value = "/estudio/gestionar")
     public ModelAndView showEstudio() {
         return new ModelAndView("estudio");
@@ -284,4 +290,29 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor}")
+    public ModelAndView addTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
+            @PathVariable Float valor, ModelMap map) {
+        try {
+            TablaCnaGeneral cnaGeneral = new TablaCnaGeneral();
+            cnaGeneral.setTablaCnaGeneralPK(cnaGeneralPK);
+            cnaGeneral.setValor(valor);
+            tablaCnaGeneralRepo.saveAndFlush(cnaGeneral);
+            map.put("nutriente", nutrientesRepo.findOne(cnaGeneralPK.getIdNutriente()));
+            map.put("valor", cnaGeneral);
+            map.put("mensaje", "Valor insertado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al insertar valor");
+            map.put("Error", e);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/estudio/getLastEstudio")
+    public ModelAndView getLastEstudio(ModelMap map) {
+        map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
+        map.put("success", Boolean.TRUE);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }
