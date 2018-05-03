@@ -60,8 +60,8 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
-    
-    $scope.referencia= JSON.parse(window.localStorage.getItem("referencia"));
+
+    $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     //Obtener Lista de Nutrientes
     $http.get("getNutrientes").then(function (data) {
         $scope.allNutrientes = data.data.data;
@@ -180,5 +180,9 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
                 $scope.tablaCnaGeneralInsertada.push(data.data);
             });
         });
+    };
+
+    $scope.groupByNombreTipoDato = function (item) {
+        return item.idTiposDatosAlimentos.nombreTipoDato;
     };
 });

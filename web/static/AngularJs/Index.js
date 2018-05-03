@@ -67,7 +67,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         if ($scope.referencia.idReferencia === "") {
             $scope.referencia.fechaAd = new Date();
             $http.post("index/addReferencia", $scope.referencia, {}).then(function (res) {
-                $scope.referencia=res.data.data;
+                $scope.referencia = res.data.data;
                 window.localStorage.setItem("referencia", JSON.stringify($scope.referencia));
             });
             $("#modalNuevaReferencia").modal("toggle");

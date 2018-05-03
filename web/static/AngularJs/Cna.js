@@ -58,7 +58,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     //Enviar Referencia al Modal
     $scope.abrirEditarModal = function () {
-        $scope.selectedFuente.selected= $scope.referencia.idFuente;
+        $scope.selectedFuente.selected = $scope.referencia.idFuente;
         $scope.selectedAutores.selected = $scope.referencia.autoresList;
         $scope.selectedCategoria.selected = $scope.referencia.categoriaList;
     };
