@@ -1,62 +1,27 @@
 var appCna = angular.module("AppCna", ['ui.select']);
-appCna.controller("CnaController", function ($scope, $http, $window, sharedData) {
+appCna.controller("CnaController", function ($scope, $http, $window) {
+    $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     $scope.selectedAutores = {};
     $scope.selectedCategoria = {};
-    $scope.referencia = {
-        idReferencia: "",
-        idFuente: "",
-        url: "http://",
-        nota: "",
-        title: "",
-        informeNum: "",
-        informeTipo: "",
-        informeSerie: "",
-        informeInstitution: "",
-        arcPublication: "",
-        volumen: "",
-        numVol: "",
-        edition: "",
-        lugar: "",
-        editorial: "",
-        secclTitle: "",
-        tesisUniversidad: "",
-        pages: "",
-        fecha: "",
-        fechaAd: "",
-        fechaMod: "",
-        autoresList: "",
-        categoriaList: ""
-    };
-    $scope.lastReferencia = {
-        idReferencia: "",
-        idFuente: "",
-        url: "http://",
-        nota: "",
-        title: "",
-        informeNum: "",
-        informeTipo: "",
-        informeSerie: "",
-        informeInstitution: "",
-        arcPublication: "",
-        volumen: "",
-        numVol: "",
-        edition: "",
-        lugar: "",
-        editorial: "",
-        secclTitle: "",
-        tesisUniversidad: "",
-        pages: "",
-        fecha: "",
-        fechaAd: "",
-        fechaMod: "",
-        autoresList: "",
-        categoriaList: ""
-    };
     $scope.estudioPorReferencia = {};
+    $scope.selectedFuente = {};
+    $scope.fuente = {
+        nombreFuente: ""
+    };
+    $scope.selectedAutores = {};
+    $scope.autor = {
+        nombre: "",
+        segundoNombre: "",
+        apellidos: ""
+    };
+    $scope.categoria = {
+        categoria: ""
+    };
+    $scope.selectedCategoria = {};
 
-    $scope.referencia = sharedData.getData();
 
     $scope.estudiosPorReferencia = function (idReferencia) {
+        console.log($scope.referencia);
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;
         });
@@ -73,11 +38,6 @@ appCna.controller("CnaController", function ($scope, $http, $window, sharedData)
     $http.get("../autores/get").then(function (data) {
         $scope.allAutores = data.data.data;
     });
-    //Obtener la ultima referencia insertada
-    $http.get("getLastReferencia").then(function (data) {
-        $scope.lastReferencia = data.data.data;
-        $scope.selectedAutores.selected = $scope.lastReferencia.autoresList;
-    });
     $scope.saveReferencia = function () {
         $scope.referencia.idFuente = parseInt($scope.selectedFuente);
         $scope.referencia.fechaMod = new Date();
@@ -87,7 +47,7 @@ appCna.controller("CnaController", function ($scope, $http, $window, sharedData)
             console.log(r.data.mensaje);
             //Obtener la ultima referencia insertada
             $http.get("getLastReferencia").then(function (data) {
-                $scope.lastReferencia = data.data.data;
+                $scope.referencia = data.data.data;
             });
         });
         $("#modalNuevaReferencia").modal("toggle");
@@ -98,32 +58,9 @@ appCna.controller("CnaController", function ($scope, $http, $window, sharedData)
     };
     //Enviar Referencia al Modal
     $scope.abrirEditarModal = function () {
-        $scope.selectedAutores.selected = $scope.lastReferencia.autoresList;
-        $scope.selectedCategoria.selected = $scope.lastReferencia.categoriaList;
-        var a = $scope.lastReferencia;
-        $scope.referencia = {
-            idReferencia: a.idReferencia,
-            idFuente: a.idFuente,
-            url: a.url,
-            nota: a.nota,
-            title: a.title,
-            informeNum: a.informeNum,
-            informeTipo: a.informeTipo,
-            informeSerie: a.informeSerie,
-            informeInstitution: a.informeInstitution,
-            arcPublication: a.arcPublication,
-            volumen: a.volumen,
-            numVol: a.numVol,
-            edition: a.edition,
-            lugar: a.lugar,
-            editorial: a.editorial,
-            secclTitle: a.secclTitle,
-            tesisUniversidad: a.tesisUniversidad,
-            pages: a.pages,
-            fecha: a.fecha,
-            fechaAd: a.fechaAd,
-            fechaMod: new Date()
-        };
+        $scope.selectedFuente.selected= $scope.referencia.idFuente;
+        $scope.selectedAutores.selected = $scope.referencia.autoresList;
+        $scope.selectedCategoria.selected = $scope.referencia.categoriaList;
     };
     $scope.abrirModalAddAutor = function () {
         $scope.autor = {

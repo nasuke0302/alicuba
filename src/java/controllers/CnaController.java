@@ -42,19 +42,6 @@ public class CnaController {
         return new ModelAndView("cna");
     }
 
-    @RequestMapping(value = "/cna/getLastReferencia")
-    public @ResponseBody
-    Map<String, ? extends Object> getLastReferencia() {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("data", referenciasRepo.findTopByOrderByIdReferenciaDesc());
-            map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
-        }
-        return map;
-    }
-
     @RequestMapping(value = "/cna/getEstudioPorReferencia/{idReferencia}")
     public ModelAndView getEstudioPorReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         Referencias r = referenciasRepo.findOne(idReferencia);

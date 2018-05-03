@@ -21,12 +21,6 @@ public interface MetadatosAlimentosRepo extends JpaRepository<MetadatosAlimentos
 
     public MetadatosAlimentosG findByIdReferencia(Referencias referencia);
 
-//    @Query("SELECT mat FROM MetadatosAlimentosG mat INNER JOIN Referencias r ON "
-//            + "mat.idReferencia=r.idReferencia INNER JOIN TablaCnaGeneral tcg "
-//            + "ON tcg.idMetadatosAlimentosG = mat.idMetadatosAlimentosG INNER JOIN "
-//            + "Nutrientes n ON tcg.idNutriente = n.idNutriente WHERE r.idReferencia = ?1")
-//    List<MetadatosAlimentosG> findEstudioByReferencia(Integer IdReferencia);
-   
     @Query("SELECT mat FROM MetadatosAlimentosG mat WHERE mat.idReferencia = ?1")
     List<MetadatosAlimentosG> findEstudioByReferencia(Referencias IdReferencia);
     

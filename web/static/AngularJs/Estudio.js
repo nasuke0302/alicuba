@@ -57,42 +57,14 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.selectedPais = {};
     $scope.selectedProvincia = "";
     $scope.selectedRangoEdad = "";
-    $scope.lastReferencia = {
-        idReferencia: "",
-        idFuente: "",
-        url: "http://",
-        nota: "",
-        title: "",
-        informeNum: "",
-        informeTipo: "",
-        informeSerie: "",
-        informeInstitution: "",
-        arcPublication: "",
-        volumen: "",
-        numVol: "",
-        edition: "",
-        lugar: "",
-        editorial: "",
-        secclTitle: "",
-        tesisUniversidad: "",
-        pages: "",
-        fecha: "",
-        fechaAd: "",
-        fechaMod: "",
-        autoresList: "",
-        categoriaList: ""
-    };
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
-
+    
+    $scope.referencia= JSON.parse(window.localStorage.getItem("referencia"));
     //Obtener Lista de Nutrientes
     $http.get("getNutrientes").then(function (data) {
         $scope.allNutrientes = data.data.data;
-    });
-    //Obtener la ultima referencia insertada
-    $http.get("../cna/getLastReferencia").then(function (data) {
-        $scope.lastReferencia = data.data.data;
     });
     //Obtener Lista de Alimentos
     $http.get("../alimentos/get").then(function (data) {
@@ -181,13 +153,12 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.estudio.import1 = $scope.selectedPais.selected;
         $scope.estudio.idProvincia = $scope.selectedProvincia;
         $scope.estudio.idRangoEdades = $scope.selectedRangoEdad;
-        $scope.estudio.idReferencia = $scope.lastReferencia.idReferencia;
+        $scope.estudio.idReferencia = $scope.referencia.idReferencia;
         $http.post("addEstudio", $scope.estudio, {}).then(function (response) {
             $window.alert(response.data.mensaje);
             $scope.estudioInsertado = true;
         });
     };
-
     $scope.addTablaCnaGeneral = function () {
         $scope.lastEstudioId = {};
 

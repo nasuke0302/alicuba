@@ -9,7 +9,7 @@
 <html lang="es" data-ng-app="AppCna">
 
     <!-- BEGIN HEAD-->
-    <head data-ng-app="AppEstudio">
+    <head>
         <meta charset="UTF-8" />
         <meta content="width=device-width, initial-scale=1.0" name="viewport" />
         <meta content="" name="description" />
@@ -54,22 +54,20 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     Referencia 
-
-                                    <p>{{referencia}}</p>
                                 </div>
                                 <div class="panel-body">
-                                    <em id="pAutores" data-ng-repeat="autor in lastReferencia.autoresList">
+                                    <em id="pAutores" data-ng-repeat="autor in referencia.autoresList">
                                         {{autor.apellidos| limitTo: 1}}. {{autor.nombre}},
                                     </em>
-                                    <em> ({{lastReferencia.fecha}}). {{lastReferencia.title}}. 
-                                        2. {{lastReferencia.nota}}. <em style="text-transform: capitalize">{{lastReferencia.lugar}}. </em>
-                                        {{lastReferencia.idFuente.nombreFuente}}.  
-                                        {{lastReferencia.pages}}.</em>
+                                    <em> ({{referencia.fecha}}). {{referencia.title}}. 
+                                        2. {{referencia.nota}}. <em style="text-transform: capitalize">{{referencia.lugar}}. </em>
+                                        {{referencia.idFuente.nombreFuente}}.  
+                                        {{referencia.pages}}.</em>
                                     <p>                                    
-                                        URL: <a href="{{lastReferencia.url}}">{{lastReferencia.url}}</a>
+                                        URL: <a href="{{referencia.url}}">{{referencia.url}}</a>
                                     </p>
                                     <p>
-                                        Categor&iacute;a (s):<em data-ng-repeat="categoria in lastReferencia.categoriaList">{{categoria.categoria}} </em>
+                                        Categor&iacute;a (s):<em data-ng-repeat="categoria in referencia.categoriaList">{{categoria.categoria}} </em>
                                     </p>
                                     <p>                                    
                                         <button class="icon-pencil btn btn-success" data-ng-click="abrirEditarModal()"
@@ -87,7 +85,7 @@
                                     <h5>Estudios Registrados</h5>
                                     <div class="toolbar">
                                         <ul class="nav">  
-                                            <li><a data-ng-click="estudiosPorReferencia(lastReferencia.idReferencia)" class="btn btn-primary">
+                                            <li><a data-ng-click="estudiosPorReferencia(referencia.idReferencia)" class="btn btn-primary">
                                                     <span class="glyphicon glyphicon-eye-open"></span> Ver estudios de la referencia</a>
                                             </li>
                                             <li><a data-ng-click="nuevoEstudio()" class="btn btn-primary">
@@ -142,27 +140,28 @@
                 <div class="col-lg-12">
                     <div class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
-                            <form name="formEditReferencias" role="form" data-ng-submit="saveReferencia()" method="post">
+                            <form name="formAddReferencias" role="form" data-ng-submit="createOrEditReferencia()" method="post">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="H3">Editar Referencia</h4>
+                                        <h4 class="modal-title" id="H3">Nueva Referencia</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label>Tipo de Referencia</label>
-                                            <select class="form-control" data-ng-model="selectedFuente">
-                                                <option value="1">Informe</option>
-                                                <option value="2">Revista Cient&iacute;fica</option>
-                                                <option value="3">Libro</option>
-                                                <option value="4">Secci&oacute;n de Libro</option>
-                                                <option value="5">Tesis Doctoral</option>
-                                                <option value="6">Otra Fuente</option>
-                                            </select>
+                                            <label>Fuente de Referencia</label>
+                                            <ui-select data-ng-model="selectedFuente.selected" 
+                                                       theme="bootstrap">
+                                                <ui-select-match placeholder="Elija una fuente de referencia...">
+                                                    {{$select.selected.nombreFuente}}
+                                                </ui-select-match>
+                                                <ui-select-choices repeat="a in allFuentes| filter: $select.search">
+                                                    {{a.nombreFuente}}
+                                                </ui-select-choices>
+                                            </ui-select>   
                                         </div>
                                         <div class="form-group">
                                             <label>Autor (es)</label>
-                                            <ui-select class="form-control" multiple="" data-ng-model="selectedAutores.selected" 
+                                            <ui-select name="selectAutor" multiple="" data-ng-model="selectedAutores.selected" 
                                                        theme="bootstrap" close-on-select="false">
                                                 <ui-select-match placeholder="Elija al menos un autor...">
                                                     {{$item.nombre}} {{$item.apellidos}} 
@@ -180,44 +179,37 @@
                                             <input name="inputTitulo" class="form-control" style="text-transform: capitalize" 
                                                    data-ng-model="referencia.title" required=""
                                                    placeholder="T&iacute;tulo de la referencia" />
-                                            <div data-ng-show="formEditReferencias.inputTitulo.$invalid">
+                                            <div data-ng-show="formAddReferencias.inputTitulo.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>Nota</label>
-                                            <textarea name="inputNota" class="form-control" placeholder="Breve descripci&oacute;n sobre la referencia"
+                                            <textarea class="form-control" name="inputNota" placeholder="Breve descripci&oacute;n sobre la referencia"
                                                       data-ng-model="referencia.nota" required=""></textarea>
-                                            <div data-ng-show="formEditReferencias.inputNota.$invalid">
+                                            <div data-ng-show="formAddReferencias.inputNota.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>A&ntilde;o</label>
-                                            <input name="inputYear" class="form-control" data-ng-minlength="2" data-ng-maxlength="4"
+                                            <input name="inputYear" class="form-control"
                                                    data-ng-model="referencia.fecha" required="" placeholder="yyyy"/>
-                                            <div data-ng-show="formEditReferencias.inputYear.$invalid">
+                                            <div data-ng-show="formAddReferencias.inputYear.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Introduzca un valor de entre 2 y 4 digitos</span>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label>P&aacute;ginas</label>
-                                            <input name="inputPaginas" class="form-control" placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
+                                            <input name="inputPaginas" class="form-control" type="text"
+                                                   placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
                                                    data-ng-model="referencia.pages" required=""/>
-                                            <div data-ng-show="formEditReferencias.inputPaginas.$invalid">
+                                            <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                             </div>
                                         </div> 
                                         <div class="form-group">
-                                            <label>Lugar o Pa&iacute;s</label>
-                                            <input name="inputLugar" value="" class="form-control" style="text-transform: capitalize"
-                                                   data-ng-model="referencia.lugar" required=""/>
-                                            <div data-ng-show="formEditReferencias.inputLugar.$invalid">
-                                                <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Categor&iacute;a </label>
+                                            <label>Categor&iacute;a (s) </label>
                                             <ui-select multiple="" data-ng-model="selectedCategoria.selected" 
                                                        theme="bootstrap" close-on-select="false">
                                                 <ui-select-match placeholder="Elija al menos una categor&iacute;a...">
@@ -226,86 +218,78 @@
                                                 <ui-select-choices repeat="a in allCategorias | filter: $select.search">
                                                     {{a.categoria}}
                                                 </ui-select-choices>
-                                            </ui-select>
+                                            </ui-select> 
                                             <button class="btn btn-success" data-toggle="modal" 
                                                     data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
                                                 <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
                                         </div>
                                         <hr />
-                                        <div class="form-group"  data-ng-show="selectedFuente === '1'">
-                                            <label>Número</label>
-                                            <input name="informe_num" class="form-control" maxlength="8"
-                                                   data-ng-model="referencia.informeNum"/>
+                                        <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
+                                            <label>Número de Informe</label>
+                                            <input class="form-control" maxlength="8" data-ng-model="referencia.informeNum"/>
                                         </div>
-                                        <div class="form-group"  data-ng-show="selectedFuente === '1'">
+                                        <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>Tipo de Informe</label>
-                                            <input name="tipo" class="form-control" style="text-transform: capitalize"
+                                            <input class="form-control" style="text-transform: capitalize"
                                                    data-ng-model="referencia.informeTipo"/>
                                         </div>
-                                        <div class="form-group"  data-ng-show="selectedFuente === '1'">
+                                        <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>Instituci&oacute;n</label>
-                                            <input name="institution" class="form-control" style="text-transform: capitalize"
+                                            <input class="form-control" style="text-transform: capitalize"
                                                    data-ng-model="referencia.informeInstitution"/>
                                         </div>
 
-                                        <div class="form-group" data-ng-show="selectedFuente === '1'">
+                                        <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>T&iacute;tulo de la serie</label>
-                                            <input name="title_serie" class="form-control" 
-                                                   data-ng-model="referencia.informeSerie"
-                                                   style="text-transform: capitalize"/>
+                                            <input class="form-control" style="text-transform: capitalize"
+                                                   data-ng-model="referencia.informeSerie"/>
                                         </div>
-                                        <div class="form-group" data-ng-show="selectedFuente === '2'">
+                                        <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 2">
                                             <label>Publicaci&oacute;n</label>
-                                            <input name="Publication" class="form-control" 
-                                                   data-ng-model="referencia.arcPublication"/>
+                                            <input class="form-control" data-ng-model="referencia.arcPublication"/>
                                         </div>
 
-                                        <div class="form-group" data-ng-show="selectedFuente === '2' ||
-                                                                selectedFuente === '3'">
+                                        <div class="form-group" 
+                                             data-ng-show="selectedFuente.selected.idFuente === 2 ||
+                                                                                         selectedFuente.selected.idFuente === 3">
                                             <label>N&uacute;mero</label>
-                                            <input name="tipo" class="form-control" 
-                                                   data-ng-model="referencia.volumen"/>
+                                            <input class="form-control" data-ng-model="referencia.volumen"/>
                                         </div>
 
-                                        <div class="form-group" data-ng-show="selectedFuente === '2' ||
-                                                                selectedFuente === '3'">
+                                        <div class="form-group" 
+                                             data-ng-show="selectedFuente.selected.idFuente === 2 ||
+                                                                                         selectedFuente.selected.idFuente === 3">
                                             <label>Volumen o tomo</label>
-                                            <input name="volumen" value="" class="form-control" 
-                                                   data-ng-model="referencia.numVol"/>
+                                            <input class="form-control" data-ng-model="referencia.numVol"/>
                                         </div>
 
-                                        <div class="form-group" data-ng-show="selectedFuente === '3' ||
-                                                                selectedFuente === '4' || selectedFuente === '5'">
+                                        <div class="form-group" 
+                                             data-ng-show="selectedFuente.selected.idFuente === 3 ||
+                                                                                         selectedFuente.selected.idFuente === 4 ||
+                                                                                         selectedFuente.selected.idFuente === 5">
                                             <label>Editorial</label>
-                                            <input name="editorial" value="" class="form-control"
-                                                   data-ng-model="referencia.editorial"/>
+                                            <input class="form-control" data-ng-model="referencia.editorial"/>
                                         </div>
-                                        <div class="form-group" data-ng-show="selectedFuente === '3' ||
-                                                                selectedFuente === '4'">
+                                        <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 3 ||
+                                                                                    selectedFuente.selected.idFuente === 4">
                                             <label>Edici&oacute;n</label>
-                                            <input name="editorial" class="form-control" 
-                                                   data-ng-model="referencia.edition"/>
+                                            <input class="form-control" data-ng-model="referencia.edition"/>
                                         </div>
-                                        <div class="form-group" data-ng-show="selectedFuente === '4'">
+                                        <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 4">
                                             <label>T&iacute;tulo del Libro</label>
-                                            <input name="secclTitle" class="form-control" 
-                                                   data-ng-model="referencia.secclTitle"/>
+                                            <input class="form-control" data-ng-model="referencia.secclTitle"/>
                                         </div>
-                                        <div class="form-group"data-ng-show="selectedFuente === '5'">
+                                        <div class="form-group"data-ng-show="selectedFuente.selected.idFuente === 5">
                                             <label>Universidad</label>
-                                            <input name="tesisUniversidad" class="form-control"
-                                                   data-ng-model="referencia.tesisUniversidad"/>
+                                            <input class="form-control" data-ng-model="referencia.tesisUniversidad"/>
                                         </div>
                                         <div class="form-group">
                                             <label>URL</label>
-                                            <input name="url" class="form-control" type="url"
-                                                   data-ng-model="referencia.url"/>
-                                            <input class="hidden" type="text"
-                                                   data-ng-model="referencia.idReferencia"/>
+                                            <input class="form-control" type="url" data-ng-model="referencia.url"/>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-ng-disabled="formEditReferencias.$invalid">Aceptar</button>
+                                        <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid">Aceptar</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                     </div>                            
                                 </div>

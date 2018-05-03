@@ -13,7 +13,6 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/datatables.bootstrap.min.css">
-
         <!--END PAGE LEVEL STYLES-->
 
         <!-- PAGE LEVEL SCRIPTS-->
@@ -45,7 +44,6 @@
                                 <div class="col-lg-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <p>{{referencia}}</p>
                                             <sec:authorize access="hasAuthority('Colaborador')">
                                                 <div class="btn-group">
                                                     <button class="icon-plus btn btn-success" data-ng-click="abrirNuevoModal()"
@@ -58,22 +56,21 @@
                                                 <table datatable="ng" id="tablaReferencias" class="table table-striped table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th>Acciones</th>
-                                                            <th>Autor(es)</th>
-                                                            <th>Referencia</th>
-                                                            <th>Fuente</th>
-                                                            <th>Categor&iacute;a(s)</th>
+                                                            <th><small>Acciones</small></th>
+                                                            <th><small>Autor(es)</small></th>
+                                                            <th><small>Referencia</small></th>
+                                                            <th><small>Categor&iacute;a(s)</small></th>
                                                                 <sec:authorize access="hasAuthority('Editor')">
-                                                                <th>Colaborador</th>
+                                                                <th><small>Colaborador</small></th>
                                                                 </sec:authorize>
-                                                            <th>Fecha de adici&oacute;n</th>
-                                                            <th>Fecha de modificaci&oacute;n</th>
+                                                            <th><small>Fecha de adici&oacute;n</small></th>
+                                                            <th><small>Fecha de modificaci&oacute;n</small></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr data-ng-repeat="r in allReferencias track by $index">
                                                             <td>
-                                                                <button class="btn btn-primary btn-xs" data-ng-click="abrirEditarModal($index)"
+                                                                <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)"
                                                                         data-toggle="modal" data-target="#modalNuevaReferencia">
                                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                                 </button>
@@ -92,7 +89,6 @@
                                                             <td>
                                                                 <small>({{r.fecha}}). {{r.title}}</small>
                                                             </td>
-                                                            <td><small>{{r.idFuente.nombreFuente}}</small></td>
                                                             <td>
                                                                 <span data-ng-repeat="c in r.categoriaList">
                                                                     {{c.categoria}}</span>
@@ -168,7 +164,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>A&ntilde;o</label>
-                                                                <input name="inputYear" class="form-control" data-ng-minlength="2" data-ng-maxlength="4"
+                                                                <input name="inputYear" class="form-control"
                                                                        data-ng-model="referencia.fecha" required="" placeholder="yyyy"/>
                                                                 <div data-ng-show="formAddReferencias.inputYear.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Introduzca un valor de entre 2 y 4 digitos</span>
@@ -176,20 +172,13 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>P&aacute;ginas</label>
-                                                                <input name="inputPaginas" class="form-control" placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
+                                                                <input name="inputPaginas" class="form-control" type="text"
+                                                                       placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
                                                                        data-ng-model="referencia.pages" required=""/>
                                                                 <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                                 </div>
                                                             </div> 
-                                                            <div class="form-group">
-                                                                <label>Lugar o Pa&iacute;s</label>
-                                                                <input name="inputLugar" class="form-control" style="text-transform: capitalize"
-                                                                       data-ng-model="referencia.lugar" required=""/>
-                                                                <div data-ng-show="formAddReferencias.inputLugar.$invalid">
-                                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                                </div>
-                                                            </div>
                                                             <div class="form-group">
                                                                 <label>Categor&iacute;a (s) </label>
                                                                 <ui-select multiple="" data-ng-model="selectedCategoria.selected" 
@@ -233,27 +222,27 @@
 
                                                             <div class="form-group" 
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
-                                                                                         selectedFuente.selected.idFuente === 3">
+                                                                                 selectedFuente.selected.idFuente === 3">
                                                                 <label>N&uacute;mero</label>
                                                                 <input class="form-control" data-ng-model="referencia.volumen"/>
                                                             </div>
 
                                                             <div class="form-group" 
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
-                                                                                         selectedFuente.selected.idFuente === 3">
+                                                                                 selectedFuente.selected.idFuente === 3">
                                                                 <label>Volumen o tomo</label>
                                                                 <input class="form-control" data-ng-model="referencia.numVol"/>
                                                             </div>
 
                                                             <div class="form-group" 
                                                                  data-ng-show="selectedFuente.selected.idFuente === 3 ||
-                                                                                         selectedFuente.selected.idFuente === 4 ||
-                                                                                         selectedFuente.selected.idFuente === 5">
+                                                                                 selectedFuente.selected.idFuente === 4 ||
+                                                                                 selectedFuente.selected.idFuente === 5">
                                                                 <label>Editorial</label>
                                                                 <input class="form-control" data-ng-model="referencia.editorial"/>
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 3 ||
-                                                                                    selectedFuente.selected.idFuente === 4">
+                                                                            selectedFuente.selected.idFuente === 4">
                                                                 <label>Edici&oacute;n</label>
                                                                 <input class="form-control" data-ng-model="referencia.edition"/>
                                                             </div>

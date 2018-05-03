@@ -25,8 +25,6 @@ import repositorios.AutoresRepo;
 import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
 import repositorios.ReferenciasRepo;
-import repositorios.RolesRepo;
-import repositorios.UsuariosRepo;
 
 @Controller
 public class IndexController {
@@ -57,14 +55,12 @@ public class IndexController {
     @RequestMapping(value = "/index/getReferencias")
     public @ResponseBody
     Map<String, ? extends Object> getReferencias() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", referenciasRepo.findAllByIdUsuario((Usuarios) principal));
+            map.put("data", referenciasRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
-            map.put("error", e);
         }
         return map;
     }
@@ -91,6 +87,7 @@ public class IndexController {
         r.setIdUsuario((Usuarios) principal);
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
+        map.put("data", r);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

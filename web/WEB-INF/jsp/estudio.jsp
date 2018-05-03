@@ -48,18 +48,18 @@
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <em id="pAutores" data-ng-repeat="autor in lastReferencia.autoresList">
+                                            <em id="pAutores" data-ng-repeat="autor in referencia.autoresList">
                                                 {{autor.apellidos| limitTo: 1}}. {{autor.nombre}},
                                             </em>
-                                            <em> ({{lastReferencia.fecha}}). {{lastReferencia.title}}. 
-                                                2. {{lastReferencia.nota}}. <em style="text-transform: capitalize">{{lastReferencia.lugar}}. </em>
-                                                {{lastReferencia.idFuente.nombreFuente}}.  
-                                                {{lastReferencia.pages}}.</em>
+                                            <em> ({{referencia.fecha}}). {{referencia.title}}. 
+                                                2. {{referencia.nota}}. <em style="text-transform: capitalize">{{referencia.lugar}}. </em>
+                                                {{referencia.idFuente.nombreFuente}}.  
+                                                {{referencia.pages}}.</em>
                                             <p>                                    
-                                                URL: <a href="{{lastReferencia.url}}">{{lastReferencia.url}}</a>
+                                                URL: <a href="{{referencia.url}}">{{referencia.url}}</a>
                                             </p>
                                             <p>
-                                                Categor&iacute;a (s):<em data-ng-repeat="categoria in lastReferencia.categoriaList">{{categoria.categoria}} </em>
+                                                Categor&iacute;a (s):<em data-ng-repeat="categoria in referencia.categoriaList">{{categoria.categoria}} </em>
                                             </p>
                                             <div class="form-group">
                                                 <h4>Primero seleccione un alimento:</h4>
@@ -221,10 +221,11 @@
                                                     type="submit" 
                                                     data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
                                         </form>
-                                        <div data-ng-show="estudioInsertado">
+                                        <div >
+                                            <!--data-ng-show="estudioInsertado">-->
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
-                                                <ui-select data-ng-model="selectedNutriente.selected" 
+                                                <ui-select data-ng-model="selectedNutriente.selected"
                                                            theme="bootstrap" name="selectNutriente">
                                                     <ui-select-match placeholder="Elija un Nutriente...">
                                                         {{$select.selected.nombre}} 
@@ -232,7 +233,7 @@
                                                             {{$select.selected.idTiposDatosAlimentos.nombreTipoDato}}
                                                         </small>
                                                     </ui-select-match>
-                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search"> 
                                                         <strong>{{a.abreviatura}}</strong>
                                                         <small><strong>Nombre: </strong>{{a.nombre}}</small>
                                                         <small><strong>Tipo de Dato: </strong>
@@ -250,8 +251,7 @@
                                                         <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""/>
                                                         <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
                                                     </div>
-                                                    <button class="icon-pencil btn btn-success" 
-                                                            type="submit" 
+                                                    <button class="icon-pencil btn btn-success" type="submit" 
                                                             data-ng-disabled="formAddTablaCnaGeneral.$invalid"> Guardar</button> 
                                                 </form>
                                             </div>
@@ -263,11 +263,19 @@
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
-                                    <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada">
+                                    <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada track by $index">
                                         <span class="input-group-addon">{{tCGI.nutriente.idTiposDatosAlimentos.nombreTipoDato}}</span>
                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutriente.nombre}}">{{tCGI.nutriente.abreviatura}}</span>
-                                        <input type="text" class="form-control" data-ng-model="tCGI.valor.valor"/>
+                                        <input type="text" class="form-control" 
+                                               data-ng-model="tCGI.valor.valor" data-ng-readonly="true"
+                                               name="inputNutrienteInsertado"/>
                                         <span class="input-group-addon">{{tCGI.nutriente.idUnidadMedida.unidadMedida}}</span>
+                                        <span class="input-group-addon">
+                                            <button class="btn btn-primary btn-xs">
+                                                <i class="glyphicon glyphicon-pencil"></i></button>
+                                            <button class="btn btn-danger btn-xs">
+                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
