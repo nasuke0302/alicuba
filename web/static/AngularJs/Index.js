@@ -1,6 +1,11 @@
 var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
 appIndex.controller("IndexController", function ($scope, $http, $window) {
 
+    $scope.currentyear = new Date().getFullYear();
+    $scope.years = [];
+    for (var i = 1940; i < 2019; i++) {
+        $scope.years.push(i);
+    }
     $scope.selectedFuente = {};
     $scope.fuente = {
         nombreFuente: ""
