@@ -335,7 +335,7 @@
                                                         <form role="form" data-ng-submit="addAutor()" method="post" name="formAddAutor">
                                                             <div class="form-group">
                                                                 <label>Nombre</label>
-                                                                <input class="form-control" type="text" name="inputAutorNombre" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" name="inputAutorNombre" data-ng-pattern="/^[a-zA-Z]*$/"
                                                                        required="" data-ng-model="autor.nombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>

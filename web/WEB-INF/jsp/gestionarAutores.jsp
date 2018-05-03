@@ -91,21 +91,33 @@
                                         <h4 class="modal-title" id="H2">Autor</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditAutor()" method="post">
+                                        <form role="form" data-ng-submit="createOrEditAutor()" 
+                                              name="formAddAutor" method="post">
                                             <div class="form-group">
                                                 <label>Nombre</label>
-                                                <input class="form-control" type="text" 
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombre"
                                                        required="" data-ng-model="autor.nombre"/>
+                                                <div class="text-center" data-ng-show="formAddAutor.inputNombre.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Segundo Nombre</label>
-                                                <input class="form-control" type="text" 
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputSegundoNombre"
                                                        data-ng-model="autor.segundoNombre"/>
+                                                <div class="text-center" data-ng-show="formAddAutor.inputSegundoNombre.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Apellidos</label>
-                                                <input class="form-control" type="text" 
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputApellidos"
                                                        required="" data-ng-model="autor.apellidos"/>
+                                                <div class="text-center" data-ng-show="formAddAutor.inputApellidos.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                             </div>
                                             <div class="text-right">
                                                 <input type="hidden" data-ng-model="autor.idAutor"/>
-                                                <button type="submit" class="btn btn-success">Guardar</button>
+                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddAutor.$invalid">Guardar</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             </div>
                                         </form>

@@ -89,17 +89,22 @@
                                         <h4 class="modal-title" id="H2">Categor&iacute;a</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditCategoria()" method="post">
+                                        <form role="form" data-ng-submit="createOrEditCategoria()" 
+                                              name="formAddCategoria" method="post">
                                             <div class="form-group">
                                                 <label>Categor&iacute;a</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="categoria.categoria"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputCategorias"
+                                                       required="" data-ng-model="categoria.categoria"/>
+                                                <div class="text-center" data-ng-show="formAddCategoria.inputCategorias.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <div class="text-right">
                                                     <input type="hidden" data-ng-model="categoria.idCategoria"/>
-                                                    <button type="submit" class="btn btn-success">Guardar</button>
+                                                    <button type="submit" class="btn btn-success" data-ng-disabled="formAddCategoria.$invalid">Guardar</button>
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                                 </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>

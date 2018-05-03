@@ -101,32 +101,51 @@
                                         <h4 class="modal-title" id="H2">Alimento</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditAlimento()" method="post">
+                                        <form role="form" data-ng-submit="createOrEditAlimento()" 
+                                              name="formAddAlimento" method="post">
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.nombreCient"
-                                                       style="text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombreCient"
+                                                       required="" data-ng-model="indiceRegistro.nombreCient"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Nombre</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.nombre"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombre"
+                                                       required="" data-ng-model="indiceRegistro.nombre"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Variedad</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.variedad"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputVariedad"
+                                                       required="" data-ng-model="indiceRegistro.variedad"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputVariedad.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Parte</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.parte"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputParte"
+                                                       required="" data-ng-model="indiceRegistro.parte"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputParte.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Proceso</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.proceso"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputProceso"
+                                                       required="" data-ng-model="indiceRegistro.proceso"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputProceso.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Mezcla</label>
-                                                <input class="form-control" type="text" 
-                                                       required="" data-ng-model="indiceRegistro.mezcla"
-                                                       style=" text-transform: capitalize"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputMezcla"
+                                                       required="" data-ng-model="indiceRegistro.mezcla"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputMezcla.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                </div>
                                                 <label>Tipo en Cuba</label>
                                                 <br>
                                                 <select class="form-control" 
@@ -148,7 +167,7 @@
                                             </div>
                                             <div class="text-right">
                                                 <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
-                                                <button type="submit" class="btn btn-success">Guardar</button>
+                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddAlimento.$invalid">Guardar</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             </div>
                                         </form>
