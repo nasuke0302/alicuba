@@ -167,7 +167,7 @@
                                                                 <input name="inputYear" class="form-control" allow-only-numbers maxlength="4"
                                                                        data-ng-model="referencia.fecha" required="" placeholder="yyyy"/>
                                                                 <div data-ng-show="formAddReferencias.inputYear.$invalid">
-                                                                    <span style="color:red; display: block; text-align: left;">Introduzca un valor de entre 2 y 4 digitos</span>
+                                                                    <span style="color:red; display: block; text-align: left;">Verifique que el año sea correcto</span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
