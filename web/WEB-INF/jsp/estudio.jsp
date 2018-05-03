@@ -79,6 +79,7 @@
                                                         </small>
                                                     </ui-select-choices>
                                                 </ui-select> 
+                                                <br />
                                                 <button class="btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
                                                         data-toggle="modal" data-target="#modalNuevoAlimento">
                                                     <span class="glyphicon glyphicon-plus"></span>Nuevo Alimento</button>
@@ -228,14 +229,15 @@
                                                 <ui-select data-ng-model="selectedNutriente.selected"
                                                            theme="bootstrap" name="selectNutriente">
                                                     <ui-select-match placeholder="Elija un Nutriente...">
+                                                        <strong>{{$select.selected.abreviatura}} </strong>
                                                         {{$select.selected.nombre}} 
                                                         <small><strong>Tipo de Dato: </strong>
                                                             {{$select.selected.idTiposDatosAlimentos.nombreTipoDato}}
                                                         </small>
                                                     </ui-select-match>
-                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search"> 
-                                                        <strong>{{a.abreviatura}}</strong>
-                                                        <small><strong>Nombre: </strong>{{a.nombre}}</small>
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search" group-by="'nombreTipoDato'"> 
+                                                        <strong>{{a.abreviatura}} </strong>
+                                                        {{a.nombre}}
                                                         <small><strong>Tipo de Dato: </strong>
                                                             {{a.idTiposDatosAlimentos.nombreTipoDato}}
                                                         </small>
