@@ -164,7 +164,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>A&ntilde;o</label>
-                                                                <input name="inputYear" class="form-control"
+                                                                <input name="inputYear" class="form-control" allow-only-numbers maxlength="4"
                                                                        data-ng-model="referencia.fecha" required="" placeholder="yyyy"/>
                                                                 <div data-ng-show="formAddReferencias.inputYear.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Introduzca un valor de entre 2 y 4 digitos</span>
@@ -172,7 +172,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>P&aacute;ginas</label>
-                                                                <input name="inputPaginas" class="form-control" type="text"
+                                                                <input name="inputPaginas" class="form-control" allow-only-numbers
                                                                        placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
                                                                        data-ng-model="referencia.pages" required=""/>
                                                                 <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
@@ -197,7 +197,8 @@
                                                             <hr />
                                                             <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Número de Informe</label>
-                                                                <input class="form-control" maxlength="8" data-ng-model="referencia.informeNum"/>
+                                                                <input class="form-control" maxlength="8"
+                                                                       allow-only-numbers data-ng-model="referencia.informeNum"/>
                                                             </div>
                                                             <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Tipo de Informe</label>
@@ -224,14 +225,16 @@
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
                                                                                  selectedFuente.selected.idFuente === 3">
                                                                 <label>N&uacute;mero</label>
-                                                                <input class="form-control" data-ng-model="referencia.volumen"/>
+                                                                <input class="form-control" allow-only-numbers
+                                                                       data-ng-model="referencia.volumen"/>
                                                             </div>
 
                                                             <div class="form-group" 
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
                                                                                  selectedFuente.selected.idFuente === 3">
                                                                 <label>Volumen o tomo</label>
-                                                                <input class="form-control" data-ng-model="referencia.numVol"/>
+                                                                <input class="form-control" allow-only-numbers
+                                                                       data-ng-model="referencia.numVol"/>
                                                             </div>
 
                                                             <div class="form-group" 
@@ -244,7 +247,8 @@
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 3 ||
                                                                             selectedFuente.selected.idFuente === 4">
                                                                 <label>Edici&oacute;n</label>
-                                                                <input class="form-control" data-ng-model="referencia.edition"/>
+                                                                <input class="form-control" allow-only-numbers
+                                                                       data-ng-model="referencia.edition"/>
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 4">
                                                                 <label>T&iacute;tulo del Libro</label>
