@@ -70,8 +70,7 @@
                                                     <tbody>
                                                         <tr data-ng-repeat="r in allReferencias track by $index">
                                                             <td>
-                                                                <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)"
-                                                                        data-toggle="modal" data-target="#modalNuevaReferencia">
+                                                                <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)">
                                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                                 </button>
                                                                 <sec:authorize access="hasAuthority('Colaborador')">
@@ -147,7 +146,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>T&iacute;tulo</label>
-                                                                <input name="inputTitulo" class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input name="inputTitulo" class="form-control"
                                                                        data-ng-model="referencia.title" required=""
                                                                        placeholder="T&iacute;tulo de la referencia" />
                                                                 <div data-ng-show="formAddReferencias.inputTitulo.$invalid">
@@ -165,10 +164,15 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>A&ntilde;o</label>
-                                                                <select name="inputYear" class="form-control" 
-                                                                        data-ng-options="year for year in years"
-                                                                        data-ng-model="referencia.fecha" required="">
-                                                                </select>
+                                                                <ui-select data-ng-model="selectedYear.selected" 
+                                                                           theme="bootstrap">
+                                                                    <ui-select-match placeholder="Elija un a&ntilde;o...">
+                                                                        {{$select.selected}}
+                                                                    </ui-select-match>
+                                                                    <ui-select-choices repeat="y in years| filter: $select.search">
+                                                                        {{y}}
+                                                                    </ui-select-choices>
+                                                                </ui-select> 
                                                                 <div data-ng-show="formAddReferencias.inputYear.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este año es requerido</span>
                                                                 </div>
@@ -344,7 +348,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Segundo Nombre</label>
-                                                                <input class="form-control" type="text" 
+                                                                <input class="form-control" type="text" data-ng-pattern="/^[a-zA-z]*$/"
                                                                        data-ng-model="autor.segundoNombre" name="inputAutorSegundoNombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorSegundoNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>

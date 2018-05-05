@@ -1,6 +1,37 @@
 var appCna = angular.module("AppCna", ['ui.select']);
 appCna.controller("CnaController", function ($scope, $http, $window) {
+//    GENERAR AÑOS
+    $scope.currentyear = new Date().getFullYear();
+    $scope.years = [];
+    for (var i = 1940; i < 2019; i++) {
+        $scope.years.push(i);
+    }
+//    END GENERAR AÑOS
+
     $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
+    $scope.referenciaEdit = {
+        idReferencia: "",
+        idFuente: "",
+        url: "",
+        nota: "",
+        title: "",
+        informeNum: "",
+        informeTipo: "",
+        informeSerie: "",
+        informeInstitution: "",
+        arcPublication: "",
+        volumen: "",
+        numVol: "",
+        edition: "",
+        lugar: "",
+        editorial: "",
+        secclTitle: "",
+        tesisUniversidad: "",
+        pages: "",
+        fecha: "",
+        idUsuario: ""
+    };
+    $scope.selectedYear = {};
     $scope.selectedAutores = {};
     $scope.selectedCategoria = {};
     $scope.estudioPorReferencia = {};
@@ -19,9 +50,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     $scope.selectedCategoria = {};
 
-
     $scope.estudiosPorReferencia = function (idReferencia) {
-        console.log($scope.referencia);
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;
         });
@@ -39,16 +68,14 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.allAutores = data.data.data;
     });
     $scope.saveReferencia = function () {
-        $scope.referencia.idFuente = parseInt($scope.selectedFuente);
-        $scope.referencia.fechaMod = new Date();
-        $scope.referencia.autoresList = $scope.selectedAutores.selected;
-        $scope.referencia.categoriaList = $scope.selectedCategoria.selected;
-        $http.post("../index/editReferencia", $scope.referencia, {}).then(function (r) {
-            console.log(r.data.mensaje);
-            //Obtener la ultima referencia insertada
-            $http.get("getLastReferencia").then(function (data) {
-                $scope.referencia = data.data.data;
-            });
+        $scope.referenciaEdit.idFuente = $scope.selectedFuente.selected;
+        $scope.referenciaEdit.autoresList = $scope.selectedAutores.selected;
+        $scope.referenciaEdit.categoriaList = $scope.selectedCategoria.selected;
+        $scope.referenciaEdit.fecha = $scope.selectedYear.selected;
+        console.log($scope.referenciaEdit);
+        $http.post("../index/editReferencia", $scope.referenciaEdit).then(function (r) {
+            window.localStorage.setItem("referencia", JSON.stringify($scope.referenciaEdit));
+            $window.alert(r.data.mensaje);
         });
         $("#modalNuevaReferencia").modal("toggle");
     };
@@ -61,6 +88,31 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.selectedFuente.selected = $scope.referencia.idFuente;
         $scope.selectedAutores.selected = $scope.referencia.autoresList;
         $scope.selectedCategoria.selected = $scope.referencia.categoriaList;
+        $scope.selectedYear.selected = $scope.referencia.fecha;
+        var a = $scope.referencia;
+        $scope.referenciaEdit = {
+            idReferencia: a.idReferencia,
+            idFuente: a.idFuente,
+            url: a.url,
+            nota: a.nota,
+            title: a.title,
+            informeNum: a.informeNum,
+            informeTipo: a.informeTipo,
+            informeSerie: a.informeSerie,
+            informeInstitution: a.informeInstitution,
+            arcPublication: a.arcPublication,
+            volumen: a.volumen,
+            numVol: a.numVol,
+            edition: a.edition,
+            lugar: a.lugar,
+            editorial: a.editorial,
+            secclTitle: a.secclTitle,
+            tesisUniversidad: a.tesisUniversidad,
+            pages: a.pages,
+            fecha: a.fecha,
+            fechaAd: a.fechaAd,
+            fechaMod: new Date()
+        };
     };
     $scope.abrirModalAddAutor = function () {
         $scope.autor = {

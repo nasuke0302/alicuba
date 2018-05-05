@@ -92,9 +92,11 @@ public class IndexController {
     }
 
     @Secured(value = "Colaborador, Editor")
+    @ResponseBody
     @RequestMapping(value = "/index/editReferencia")
     public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
+        r1.setIdUsuario(r.getIdUsuario());
         r1.setAutoresList(r.getAutoresList());
         r1.setArcPublication(r.getArcPublication());
         r1.setCategoriaList(r.getCategoriaList());
@@ -117,8 +119,14 @@ public class IndexController {
         r1.setTitle(r.getTitle());
         r1.setUrl(r.getUrl());
         r1.setVolumen(r.getVolumen());
-        referenciasRepo.saveAndFlush(r1);
-        map.put("mensaje", "Referencia editada correctamente");
+        try {
+            referenciasRepo.saveAndFlush(r1);
+            map.put("mensaje", "Referencia editada correctamente");
+            map.put("data", r1);
+        } catch (Exception e) {
+            map.put("mensaje", "Error al actualizar la referencia");
+            map.put("error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

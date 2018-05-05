@@ -10,6 +10,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     $scope.fuente = {
         nombreFuente: ""
     };
+    $scope.selectedYear = {};
     $scope.selectedAutores = {};
     $scope.autor = {
         nombre: "",
@@ -64,24 +65,20 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     });
     //Crear o Editar Referencia
     $scope.createOrEditReferencia = function () {
-        console.log($scope.selectedAutores.selected);
-        $scope.referencia.idFuente = parseInt($scope.selectedFuente);
         $scope.referencia.autoresList = $scope.selectedAutores.selected;
         $scope.referencia.categoriaList = $scope.selectedCategoria.selected;
         $scope.referencia.idFuente = $scope.selectedFuente.selected;
+        $scope.referencia.fecha = $scope.selectedYear.selected;
         if ($scope.referencia.idReferencia === "") {
             $scope.referencia.fechaAd = new Date();
             $http.post("index/addReferencia", $scope.referencia, {}).then(function (res) {
                 $scope.referencia = res.data.data;
                 window.localStorage.setItem("referencia", JSON.stringify($scope.referencia));
+                $("#modalNuevaReferencia").modal("toggle");
+                $window.location.href = "cna/gestionar";
             });
-            $("#modalNuevaReferencia").modal("toggle");
-            $window.location.href = "cna/gestionar";
         } else {
-            $scope.referencia.fechaMod = new Date();
-            $http.post("index/editReferencia", $scope.referencia, {});
             window.localStorage.setItem("referencia", JSON.stringify($scope.referencia));
-            $("#modalNuevaReferencia").modal("toggle");
             $window.location.href = "cna/gestionar";
         }
     };
@@ -136,7 +133,6 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     //Enviar Referencia al Modal Eliminar
     $scope.abrirEliminarModal = function (indice) {
         var a = $scope.allReferencias[indice];
-        console.log(a);
         $scope.referencia = {
             idReferencia: a.idReferencia,
             idFuente: a.idFuente,
