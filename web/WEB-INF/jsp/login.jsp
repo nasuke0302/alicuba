@@ -63,14 +63,6 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     </form>
                 </div>
-<!--                <div id="forgot" class="tab-pane">
-                    <form action="index.html" class="form-signin">                
-                        <p class="text-muted text-center btn-block btn btn-primary btn-rect">Usuario o correo electr&oacute;nico</p>
-                        <input type="email"  required="required" placeholder=""  class="form-control" />
-                        <br />
-                        <button class="btn text-muted text-center btn-success" type="submit">Obtener una contrase&ntilde;a nueva</button>
-                    </form>
-                </div>-->
                 <div id="signup" class="tab-pane">
                     <form action="addUsuarios" class="form-signin" method="post" name="registerForm">
                         <p class="text-muted text-center btn-block btn btn-primary btn-rect">Por favor llene los datos para el registro</p>
@@ -119,8 +111,8 @@
             <div class="text-center">
                 <ul class="list-inline">
                     <li><a href="#login" data-toggle="tab">Acceder</a></li>
-                    <!--<li><a class="text-muted" href="#forgot" data-toggle="tab">¿Has olvidado tu contrase&ntilde;a?</a></li>-->
                     <li><a href="#signup" data-toggle="tab">Crear cuenta</a></li>
+                    <li><a href="${pageContext.request.contextPath}/helpPage">Ayuda</a></li>
                 </ul>
             </div>
 
