@@ -5,6 +5,8 @@
  */
 package repositorios;
 
+import java.util.List;
+import models.Roles;
 import models.Usuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,5 +23,7 @@ public interface UsuariosRepo extends JpaRepository<Usuarios, Integer> {
     public Usuarios findByEmail(String string);
 
     public Object findByNombreIgnoreCase(String username);
+
+    public List<Usuarios> findAllByIdRol(Roles rol);
     
 }
