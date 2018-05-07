@@ -25,20 +25,43 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/HelpPage.js"></script>
     </head>
-    <body data-ng-controller="helpPageController">
-        <br />
-        <div class="col-md-12">
-            <div class="row">
-                <button class="btn btn-success col-md-offset-1" onclick="regresar()">
-                    <span class="glyphicon glyphicon-arrow-left"></span> Regresar</button>
-                <div class="text-center">
-                    <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 110px;"/>
-                    <h1 style="color: #009933">Página de ayuda y contacto</h1>
-                </div>
-                <div>
-                    <p data-ng-repeat="u in usuariosAdmins">
-                        {{u.email}}
-                    </p>
+    <body class="padTop53" data-ng-controller="helpPageController">
+        <!--MAIN WRAP-->
+        <div id="wrap">
+            <!-- HEADER SECTION -->
+            <jsp:include page="/WEB-INF/includes/header.jsp"/>
+            <!-- END HEADER SECTION -->
+            <!-- MENU SECTION -->
+            <jsp:include page="/WEB-INF/includes/menuContent.jsp"/>
+            <!--END MENU SECTION -->
+            <!--PAGE CONTENT -->
+            <div id="content">
+                <div class="inner" style="min-height:800px;">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="text-center">
+                                <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 110px;"/>
+                                <h1 style="color: #009933">Página de ayuda y contacto</h1>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <p>Administradores</p>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-3" data-ng-repeat="u in usuariosAdmins">
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading">
+                                                <p>{{u.nombre}} {{u.segundoNombre}} {{u.apellidos}} <p>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p> Email: {{u.email}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
