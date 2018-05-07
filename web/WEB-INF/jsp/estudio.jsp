@@ -283,7 +283,7 @@
                             </div>
                             <!--END NUTRIENTES INSERTADOS-->
                             <div class="text-right">
-                                <button class="btn btn-success" onClick="regresar()"><i class="glyphicon glyphicon-thumbs-up"></i> Terminar</button>
+                                <button class="btn btn-success" onClick="regresar()"><i class="glyphicon glyphicon-check"></i> Terminado</button>
                             </div>
                         </div>
                     </div>              		

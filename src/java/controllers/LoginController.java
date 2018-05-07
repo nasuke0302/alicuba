@@ -5,6 +5,7 @@
  */
 package controllers;
 
+import java.util.List;
 import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,13 @@ public class LoginController {
 
     @RequestMapping(value = "/addUsuarios", method = RequestMethod.POST)
     public String addUsuarios(@ModelAttribute Usuarios u, Model m, Roles rol, BindingResult result) {
+        List<Usuarios> usuarios = repo.findAll();
+        for (int i = 0; i < usuarios.size(); i++) {
+            Usuarios u1 = usuarios.get(i);
+            if (u1.getEmail().equals(u.getEmail())) {
+                return "redirect:/login?error";
+            }
+        }
         u.setIdRol(new Roles(2));
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         repo.saveAndFlush(u);
