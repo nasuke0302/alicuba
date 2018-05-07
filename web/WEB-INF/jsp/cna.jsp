@@ -104,7 +104,6 @@
                                         <tr>
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
-                                            <td><strong>Acciones</strong></td>
                                         </tr>
                                         <tr data-ng-repeat="e in estudioPorReferencia">
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
@@ -116,19 +115,23 @@
                                                 <abbr title="{{e.idRangoEdades.rango}}">{{e.idRangoEdades.etiqueta}}</abbr></td>
                                             <td>
                                                 <table class="table">
-                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList">
+                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
                                                         <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
                                                         <td>
                                                             <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
                                                             {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                         <td> {{nut.valor}}</td>
+                                                        <td>
+                                                            <button class="btn btn-primary btn-xs">
+                                                                <i class="glyphicon glyphicon-pencil"></i></button>
+                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                    data-ng-click="abrirEliminarModal($index)">
+                                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                                        </td> 
                                                     </tr>
                                                 </table>
                                             </td>
-                                            <td>
-                                                <a href="#" class="btn btn-outline btn-success btn-xs" role="button" title="Editar Estudio"><span class="glyphicon glyphicon-edit"></span></a> 
-                                                <a href="#" class="btn btn-outline btn-danger btn-xs" role="button" title="Eliminar Estudio"><span class="glyphicon glyphicon-remove"></span></a> 
-                                            </td> 
+
                                         </tr>
                                     </table>
                                 </div>
@@ -413,6 +416,29 @@
                     </div>
                 </div>
                 <!--END CREATE CATEGORIA-->
+                <!--DELETE ESTUDIO MODAL-->
+                <div>
+                    <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                        <div class="modal-dialog" style="margin-top: 260.5px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                    <div class="modal-body">
+                                        <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            {{estudioPorReferencia}}
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--END DELETE ESTUDIO MODAL-->
+                </div>
+                <!--END DLETE MODAL-->
             </div>
             <!--END PAGE CONTENT -->
         </div>

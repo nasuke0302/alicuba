@@ -181,8 +181,15 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
             });
         });
     };
-
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
+    };
+    
+    $scope.eliminarEstudio = function(){
+        
+    };
+    
+    $scope.abrirEliminarModal = function(indice){
+        var a = $scope.estudioPorReferencia(indice);
     };
 });

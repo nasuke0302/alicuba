@@ -121,10 +121,9 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
                                                             <select class="form-control" data-ng-model="estudio.riego">
-                                                                <option selected="">S&iacute;</option>
+                                                                <option>S&iacute;</option>
                                                                 <option>No</option>
                                                             </select>
-                                                            <!--<input type="number" class="form-control" data-ng-model="estudio.riego" />--> 
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N</span>
