@@ -166,6 +166,8 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
             $scope.lastEstudioId = data.data.data;
             $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
             $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.lastEstudioId.idMetadatosAlimentosG;
+//            $scope.tablaCnaGeneral.idNutriente = 55;
+//            $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.lastEstudioId.idMetadatosAlimentosG;
 
             $scope.tablaCnaGeneralPK = {
                 idNutriente: $scope.tablaCnaGeneral.idNutriente,
@@ -183,13 +185,5 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     };
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
-    };
-    
-    $scope.eliminarEstudio = function(){
-        
-    };
-    
-    $scope.abrirEliminarModal = function(indice){
-        var a = $scope.estudioPorReferencia(indice);
     };
 });

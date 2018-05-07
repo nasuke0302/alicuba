@@ -283,6 +283,9 @@
                                 </div>
                             </div>
                             <!--END REFERENCIAS INSERTADAS-->
+                            <div class="text-right">
+                                <button class="btn btn-success" onClick="regresar()"><i class="glyphicon glyphicon-thumbs-up"></i> Terminar</button>
+                            </div>
                         </div>
                     </div>              		
                     <!--MODAL NUEVO ALIMENTO-->
@@ -389,6 +392,11 @@
                                                         $(function () {
                                                             Notifications();
                                                         });
+        </script>
+        <script>
+                    function regresar() {
+                        window.history.back();
+                    }
         </script>
         <!--END PAGE LEVEL SCRIPTS-->
     </body>
