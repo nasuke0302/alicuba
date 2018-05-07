@@ -114,7 +114,7 @@
                                                 <abbr title="Riego">{{e.riego}}</abbr>-
                                                 <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
                                                 <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
-                                                <button class="btn btn-primary btn-xs" title="Editar alimento">
+                                                <button class="btn btn-primary btn-xs" title="Editar alimento" data-ng-click="editarMetadatos($index)">
                                                     <i class="glyphicon glyphicon-pencil"></i></button>
                                                 <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                         title="Eliminar alimento"

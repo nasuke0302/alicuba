@@ -226,7 +226,6 @@
                                                     data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
                                         </form>
                                         <div >
-                                            <!--data-ng-show="estudioInsertado">-->
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
                                                 <ui-select data-ng-model="selectedNutriente.selected"
@@ -262,7 +261,7 @@
                                     </div>
                                 </div>                            
                             </div>
-                            <!--BEGIN REFERENCIAS INSERTADAS-->
+                            <!--BEGIN NUTRIENTES INSERTADOS-->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
@@ -282,7 +281,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--END REFERENCIAS INSERTADAS-->
+                            <!--END NUTRIENTES INSERTADOS-->
                             <div class="text-right">
                                 <button class="btn btn-success" onClick="regresar()"><i class="glyphicon glyphicon-thumbs-up"></i> Terminar</button>
                             </div>

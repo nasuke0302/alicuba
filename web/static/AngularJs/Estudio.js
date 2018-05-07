@@ -1,26 +1,11 @@
 var estudioApp = angular.module('AppEstudio', ['ui.select']);
 estudioApp.controller('EstudioController', function ($scope, $http, $window) {
-    $scope.tablaCnaGeneralInsertada = [];
-    $scope.nutrienteInsertado = [];
-    $scope.estudioInsertado = false;
     $scope.tablaCnaGeneral = {
         valor: "",
         idNutriente: "",
         idMetadatosAlimentosG: ""
     };
     $scope.oneTDA = {};
-    $scope.alimento = {
-        nombreCient: "",
-        nombre: "",
-        variedad: "",
-        parte: "",
-        proceso: "",
-        mezcla: "",
-        idTipoCuba: "",
-        idTipoFao: "",
-        idTipoNrc: ""
-    };
-    $scope.selectedAlimento = {};
     $scope.estudio = {
         idMetadatosAlimentosG: "",
         idReferencia: "",
@@ -45,21 +30,36 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         fertilizado: "",
         tablaCnaGeneral: ""
     };
+    $scope.estudio = JSON.parse(window.localStorage.getItem("metadato"));
+    $scope.alimento = {
+        nombreCient: "",
+        nombre: "",
+        variedad: "",
+        parte: "",
+        proceso: "",
+        mezcla: "",
+        idTipoCuba: "",
+        idTipoFao: "",
+        idTipoNrc: ""
+    };
+    $scope.selectedAlimento = $scope.estudio.idAlimento;
     $scope.selectedTipoCuba = 22;
     $scope.selectedTipoFao = 10;
     $scope.selectedTipoNrc = 9;
-    $scope.selectedCalidad = 6;
-    $scope.selectedEpoca = 4;
-    $scope.selectedFertilizado = 1;
-    $scope.selectedMesIni = 1;
-    $scope.selectedMesFin = 2;
-    $scope.selectedNivelFert = 1;
+    $scope.selectedCalidad = $scope.estudio.calidad.idCalidad;
+    $scope.selectedEpoca = $scope.estudio.idEpoca.idEpoca;
+    $scope.selectedFertilizado = $scope.estudio.fertilizado.idFertilizado;
+    $scope.selectedMesIni = $scope.estudio.mesIni.idMes;
+    $scope.selectedMesFin = $scope.estudio.mesFin.idMes;
+    $scope.selectedNivelFert = $scope.estudio.idNivelFert.idNivelFert;
     $scope.selectedPais = {};
-    $scope.selectedProvincia = 17;
-    $scope.selectedRangoEdad = 5;
+    $scope.selectedProvincia = $scope.estudio.idProvincia.idProvincia;
+    $scope.selectedRangoEdad = $scope.estudio.idRangoEdades.idRangoEdades;
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
+    $scope.tablaCnaGeneralInsertada = $scope.estudio.tablaCnaGeneralList;
+    $scope.estudioInsertado = true;
 
     $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     //Obtener Lista de Nutrientes

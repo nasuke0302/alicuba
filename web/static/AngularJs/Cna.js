@@ -12,7 +12,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         tablaCneGeneralPK: "",
         valor: ""
     };
-    $scope.alimentoToDelete = {};
+    $scope.metadato = {};
     $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     $scope.referenciaEdit = {
         idReferencia: "",
@@ -161,10 +161,10 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             });
         });
     };
-    
+
     $scope.eliminarAlimento = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.alimentoToDelete.idMetadatosAlimentosG, {}).then(function (res) {
+        $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
             $window.alert(res.data.mensaje);
             $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
                 $scope.estudioPorReferencia = data.data.data;
@@ -181,8 +181,14 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
         console.log($scope.estudioToDelete);
     };
-    
-     $scope.abrirEliminarAlimentoModal = function (indice) {
-        $scope.alimentoToDelete = $scope.estudioPorReferencia[indice];
+
+    $scope.abrirEliminarAlimentoModal = function (indice) {
+        $scope.metadato = $scope.estudioPorReferencia[indice];
+    };
+
+    $scope.editarMetadatos = function (indice) {
+        $scope.metadato = $scope.estudioPorReferencia[indice];
+        window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
+        $window.location.href = "../estudio/gestionar";
     };
 });
