@@ -21,6 +21,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -33,6 +34,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MetadatosAlimentosG.findAll", query = "SELECT m FROM MetadatosAlimentosG m")})
 public class MetadatosAlimentosG implements Serializable {
 
+    @Size(max = 32)
+    @Column(name = "riego")
+    private String riego;
+
 //    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
     private List<TablaCnaGeneral> tablaCnaGeneralList;
@@ -43,8 +48,6 @@ public class MetadatosAlimentosG implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_metadatos_alimentos_g")
     private Integer idMetadatosAlimentosG;
-    @Column(name = "riego")
-    private Integer riego;
     @Column(name = "n")
     private Integer n;
     @Column(name = "npk")
@@ -110,13 +113,6 @@ public class MetadatosAlimentosG implements Serializable {
         this.idMetadatosAlimentosG = idMetadatosAlimentosG;
     }
 
-    public Integer getRiego() {
-        return riego;
-    }
-
-    public void setRiego(Integer riego) {
-        this.riego = riego;
-    }
 
     public Integer getN() {
         return n;
@@ -302,6 +298,14 @@ public class MetadatosAlimentosG implements Serializable {
 
     public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
         this.tablaCnaGeneralList = tablaCnaGeneralList;
+    }
+
+    public String getRiego() {
+        return riego;
+    }
+
+    public void setRiego(String riego) {
+        this.riego = riego;
     }
 
 }
