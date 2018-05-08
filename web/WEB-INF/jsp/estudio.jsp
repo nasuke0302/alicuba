@@ -126,7 +126,7 @@
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N</span>
-                                                            <input type="number" class="form-control" data-ng-model="estudio.n"/>                                                  
+                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.n"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N-P-K</span>
@@ -134,7 +134,7 @@
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Edad</span>
-                                                            <input type="number" class="form-control" data-ng-model="estudio.edad"/>                                                  
+                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.edad"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Corte</span>
