@@ -163,7 +163,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
 
     $scope.eliminarAlimento = function () {
-        $("#formModalEliminar").modal("toggle");
+        $("#formModalEliminarAlimento").modal("toggle");
         $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
             $window.alert(res.data.mensaje);
             $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {

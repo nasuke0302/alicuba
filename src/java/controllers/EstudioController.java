@@ -285,6 +285,7 @@ public class EstudioController {
         try {
             metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
+            map.put("data", mag);
         } catch (Exception e) {
             map.put("mensaje", "Error al insertar Estudio");
             map.put("Error", e);

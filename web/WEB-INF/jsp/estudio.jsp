@@ -120,9 +120,8 @@
                                                     <div id="div-1" class="accordion-body collapse in body">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
-                                                            <select class="form-control" data-ng-model="estudio.riego">
-                                                                <option>S&iacute;</option>
-                                                                <option>No</option>
+                                                            <select class="form-control" required=""
+                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">
@@ -266,18 +265,12 @@
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
                                     <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada track by $index">
-                                        <span class="input-group-addon">{{tCGI.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</span>
-                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutrientes.nombre}}">{{tCGI.nutrientes.abreviatura}}</span>
+                                        <span class="input-group-addon">{{tCGI.nutriente.idTiposDatosAlimentos.nombreTipoDato}}</span>
+                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutriente.nombre}}">{{tCGI.nutriente.abreviatura}}</span>
                                         <input type="text" class="form-control" 
-                                               data-ng-model="tCGI.valor" data-ng-readonly="true"
+                                               data-ng-model="tCGI.valor.valor" data-ng-readonly="true"
                                                name="inputNutrienteInsertado"/>
-                                        <span class="input-group-addon">{{tCGI.nutrientes.idUnidadMedida.unidadMedida}}</span>
-                                        <span class="input-group-addon">
-                                            <button class="btn btn-primary btn-xs">
-                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button class="btn btn-danger btn-xs">
-                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                        </span>
+                                        <span class="input-group-addon">{{tCGI.nutriente.idUnidadMedida.unidadMedida}}</span>
                                     </div>
                                 </div>
                             </div>

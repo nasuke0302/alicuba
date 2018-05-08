@@ -105,7 +105,8 @@
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
                                         </tr>
-                                        <tr data-ng-repeat="e in estudioPorReferencia track by indexAlimentos" data-ng-init="indexAlimentos = $index">
+                                        <tr data-ng-repeat="e in estudioPorReferencia track by e.idMetadatosAlimentosG" >
+                                            <!--data-ng-init="indexAlimentos = $index">-->
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
                                                 <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
                                                 <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
