@@ -10,3 +10,15 @@
 <div id="footer">
     <p>&copy;  AliCuba &nbsp;2018 &nbsp;</p>
 </div>
+<script src="${pageContext.request.contextPath}/static/WebSockets/sockjs.js"></script>
+<script src="${pageContext.request.contextPath}/static/WebSockets/stomp.js"></script>
+<script>
+    var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/messages/enviar", function (result) {
+            var a = result;
+            alert(a);
+        });
+    });
+</script>

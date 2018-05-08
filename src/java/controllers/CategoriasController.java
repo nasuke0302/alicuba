@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 import models.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,9 @@ public class CategoriasController {
     
     @Autowired
     CategoriaRepo categoriaRepo;
+    
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
     
     @Secured(value= "Colaborador, Editor")
     @RequestMapping(value = "/categorias/gestionar")
@@ -57,6 +62,8 @@ public class CategoriasController {
     public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map) {
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
+        map.put("data", cat);
+        messagingTemplate.convertAndSend("/messages/enviar", cat, map);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     

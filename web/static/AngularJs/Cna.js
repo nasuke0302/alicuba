@@ -9,7 +9,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
 //    END GENERAR AÑOS
     $scope.estudioToDelete = {
         nutrientes: "",
-        tablaCneGeneralPK: "",
+        tablaCnaGeneralPK: "",
         valor: ""
     };
     $scope.metadato = {};
@@ -156,7 +156,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $("#formModalEliminar").modal("toggle");
         $http.post("../estudio/deleteEstudio", $scope.estudioToDelete.tablaCnaGeneralPK, {}).then(function (res) {
             $window.alert(res.data.mensaje);
-            $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
                 $scope.estudioPorReferencia = data.data.data;
             });
         });
@@ -166,13 +166,14 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $("#formModalEliminar").modal("toggle");
         $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
             $window.alert(res.data.mensaje);
-            $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
                 $scope.estudioPorReferencia = data.data.data;
             });
         });
     };
 
     $scope.abrirEliminarModal = function (indice1, indice2) {
+        console.log($scope.estudioPorReferencia);
         var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
         $scope.estudioToDelete = {
             nutrientes: a.nutrientes,
