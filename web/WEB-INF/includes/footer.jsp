@@ -16,9 +16,10 @@
     var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
     var stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
+        console.log("connected to "+ frame);
         stompClient.subscribe("/messages/enviar", function (result) {
-            var a = result;
-            alert(a);
+            var cat = result;
+            console.log(cat);
         });
     });
 </script>

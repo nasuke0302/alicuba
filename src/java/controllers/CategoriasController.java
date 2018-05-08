@@ -63,7 +63,7 @@ public class CategoriasController {
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
-        messagingTemplate.convertAndSend("/messages/enviar", cat, map);
+        messagingTemplate.convertAndSend("/messages/enviar", cat);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     
