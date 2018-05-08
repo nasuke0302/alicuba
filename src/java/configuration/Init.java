@@ -21,7 +21,7 @@ public class Init extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{MVCConfig.class};
+        return new Class[]{MVCConfig.class, WebSocketsConfig.class};
     }
 
     @Override
