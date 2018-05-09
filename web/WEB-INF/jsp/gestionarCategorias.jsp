@@ -145,15 +145,20 @@
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
         <script>
-                    var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
-                    var stompClient = Stomp.over(socket);
-                    stompClient.connect({}, function (frame) {
-                        console.log("connected to " + frame);
-                        stompClient.subscribe("/messages/enviar", function (res) {
-                            var cat = JSON.parse(res.body);
-                            alert(cat.mensaje);
+                    if (Notification.permission === "granted") {
+                        var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
+                        var stompClient = Stomp.over(socket);
+                        var notify;
+                        stompClient.connect({}, function (frame) {
+                            console.log("connected to " + frame);
+                            stompClient.subscribe("/messages/enviar", function (res) {
+                                var cat = JSON.parse(res.body);
+                                notify = new Notification("Nueva Categoría", {
+                                    body: cat.mensaje,
+                                    icon: "/alicuba/static/favicon.png"});
+                            });
                         });
-                    });
+                    }
         </script>
     </body>
 </html>

@@ -79,7 +79,7 @@ public class CategoriasController {
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
         Mensaje msj = new Mensaje();
-        msj.setMensaje(username + " ha insertado la categoría " + cat.getCategoria());
+        msj.setMensaje(username + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
         mensajeRepo.saveAndFlush(msj);
         messagingTemplate.convertAndSend("/messages/enviar", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
