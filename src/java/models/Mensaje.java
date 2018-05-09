@@ -27,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m")
     , @NamedQuery(name = "Mensaje.findByIdMensaje", query = "SELECT m FROM Mensaje m WHERE m.idMensaje = :idMensaje")
-    , @NamedQuery(name = "Mensaje.findByMensaje", query = "SELECT m FROM Mensaje m WHERE m.mensaje = :mensaje")})
+    , @NamedQuery(name = "Mensaje.findByMensaje", query = "SELECT m FROM Mensaje m WHERE m.mensaje = :mensaje")
+    , @NamedQuery(name = "Mensaje.findBySender", query = "SELECT m FROM Mensaje m WHERE m.sender = :sender")
+    , @NamedQuery(name = "Mensaje.findByReceiver", query = "SELECT m FROM Mensaje m WHERE m.receiver = :receiver")})
 public class Mensaje implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +40,10 @@ public class Mensaje implements Serializable {
     private Integer idMensaje;
     @Column(name = "mensaje")
     private String mensaje;
+    @Column(name = "sender")
+    private String sender;
+    @Column(name = "receiver")
+    private String receiver;
 
     public Mensaje() {
     }
@@ -60,6 +66,22 @@ public class Mensaje implements Serializable {
 
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
+    }
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     @Override
