@@ -23,7 +23,7 @@
         </header>
         <!--END LOGO SECTION--> 
         <ul class="nav navbar-top-links navbar-right">
-            <!--            BEGIN NOTIFICATIONS SECTION-->
+            <!--EGIN NOTIFICATIONS SECTION-->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <span class="label label-success">2</span>
@@ -33,22 +33,18 @@
                     <li>
                         <a href="#">
                             <div>
-                                <strong>John Smith</strong>
+                                <strong>{{msj.titulo}}</strong>
                                 <span class="pull-right text-muted">
-                                    <em>Today</em>
+                                    <em>{{msj.fecha}}</em>
                                 </span>
                             </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing.
-                                <br>
-                                <span class="label label-primary">Important</span> 
-
-                            </div>
+                            <div>{{msj.mensaje}}</div>
                         </a>
                     </li>
                     <li class="divider"></li>
                 </ul>
             </li>
-            <!--BEGIN NOTIFICATIONS SECTION-->
+            <!--END NOTIFICATIONS SECTION-->
             <!--ADMIN SETTINGS SECTIONS--> 
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">

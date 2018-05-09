@@ -5,6 +5,10 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import models.Categoria;
@@ -45,6 +49,7 @@ public class CategoriasController {
     MensajeRepo mensajeRepo;
 
     String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/gestionar")
@@ -75,9 +80,14 @@ public class CategoriasController {
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
         Mensaje msj = new Mensaje();
+        msj.setSender(principal.getNombre());
+        Date fecha = new Date();
+        msj.setTitulo("Nueva categoría");
+        msj.setFecha(dateFormat.format(fecha));
         msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
         mensajeRepo.saveAndFlush(msj);
-        messagingTemplate.convertAndSend("/messages/enviar", msj);
+        messagingTemplate.convertAndSendToUser("feisy", "/queue/enviar", msj);
+//        messagingTemplate.convertAndSend("/messages/enviar", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

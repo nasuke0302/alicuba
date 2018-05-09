@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mensaje.findByReceiver", query = "SELECT m FROM Mensaje m WHERE m.receiver = :receiver")})
 public class Mensaje implements Serializable {
 
+    @Column(name = "titulo")
+    private String titulo;
+
     
 
     private static final long serialVersionUID = 1L;
@@ -129,6 +132,14 @@ public class Mensaje implements Serializable {
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
     
 }

@@ -19,6 +19,7 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/ng-stomp.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Categorias.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
@@ -99,6 +100,7 @@
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
                                                 </div>
+                                                <br />
                                                 <div class="text-right">
                                                     <input type="hidden" data-ng-model="categoria.idCategoria"/>
                                                     <button type="submit" class="btn btn-success" data-ng-disabled="formAddCategoria.$invalid">Guardar</button>
@@ -144,22 +146,5 @@
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
-        <script>
-                    if (Notification.permission === "granted") {
-                        var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
-                        var stompClient = Stomp.over(socket);
-                        var notify;
-                        stompClient.connect({}, function (frame) {
-                            stompClient.subscribe("/messages/enviar", function (res) {
-                                var cat = JSON.parse(res.body);
-                                notify = new Notification("Nueva Categoría", {
-                                    body: cat.mensaje,
-                                    icon: "/alicuba/static/IconWebSocket.png"});
-                                
-                                
-                            });
-                        });
-                    }
-        </script>
     </body>
 </html>

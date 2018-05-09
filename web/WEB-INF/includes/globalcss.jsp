@@ -17,5 +17,4 @@
 <link rel="stylesheet" href="<c:url value="/static/css/theme.css"/>">
 <link rel="stylesheet" href="<c:url value="/static/css/MoneAdmin.css"/>">
 <link rel="stylesheet" href="<c:url value="/static/plugins/Font-Awesome/css/font-awesome.css"/>">
-
 <!--END GLOBAL STYLES --> 
