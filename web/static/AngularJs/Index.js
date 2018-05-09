@@ -44,7 +44,8 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         fechaAd: "",
         fechaMod: "",
         autoresList: "",
-        categoriaList: ""
+        categoriaList: "",
+        idUsuario: ""
     };
 
     //Obtener Listado de Referencias

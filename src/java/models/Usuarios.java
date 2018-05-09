@@ -6,9 +6,11 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -230,4 +232,5 @@ public class Usuarios implements Serializable, UserDetails {
     public void setReferenciasList(List<Referencias> referenciasList) {
         this.referenciasList = referenciasList;
     }
+
 }

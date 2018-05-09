@@ -24,7 +24,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         informeTipo: "",
         informeSerie: "",
         informeInstitution: "",
-        arcPublication: "",
+        arcPublication: "a.arcPublication",
         volumen: "",
         numVol: "",
         edition: "",
@@ -34,6 +34,8 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         tesisUniversidad: "",
         pages: "",
         fecha: "",
+        fechaAd: "",
+        fechaMod: "",
         idUsuario: ""
     };
     $scope.selectedYear = {};
@@ -77,6 +79,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.referenciaEdit.autoresList = $scope.selectedAutores.selected;
         $scope.referenciaEdit.categoriaList = $scope.selectedCategoria.selected;
         $scope.referenciaEdit.fecha = $scope.selectedYear.selected;
+        console.log($scope.referenciaEdit);
         $http.post("../index/editReferencia", $scope.referenciaEdit).then(function (r) {
             window.localStorage.setItem("referencia", JSON.stringify($scope.referenciaEdit));
             $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
@@ -116,7 +119,8 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             pages: a.pages,
             fecha: a.fecha,
             fechaAd: a.fechaAd,
-            fechaMod: new Date()
+            fechaMod: new Date(),
+            idUsuario: a.idUsuario
         };
     };
     $scope.abrirModalAddAutor = function () {
@@ -161,7 +165,6 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             });
         });
     };
-
     $scope.eliminarAlimento = function () {
         $("#formModalEliminarAlimento").modal("toggle");
         $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
@@ -171,7 +174,6 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             });
         });
     };
-
     $scope.abrirEliminarModal = function (indice1, indice2) {
         console.log($scope.estudioPorReferencia);
         var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
@@ -182,11 +184,9 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
         console.log($scope.estudioToDelete);
     };
-
     $scope.abrirEliminarAlimentoModal = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
     };
-
     $scope.editarMetadatos = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
         window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));

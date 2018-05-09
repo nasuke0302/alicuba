@@ -118,7 +118,9 @@ public class IndexController {
     @RequestMapping(value = "/index/editReferencia")
     public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
+        System.out.println("Id Usuario del q llega" + r.getIdUsuario());
         r1.setIdUsuario(r.getIdUsuario());
+        System.out.println("Id Usuario del q llega" + r1.getIdUsuario());
         r1.setAutoresList(r.getAutoresList());
         r1.setArcPublication(r.getArcPublication());
         r1.setCategoriaList(r.getCategoriaList());
