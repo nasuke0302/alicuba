@@ -8,10 +8,13 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 import models.Categoria;
+import models.Mensaje;
+import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.CategoriaRepo;
+import repositorios.MensajeRepo;
 
 /**
  *
@@ -29,20 +33,25 @@ import repositorios.CategoriaRepo;
  */
 @Controller
 public class CategoriasController {
-    
+
     @Autowired
     CategoriaRepo categoriaRepo;
-    
+
     @Autowired
     SimpMessagingTemplate messagingTemplate;
-    
-    @Secured(value= "Colaborador, Editor")
+
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/gestionar")
     public ModelAndView showGestionarCategorias() {
         return new ModelAndView("gestionarCategorias");
     }
-    
-    @Secured(value= "Colaborador, Editor")
+
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/get")
     public @ResponseBody
     Map<String, ? extends Object> getCategorias() {
@@ -55,19 +64,28 @@ public class CategoriasController {
         }
         return map;
     }
-    
-    @Secured(value= "Colaborador")
+
+    @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/categorias/add")
     public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map) {
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+        }
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
-        messagingTemplate.convertAndSend("/messages/enviar", cat);
+        Mensaje msj = new Mensaje();
+        msj.setMensaje(username + " ha insertado la categoría " + cat.getCategoria());
+        mensajeRepo.saveAndFlush(msj);
+        messagingTemplate.convertAndSend("/messages/enviar", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-    @Secured(value= "Colaborador, Editor")
+
+    @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/categorias/edit")
     public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map) {
@@ -77,8 +95,8 @@ public class CategoriasController {
         map.put("mensaje", "Categoría editada correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-    @Secured(value= "Colaborador")
+
+    @Secured(value = "Colaborador")
     @RequestMapping(value = "/categorias/delete/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteCategorias(@PathVariable Integer id, ModelMap map) {
         categoriaRepo.delete(id);

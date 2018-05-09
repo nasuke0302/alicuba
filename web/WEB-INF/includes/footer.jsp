@@ -12,14 +12,3 @@
 </div>
 <script src="${pageContext.request.contextPath}/static/WebSockets/sockjs.js"></script>
 <script src="${pageContext.request.contextPath}/static/WebSockets/stomp.js"></script>
-<script>
-    var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
-    var stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
-        console.log("connected to "+ frame);
-        stompClient.subscribe("/messages/enviar", function (result) {
-            var cat = result;
-            console.log(cat);
-        });
-    });
-</script>
