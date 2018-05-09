@@ -481,7 +481,26 @@
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
-        <!-- PAGE LEVEL SCRIPT-->
+        <!--BEGIN PAGE LEVEL SCRIPT-->
+        <script>
+                    if (Notification.permission === "granted") {
+                        var socket = new SockJS("${pageContext.request.contextPath}/websocket/configuration");
+                        var stompClient = Stomp.over(socket);
+                        var notify;
+                        stompClient.connect({}, function (frame) {
+                            stompClient.subscribe("/messages/enviar", function (res) {
+                                console.log(res);
+                                var msj = JSON.parse(res.body);
+                                notify = new Notification("Referencia Editada", {
+                                    body: msj.mensaje,
+                                    icon: "/alicuba/static/IconWebSocket.png"});
+
+
+                            });
+                        });
+                    }
+        </script> 
+        <!--END PAGE LEVEL SCRIPT-->
     </body>
     <!-- END BODY-->
 </html>

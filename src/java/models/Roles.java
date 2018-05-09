@@ -100,7 +100,7 @@ public class Roles implements Serializable, GrantedAuthority {
 
     @Override
     public String toString() {
-        return "model.Roles[ idRoles=" + idRoles + " ]";
+        return tipoRol;
     }
 
     @Override

@@ -77,9 +77,9 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.referenciaEdit.autoresList = $scope.selectedAutores.selected;
         $scope.referenciaEdit.categoriaList = $scope.selectedCategoria.selected;
         $scope.referenciaEdit.fecha = $scope.selectedYear.selected;
-        console.log($scope.referenciaEdit);
         $http.post("../index/editReferencia", $scope.referenciaEdit).then(function (r) {
             window.localStorage.setItem("referencia", JSON.stringify($scope.referenciaEdit));
+            $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
             $window.alert(r.data.mensaje);
         });
         $("#modalNuevaReferencia").modal("toggle");

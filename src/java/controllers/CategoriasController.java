@@ -13,6 +13,7 @@ import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -54,11 +55,12 @@ public class CategoriasController {
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/get")
     public @ResponseBody
-    Map<String, ? extends Object> getCategorias() {
+    Map<String, ? extends Object> getCategorias(@AuthenticationPrincipal Usuarios usuario) {
         Map<String, Object> map = new HashMap<>();
         try {
             map.put("data", categoriaRepo.findAll());
             map.put("success", Boolean.TRUE);
+            map.put("user", usuario.getEmail());
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
         }
@@ -68,18 +70,12 @@ public class CategoriasController {
     @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/categorias/add")
-    public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map) {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-        }
+    public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
         Mensaje msj = new Mensaje();
-        msj.setMensaje(username + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
+        msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
         mensajeRepo.saveAndFlush(msj);
         messagingTemplate.convertAndSend("/messages/enviar", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);

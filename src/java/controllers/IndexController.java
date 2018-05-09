@@ -5,12 +5,20 @@
  */
 package controllers;
 
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import models.Mensaje;
 import models.Referencias;
+import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,6 +32,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
 import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
+import repositorios.MensajeRepo;
 import repositorios.ReferenciasRepo;
 
 @Controller
@@ -41,6 +50,14 @@ public class IndexController {
     @Autowired
     CategoriaRepo categoriasRepo;
 
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    Calendar fecha = Calendar.getInstance();
+
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
         return new ModelAndView("index");
@@ -54,13 +71,19 @@ public class IndexController {
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getReferencias")
     public @ResponseBody
-    Map<String, ? extends Object> getReferencias() {
+    Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
+
         try {
-            map.put("data", referenciasRepo.findAll());
+            if (principal.getIdRol() == new Roles(2)) {
+                map.put("data", referenciasRepo.findAllByIdUsuario(principal));
+            } else {
+                map.put("data", referenciasRepo.findAll());
+            }
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }
@@ -82,9 +105,8 @@ public class IndexController {
     @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/index/addReferencia")
-    public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        r.setIdUsuario((Usuarios) principal);
+    public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
+        r.setIdUsuario(principal);
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
@@ -94,7 +116,7 @@ public class IndexController {
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/index/editReferencia")
-    public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map) {
+    public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
         r1.setIdUsuario(r.getIdUsuario());
         r1.setAutoresList(r.getAutoresList());
@@ -123,6 +145,15 @@ public class IndexController {
             referenciasRepo.saveAndFlush(r1);
             map.put("mensaje", "Referencia editada correctamente");
             map.put("data", r1);
+            if ("Editor".equals(principal.getIdRol().toString())) {
+                Mensaje mensaje = new Mensaje();
+                mensaje.setFecha(fecha.toString());
+                mensaje.setEstado(Boolean.FALSE);
+                mensaje.setMensaje(principal.getNombre() + " ha editado la referencia con título: "
+                        + r1.getTitle());
+                mensajeRepo.saveAndFlush(mensaje);
+                messagingTemplate.convertAndSend("/messages/enviar", mensaje);
+            }
         } catch (Exception e) {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);
