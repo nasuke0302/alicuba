@@ -8,9 +8,11 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 import models.Alimentos;
+import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,13 +53,18 @@ public class AlimentosController {
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/get")
     public @ResponseBody
-    Map<String, ? extends Object> getAlimentos() {
+    Map<String, ? extends Object> getAlimentos(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", alimentosRepo.findAll());
+            if ("Colaborador".equals(principal.getIdRol().toString())) {
+                map.put("data", alimentosRepo.findAllByIdUsuario(principal));
+            } else {
+                map.put("data", alimentosRepo.findAll());
+            }
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }
@@ -107,9 +114,8 @@ public class AlimentosController {
     @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/alimentos/add")
-    public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        r.setIdUsuario((Usuarios) principal);
+    public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
+        r.setIdUsuario(principal);
         alimentosRepo.saveAndFlush(r);
         map.put("mensaje", "Alimento insertado correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -119,18 +125,8 @@ public class AlimentosController {
     @ResponseBody
     @RequestMapping(value = "/alimentos/edit")
     public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Alimentos r1 = alimentosRepo.findOne(r.getIdAlimento());
-        r1.setIdTipoCuba(r.getIdTipoCuba());
-        r1.setIdTipoFao(r.getIdTipoFao());
-        r1.setIdTipoNrc(r.getIdTipoNrc());
-        r1.setNombre(r.getNombre());
-        r1.setNombreCient(r.getNombreCient());
-        r1.setParte(r.getParte());
-        r1.setProceso(r.getProceso());
-        r1.setMezcla(r.getMezcla());
-        r1.setVariedad(r.getVariedad());
-        r1.setIdUsuario((Usuarios) principal);
+        r1 = r;
         alimentosRepo.saveAndFlush(r1);
         map.put("mensaje", "Alimento editado correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);

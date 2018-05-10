@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib  prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html data-ng-app="appAlimentos">
     <head>
@@ -58,7 +60,9 @@
                                                     <th>Parte</th>
                                                     <th>Proceso</th>
                                                     <th>Mezcla</th>
-                                                    <th>Usuario</th>
+                                                        <sec:authorize access="hasAuthority('Editor')">
+                                                        <th>Colaborador</th>
+                                                        </sec:authorize>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -78,7 +82,9 @@
                                                     <td>{{alimento.parte}}</td>
                                                     <td>{{alimento.proceso}}</td>
                                                     <td>{{alimento.mezcla}}</td>
-                                                    <td>{{alimento.idUsuario.nombre}}</td>
+                                                    <sec:authorize access="hasAuthority('Editor')">
+                                                        <td>{{alimento.idUsuario.nombre}}</td>
+                                                    </sec:authorize>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -185,6 +185,7 @@ public class Usuarios implements Serializable, UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<Roles> authority = new ArrayList<>();
         authority.add(idRol);

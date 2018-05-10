@@ -87,7 +87,6 @@ public class CategoriasController {
         msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
         mensajeRepo.saveAndFlush(msj);
         messagingTemplate.convertAndSendToUser("feisy", "/queue/enviar", msj);
-//        messagingTemplate.convertAndSend("/messages/enviar", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

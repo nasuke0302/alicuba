@@ -32,11 +32,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Mensaje.findByReceiver", query = "SELECT m FROM Mensaje m WHERE m.receiver = :receiver")})
 public class Mensaje implements Serializable {
 
-    @Column(name = "titulo")
-    private String titulo;
-
-    
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,10 +44,12 @@ public class Mensaje implements Serializable {
     private String sender;
     @Column(name = "receiver")
     private String receiver;
-    @Column(name = "estado")
-    private Boolean estado;
     @Column(name = "fecha")
     private String fecha;
+    @Column(name = "leido")
+    private Boolean leido;
+    @Column(name = "titulo")
+    private String titulo;
 
     public Mensaje() {
     }
@@ -118,14 +115,6 @@ public class Mensaje implements Serializable {
         return "models.Mensaje[ idMensaje=" + idMensaje + " ]";
     }
 
-    public Boolean getEstado() {
-        return estado;
-    }
-
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
-    }
-
     public String getFecha() {
         return fecha;
     }
@@ -141,5 +130,13 @@ public class Mensaje implements Serializable {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
+
+    public Boolean getLeido() {
+        return leido;
+    }
+
+    public void setLeido(Boolean leido) {
+        this.leido = leido;
+    }
+
 }

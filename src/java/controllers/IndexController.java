@@ -5,7 +5,10 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import models.Mensaje;
@@ -52,7 +55,8 @@ public class IndexController {
     @Autowired
     MensajeRepo mensajeRepo;
 
-    Calendar fecha = Calendar.getInstance();
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
@@ -69,9 +73,8 @@ public class IndexController {
     public @ResponseBody
     Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
-
         try {
-            if (principal.getIdRol() == new Roles(2)) {
+            if ("Colaborador".equals(principal.getIdRol().toString())) {
                 map.put("data", referenciasRepo.findAllByIdUsuario(principal));
             } else {
                 map.put("data", referenciasRepo.findAll());
@@ -114,43 +117,21 @@ public class IndexController {
     @RequestMapping(value = "/index/editReferencia")
     public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
-        System.out.println("Id Usuario del q llega" + r.getIdUsuario());
-        r1.setIdUsuario(r.getIdUsuario());
-        System.out.println("Id Usuario del q llega" + r1.getIdUsuario());
-        r1.setAutoresList(r.getAutoresList());
-        r1.setArcPublication(r.getArcPublication());
-        r1.setCategoriaList(r.getCategoriaList());
-        r1.setEdition(r.getEdition());
-        r1.setEditorial(r.getEditorial());
-        r1.setFecha(r.getFecha());
-        r1.setFechaMod(r.getFechaMod());
-        r1.setIdFuente(r.getIdFuente());
-        r1.setInformeInstitution(r.getInformeInstitution());
-        r1.setInformeNum(r.getInformeNum());
-        r1.setInformeSerie(r.getInformeSerie());
-        r1.setInformeTipo(r.getInformeTipo());
-        r1.setLugar(r.getLugar());
-        r1.setMetadatosAlimentosGList(r.getMetadatosAlimentosGList());
-        r1.setNota(r.getNota());
-        r1.setNumVol(r.getNumVol());
-        r1.setPages(r.getPages());
-        r1.setSecclTitle(r.getSecclTitle());
-        r1.setTesisUniversidad(r.getTesisUniversidad());
-        r1.setTitle(r.getTitle());
-        r1.setUrl(r.getUrl());
-        r1.setVolumen(r.getVolumen());
+        r1 = r;
         try {
             referenciasRepo.saveAndFlush(r1);
             map.put("mensaje", "Referencia editada correctamente");
             map.put("data", r1);
             if ("Editor".equals(principal.getIdRol().toString())) {
                 Mensaje mensaje = new Mensaje();
-                mensaje.setFecha(fecha.toString());
-                mensaje.setEstado(Boolean.FALSE);
+                Date fecha = new Date();
+                mensaje.setFecha( dateFormat.format(fecha));
+                mensaje.setLeido(Boolean.FALSE);
                 mensaje.setMensaje(principal.getNombre() + " ha editado la referencia con título: "
                         + r1.getTitle());
                 mensajeRepo.saveAndFlush(mensaje);
-                messagingTemplate.convertAndSend("/messages/enviar", mensaje);
+                messagingTemplate.convertAndSendToUser("feisy",
+                        "/queue/enviar", mensaje);
             }
         } catch (Exception e) {
             map.put("mensaje", "Error al actualizar la referencia");
