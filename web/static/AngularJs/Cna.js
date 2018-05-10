@@ -192,4 +192,15 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
         $window.location.href = "../estudio/gestionar";
     };
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.msj = JSON.parse(res.body);
+            notify = new Notification($scope.msj.titulo, {
+                body: $scope.msj.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
 });

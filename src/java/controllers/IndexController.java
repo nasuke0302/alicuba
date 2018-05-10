@@ -130,7 +130,7 @@ public class IndexController {
                 mensaje.setMensaje(principal.getNombre() + " ha editado la referencia con título: "
                         + r1.getTitle());
                 mensajeRepo.saveAndFlush(mensaje);
-                messagingTemplate.convertAndSendToUser("feisy",
+                messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
                         "/queue/enviar", mensaje);
             }
         } catch (Exception e) {

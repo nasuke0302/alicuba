@@ -190,7 +190,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-    var socket = new SockJS("../websocket/configuration");
+    var socket = new SockJS("../alicuba/websocket/configuration");
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {

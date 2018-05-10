@@ -5,15 +5,18 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import models.Alimentos;
-import models.Roles;
+import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AlimentosRepo;
+import repositorios.MensajeRepo;
 import repositorios.TipoCubaRepo;
 import repositorios.TipoFaoRepo;
 import repositorios.TipoNrcRepo;
@@ -43,6 +47,13 @@ public class AlimentosController {
     TipoFaoRepo tipoFaoRepo;
     @Autowired
     TipoNrcRepo tipoNrcRepo;
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/gestionar")
@@ -124,11 +135,29 @@ public class AlimentosController {
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/alimentos/edit")
-    public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map) {
+    public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Alimentos r1 = alimentosRepo.findOne(r.getIdAlimento());
         r1 = r;
-        alimentosRepo.saveAndFlush(r1);
-        map.put("mensaje", "Alimento editado correctamente");
+        try {
+            alimentosRepo.saveAndFlush(r1);
+            map.put("mensaje", "Alimento editado correctamente");
+            map.put("data", r1);
+            if ("Editor".equals(principal.getIdRol().toString())) {
+                Mensaje mensaje = new Mensaje();
+                Date fecha = new Date();
+                mensaje.setFecha( dateFormat.format(fecha));
+                mensaje.setLeido(Boolean.FALSE);
+                mensaje.setMensaje(principal.getNombre() + " ha editado el alimento con nombre científico: "
+                        + r1.getNombreCient());
+                mensajeRepo.saveAndFlush(mensaje);
+                messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
+                        "/queue/enviar", mensaje);
+            }
+        } catch (Exception e) {
+            map.put("mensaje", "Error al actualizar la referencia");
+            map.put("error", e);
+        }
+
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
