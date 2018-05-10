@@ -43,8 +43,10 @@
                             <div class="panel panel-default">
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
-                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
-                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                    <sec:authorize access="hasAuthority('Colaborador')">
+                                        <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
+                                                data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                    </sec:authorize>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
                                 <!--TABLA Alimentos-->
@@ -72,9 +74,12 @@
                                                         <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                                 data-ng-click="abrirEditarModal($index)">
                                                             <i class="glyphicon glyphicon-pencil"></i></button>
-                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                data-ng-click="abrirEliminarModal($index)">
-                                                            <i class="glyphicon glyphicon-trash"></i></button>
+
+                                                        <sec:authorize access="hasAuthority('Colaborador')">
+                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                    data-ng-click="abrirEliminarModal($index)">
+                                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                                            </sec:authorize>
                                                     </td>
                                                     <td>{{alimento.nombreCient}}</td>
                                                     <td>{{alimento.nombre}}</td>
