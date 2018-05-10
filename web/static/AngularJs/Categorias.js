@@ -1,4 +1,4 @@
-var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap', 'ngStomp']);
+var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap']);
 appCategorias.controller("CategoriasController", function ($scope, $http, $window) {
     $scope.msj = {};
     $scope.categoria = {

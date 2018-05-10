@@ -18,7 +18,9 @@ import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -61,6 +63,18 @@ public class IndexController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
+    @MessageMapping("/topic/getMessages")
+    @SendToUser("/user/queue/notifications")
+    public List<Mensaje> getMessages(String s) {
+        notificaciones = mensajeRepo.findAll();
+//        for (Mensaje notificacion : notificaciones) {
+//            messagingTemplate.convertAndSendToUser(notificacion.getReceiver(),
+//                    "/queue/notifications", notificacion);
+//        }
+
+        return notificaciones;
+    }
+
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
         return new ModelAndView("index");
@@ -86,11 +100,6 @@ public class IndexController {
         } catch (MessagingException e) {
             map.put("success", Boolean.FALSE);
             map.put("error", e);
-        }
-        notificaciones = mensajeRepo.findAll();
-        for (Mensaje notificacion : notificaciones) {
-            messagingTemplate.convertAndSendToUser(notificacion.getReceiver(),
-                    "/queue/notifications", notificacion);
         }
         return map;
     }

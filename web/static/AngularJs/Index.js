@@ -4,6 +4,9 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     $scope.notification = {};
     $scope.msj = {};
     var socket = new SockJS("../alicuba/websocket/configuration");
+    socket.onopen = function(){
+        console.log("Entered here");
+    };
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {
@@ -13,9 +16,11 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
                 body: $scope.notification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
         });
+        
         stompClient.subscribe("/user/queue/notifications", function (res) {
             $scope.msj = JSON.parse(res.body);
         });
+        stompClient.send("/topic/getMessages", {}, "hi");
     });
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
