@@ -36,7 +36,7 @@ public class Mensaje implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idMensaje")
+    @Column(name = "id_mensaje")
     private Integer idMensaje;
     @Column(name = "mensaje")
     private String mensaje;

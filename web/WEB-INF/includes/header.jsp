@@ -8,30 +8,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
 
-<script>
-    var appHeader = angular.module("AppHeader", []);
-    appHeader.controller("HeaderController", function ($scope, $http) {
-        $scope.msj = {};
-
-        $http.get("../notifications/get").then(function (res) {
-            console.log(res);
-        });
-        var socket = new SockJS("../websocket/configuration");
-        var stompClient = Stomp.over(socket);
-        var notify;
-        stompClient.connect({}, function (frame) {
-            stompClient.subscribe("/user/queue/notifications", function (res) {
-                $scope.msj = JSON.parse(res.body);
-                notify = new Notification($scope.msj.titulo, {
-                    body: $scope.msj.mensaje,
-                    icon: "/alicuba/static/IconWebSocket.png"});
-            });
-        });
-    });
-</script>
-<div id="top" data-ng-app="AppHeader">
-    <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;" 
-         data-ng-controller="HeaderController">
+<div id="top">
+    <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
         <a data-original-title="Show/Hide Menu" data-placement="bottom" 
            data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" 
            data-toggle="collapse" href="#menu" id="menu-toggle">

@@ -10,12 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import models.Mensaje;
 import models.Referencias;
 import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -55,6 +57,7 @@ public class IndexController {
     @Autowired
     MensajeRepo mensajeRepo;
 
+    List<Mensaje> notificaciones;
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -80,9 +83,14 @@ public class IndexController {
                 map.put("data", referenciasRepo.findAll());
             }
             map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             map.put("success", Boolean.FALSE);
             map.put("error", e);
+        }
+        notificaciones = mensajeRepo.findAll();
+        for (Mensaje notificacion : notificaciones) {
+            messagingTemplate.convertAndSendToUser(notificacion.getReceiver(),
+                    "/queue/notifications", notificacion);
         }
         return map;
     }
@@ -125,8 +133,11 @@ public class IndexController {
             if ("Editor".equals(principal.getIdRol().toString())) {
                 Mensaje mensaje = new Mensaje();
                 Date fecha = new Date();
-                mensaje.setFecha( dateFormat.format(fecha));
+                mensaje.setFecha(dateFormat.format(fecha));
                 mensaje.setLeido(Boolean.FALSE);
+                mensaje.setSender(principal.getNombre());
+                mensaje.setTitulo("Referencia editada");
+                mensaje.setReceiver(r1.getIdUsuario().getNombre().toLowerCase());
                 mensaje.setMensaje(principal.getNombre() + " ha editado la referencia con título: "
                         + r1.getTitle());
                 mensajeRepo.saveAndFlush(mensaje);
