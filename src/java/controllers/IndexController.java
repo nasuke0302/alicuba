@@ -64,7 +64,7 @@ public class IndexController {
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @MessageMapping("/topic/getMessages")
-    @SendToUser("/user/queue/notifications")
+    @SendToUser("/feisy/queue/notifications")
     public List<Mensaje> getMessages(String s) {
         notificaciones = mensajeRepo.findAll();
 //        for (Mensaje notificacion : notificaciones) {
