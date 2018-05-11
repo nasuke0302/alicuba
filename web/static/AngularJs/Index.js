@@ -1,27 +1,6 @@
 var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
 appIndex.controller("IndexController", function ($scope, $http, $window) {
 
-    $scope.notification = {};
-    $scope.msj = {};
-    var socket = new SockJS("../alicuba/websocket/configuration");
-    socket.onopen = function(){
-        console.log("Entered here");
-    };
-    var stompClient = Stomp.over(socket);
-    var notify;
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.notification = JSON.parse(res.body);
-            notify = new Notification($scope.notification.titulo, {
-                body: $scope.notification.mensaje,
-                icon: "/alicuba/static/IconWebSocket.png"});
-        });
-        
-        stompClient.subscribe("/user/queue/notifications", function (res) {
-            $scope.msj = JSON.parse(res.body);
-        });
-        stompClient.send("/topic/getMessages", {}, "hi");
-    });
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {

@@ -18,7 +18,9 @@ import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.access.annotation.Secured;
@@ -63,15 +65,16 @@ public class IndexController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    @MessageMapping("/topic/getMessages")
-    @SendToUser("/feisy/queue/notifications")
+    @MessageMapping(value = "/topic/getMessages")
+    @SendTo(value = "/topic/notifications")
     public List<Mensaje> getMessages(String s) {
+        System.out.println("Entra al metodo");
         notificaciones = mensajeRepo.findAll();
-//        for (Mensaje notificacion : notificaciones) {
-//            messagingTemplate.convertAndSendToUser(notificacion.getReceiver(),
-//                    "/queue/notifications", notificacion);
-//        }
-
+        for (Mensaje notificacion : notificaciones) {
+            System.out.println("Entra al for");
+            messagingTemplate.convertAndSendToUser(notificacion.getReceiver(),
+                    "/queue/notifications", notificacion);
+        }
         return notificaciones;
     }
 

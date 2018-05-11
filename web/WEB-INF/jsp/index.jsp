@@ -22,6 +22,8 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/WebSockets/sockjs.js"></script>
+        <script src="${pageContext.request.contextPath}/static/WebSockets/stomp.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Index.js"></script>
         <!--END PAGE LEVEL SCRIPTS-->
     </head>
