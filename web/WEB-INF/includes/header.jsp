@@ -7,29 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
-<script>
-    var notification = {};
-    var msj = {};
-    var socket = new SockJS("../alicuba/websocket/configuration");
-    var stompClient = Stomp.over(socket);
-    var notify;
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/user/queue/enviar", function (res) {
-            notification = JSON.parse(res.body);
-            notify = new Notification(notification.titulo, {
-                body: notification.mensaje,
-                icon: "/alicuba/static/IconWebSocket.png"});
-            setTimeout(notification.close(), 1 * 1000);
-        });
-
-        stompClient.subscribe("/topic/notifications", function (res) {
-            msj = JSON.parse(res.body);
-        });
-        
-        stompClient.send("/topic/getMessages", {}, "dame mis notificaciones hijueputa");
-    });
-</script>
-
 <div id="top">
     <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
         <a data-original-title="Show/Hide Menu" data-placement="bottom" 
@@ -55,12 +32,12 @@
                     <li>
                         <a href="#">
                             <div>
-                                <strong>{{msj.titulo}}</strong>
+                                <strong>{{m[0].titulo}}</strong>
                                 <span class="pull-right text-muted">
-                                    <em>{{msj.fecha}}</em>
+                                    <em>{{m[0].fecha}}</em>
                                 </span>
                             </div>
-                            <div>{{msj.mensaje}}</div>
+                            <div>{{m[0].mensaje}}</div>
                         </a>
                     </li>
                     <li class="divider"></li>
