@@ -32,12 +32,12 @@
                     <li>
                         <a href="#">
                             <div>
-                                <strong>{{m[0].titulo}}</strong>
+                                <strong>{{msj[0].titulo}}</strong>
                                 <span class="pull-right text-muted">
-                                    <em>{{m[0].fecha}}</em>
+                                    <em>{{msj[0].fecha}}</em>
                                 </span>
                             </div>
-                            <div>{{m[0].mensaje}}</div>
+                            <div>{{msj[0].mensaje}}</div>
                         </a>
                     </li>
                     <li class="divider"></li>
