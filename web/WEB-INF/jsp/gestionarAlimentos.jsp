@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib  prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html data-ng-app="appAlimentos">
     <head>
@@ -41,8 +43,10 @@
                             <div class="panel panel-default">
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
-                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
-                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                    <sec:authorize access="hasAuthority('Colaborador')">
+                                        <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
+                                                data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                    </sec:authorize>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
                                 <!--TABLA Alimentos-->
@@ -58,7 +62,9 @@
                                                     <th>Parte</th>
                                                     <th>Proceso</th>
                                                     <th>Mezcla</th>
-                                                    <th>Usuario</th>
+                                                        <sec:authorize access="hasAuthority('Editor')">
+                                                        <th>Colaborador</th>
+                                                        </sec:authorize>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -68,9 +74,12 @@
                                                         <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                                 data-ng-click="abrirEditarModal($index)">
                                                             <i class="glyphicon glyphicon-pencil"></i></button>
-                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                data-ng-click="abrirEliminarModal($index)">
-                                                            <i class="glyphicon glyphicon-trash"></i></button>
+
+                                                        <sec:authorize access="hasAuthority('Colaborador')">
+                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                    data-ng-click="abrirEliminarModal($index)">
+                                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                                            </sec:authorize>
                                                     </td>
                                                     <td>{{alimento.nombreCient}}</td>
                                                     <td>{{alimento.nombre}}</td>
@@ -78,7 +87,9 @@
                                                     <td>{{alimento.parte}}</td>
                                                     <td>{{alimento.proceso}}</td>
                                                     <td>{{alimento.mezcla}}</td>
-                                                    <td>{{alimento.idUsuario.nombre}}</td>
+                                                    <sec:authorize access="hasAuthority('Editor')">
+                                                        <td>{{alimento.idUsuario.nombre}}</td>
+                                                    </sec:authorize>
                                                 </tr>
                                             </tbody>
                                         </table>

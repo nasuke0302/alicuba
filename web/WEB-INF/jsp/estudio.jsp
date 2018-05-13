@@ -120,14 +120,13 @@
                                                     <div id="div-1" class="accordion-body collapse in body">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
-                                                            <select class="form-control" data-ng-model="estudio.riego">
-                                                                <option>S&iacute;</option>
-                                                                <option>No</option>
+                                                            <select class="form-control" required=""
+                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N</span>
-                                                            <input type="number" class="form-control" data-ng-model="estudio.n"/>                                                  
+                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.n"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N-P-K</span>
@@ -135,7 +134,7 @@
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Edad</span>
-                                                            <input type="number" class="form-control" data-ng-model="estudio.edad"/>                                                  
+                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.edad"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Corte</span>
@@ -226,7 +225,6 @@
                                                     data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
                                         </form>
                                         <div >
-                                            <!--data-ng-show="estudioInsertado">-->
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
                                                 <ui-select data-ng-model="selectedNutriente.selected"
@@ -262,7 +260,7 @@
                                     </div>
                                 </div>                            
                             </div>
-                            <!--BEGIN REFERENCIAS INSERTADAS-->
+                            <!--BEGIN NUTRIENTES INSERTADOS-->
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
@@ -273,16 +271,13 @@
                                                data-ng-model="tCGI.valor.valor" data-ng-readonly="true"
                                                name="inputNutrienteInsertado"/>
                                         <span class="input-group-addon">{{tCGI.nutriente.idUnidadMedida.unidadMedida}}</span>
-                                        <span class="input-group-addon">
-                                            <button class="btn btn-primary btn-xs">
-                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button class="btn btn-danger btn-xs">
-                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                        </span>
                                     </div>
                                 </div>
                             </div>
-                            <!--END REFERENCIAS INSERTADAS-->
+                            <!--END NUTRIENTES INSERTADOS-->
+                            <div class="text-right">
+                                <button class="btn btn-success" onClick="regresar()"><i class="glyphicon glyphicon-check"></i> Terminado</button>
+                            </div>
                         </div>
                     </div>              		
                     <!--MODAL NUEVO ALIMENTO-->
@@ -389,6 +384,11 @@
                                                         $(function () {
                                                             Notifications();
                                                         });
+        </script>
+        <script>
+                    function regresar() {
+                        window.history.back();
+                    }
         </script>
         <!--END PAGE LEVEL SCRIPTS-->
     </body>

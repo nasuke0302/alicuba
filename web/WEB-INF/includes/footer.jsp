@@ -10,3 +10,5 @@
 <div id="footer">
     <p>&copy;  AliCuba &nbsp;2018 &nbsp;</p>
 </div>
+<script src="${pageContext.request.contextPath}/static/WebSockets/sockjs.js"></script>
+<script src="${pageContext.request.contextPath}/static/WebSockets/stomp.js"></script>

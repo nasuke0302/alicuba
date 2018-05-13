@@ -122,6 +122,16 @@
         <script src="${pageContext.request.contextPath}/static/plugins/jquery-2.0.3.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/js/login.js"></script>
+        <script>
+                                            if (Notification.permission === "default") {
+                                                Notification.requestPermission(function (p) {
+                                                    if (p === "granted") {
+                                                        alert("Usted recibirá notificaciones de esta página");
+                                                    }
+                                                });
+                                            }
+
+        </script>
         <!--END PAGE LEVEL SCRIPTS-->
     </body>
 </html>

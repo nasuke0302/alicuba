@@ -5,7 +5,6 @@
  */
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -21,7 +20,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -34,7 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MetadatosAlimentosG.findAll", query = "SELECT m FROM MetadatosAlimentosG m")})
 public class MetadatosAlimentosG implements Serializable {
 
-    @Size(max = 32)
     @Column(name = "riego")
     private String riego;
 

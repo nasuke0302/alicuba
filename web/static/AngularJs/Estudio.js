@@ -1,26 +1,11 @@
 var estudioApp = angular.module('AppEstudio', ['ui.select']);
 estudioApp.controller('EstudioController', function ($scope, $http, $window) {
-    $scope.tablaCnaGeneralInsertada = [];
-    $scope.nutrienteInsertado = [];
-    $scope.estudioInsertado = false;
     $scope.tablaCnaGeneral = {
         valor: "",
         idNutriente: "",
         idMetadatosAlimentosG: ""
     };
     $scope.oneTDA = {};
-    $scope.alimento = {
-        nombreCient: "",
-        nombre: "",
-        variedad: "",
-        parte: "",
-        proceso: "",
-        mezcla: "",
-        idTipoCuba: "",
-        idTipoFao: "",
-        idTipoNrc: ""
-    };
-    $scope.selectedAlimento = {};
     $scope.estudio = {
         idMetadatosAlimentosG: "",
         idReferencia: "",
@@ -45,14 +30,26 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         fertilizado: "",
         tablaCnaGeneral: ""
     };
+    $scope.alimento = {
+        nombreCient: "",
+        nombre: "",
+        variedad: "",
+        parte: "",
+        proceso: "",
+        mezcla: "",
+        idTipoCuba: "",
+        idTipoFao: "",
+        idTipoNrc: ""
+    };
+    $scope.selectedAlimento = {};
     $scope.selectedTipoCuba = 22;
     $scope.selectedTipoFao = 10;
     $scope.selectedTipoNrc = 9;
     $scope.selectedCalidad = 6;
     $scope.selectedEpoca = 4;
     $scope.selectedFertilizado = 1;
-    $scope.selectedMesIni = 1;
-    $scope.selectedMesFin = 2;
+    $scope.selectedMesIni = 13;
+    $scope.selectedMesFin = 13;
     $scope.selectedNivelFert = 1;
     $scope.selectedPais = {};
     $scope.selectedProvincia = 17;
@@ -60,6 +57,13 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
+    $scope.tablaCnaGeneralInsertada = [];
+    $scope.estudioInsertado = true;
+    $scope.tiposRiego = {
+        tipo1: "Sí",
+        tipo2: "No",
+        tipo3: "Sin definir riego"
+    };
 
     $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     //Obtener Lista de Nutrientes
@@ -155,41 +159,26 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.estudio.idRangoEdades = $scope.selectedRangoEdad;
         $scope.estudio.idReferencia = $scope.referencia.idReferencia;
         $http.post("addEstudio", $scope.estudio, {}).then(function (response) {
+            window.localStorage.setItem("metadato", JSON.stringify(response.data.data));
             $window.alert(response.data.mensaje);
             $scope.estudioInsertado = true;
         });
     };
     $scope.addTablaCnaGeneral = function () {
-        $scope.lastEstudioId = {};
-
-        $http.get("getLastEstudio").then(function (data) {
-            $scope.lastEstudioId = data.data.data;
-            $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
-            $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.lastEstudioId.idMetadatosAlimentosG;
-
-            $scope.tablaCnaGeneralPK = {
-                idNutriente: $scope.tablaCnaGeneral.idNutriente,
-                idMetadatosAlimentosG: $scope.tablaCnaGeneral.idMetadatosAlimentosG
-            };
-
-            $http.post("addTablaCnaGeneral/" + $scope.tablaCnaGeneral.valor, $scope.tablaCnaGeneralPK, {}).then(function (data) {
-                $window.alert(data.data.mensaje);
-
-                $scope.tablaCnaGeneral.valor = "";
-                $scope.selectedNutriente.selected = "";
-                $scope.tablaCnaGeneralInsertada.push(data.data);
-            });
+        $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
+        $scope.tablaCnaGeneral.idMetadatosAlimentosG = JSON.parse(window.localStorage.getItem("metadato")).idMetadatosAlimentosG;
+        $scope.tablaCnaGeneralPK = {
+            idNutriente: $scope.tablaCnaGeneral.idNutriente,
+            idMetadatosAlimentosG: $scope.tablaCnaGeneral.idMetadatosAlimentosG
+        };
+        $http.post("addTablaCnaGeneral/" + $scope.tablaCnaGeneral.valor, $scope.tablaCnaGeneralPK, {}).then(function (data) {
+            $window.alert(data.data.mensaje);
+            $scope.tablaCnaGeneral.valor = "";
+            $scope.selectedNutriente.selected = "";
+            $scope.tablaCnaGeneralInsertada.push(data.data);
         });
     };
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
-    };
-    
-    $scope.eliminarEstudio = function(){
-        
-    };
-    
-    $scope.abrirEliminarModal = function(indice){
-        var a = $scope.estudioPorReferencia(indice);
     };
 });

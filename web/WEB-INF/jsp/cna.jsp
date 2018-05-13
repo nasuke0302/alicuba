@@ -105,14 +105,23 @@
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
                                         </tr>
-                                        <tr data-ng-repeat="e in estudioPorReferencia">
+                                        <tr data-ng-repeat="e in estudioPorReferencia track by e.idMetadatosAlimentosG" >
+                                            <!--data-ng-init="indexAlimentos = $index">-->
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
-                                                <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, {{e.tratamiento}}, 
-                                                <abbr title="{{e.idProvincia.idRegion.region}}">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
-                                                <abbr title="{{e.idEpoca.nombre}}">{{e.idEpoca.etiqueta}}</abbr>-
+                                                <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
+                                                <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
+                                                <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
+                                                <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
                                                 <abbr title="Riego">{{e.riego}}</abbr>-
-                                                <abbr title="{{e.fertilizado.fertilizado}}">{{e.fertilizado.etiqueta}}</abbr>-
-                                                <abbr title="{{e.idRangoEdades.rango}}">{{e.idRangoEdades.etiqueta}}</abbr></td>
+                                                <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
+                                                <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
+                                                <button class="btn btn-primary btn-xs" title="Editar alimento" data-ng-click="editarMetadatos($index)">
+                                                    <i class="glyphicon glyphicon-pencil"></i></button>
+                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
+                                                        title="Eliminar alimento"
+                                                        data-ng-click="abrirEliminarAlimentoModal($index)">
+                                                    <i class="glyphicon glyphicon-trash"></i></button>
+                                            </td>
                                             <td>
                                                 <table class="table">
                                                     <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
@@ -122,16 +131,16 @@
                                                             {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                         <td> {{nut.valor}}</td>
                                                         <td>
-                                                            <button class="btn btn-primary btn-xs">
+                                                            <button class="btn btn-primary btn-xs" title="editar estudio">
                                                                 <i class="glyphicon glyphicon-pencil"></i></button>
                                                             <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    data-ng-click="abrirEliminarModal($index)">
+                                                                    title="Eliminar estudio"
+                                                                    data-ng-click="abrirEliminarModal(indexAlimentos, $index)">
                                                                 <i class="glyphicon glyphicon-trash"></i></button>
                                                         </td> 
                                                     </tr>
                                                 </table>
                                             </td>
-
                                         </tr>
                                     </table>
                                 </div>
@@ -416,6 +425,30 @@
                     </div>
                 </div>
                 <!--END CREATE CATEGORIA-->
+                <!--DELETE ALIMENTO MODAL-->
+                <div>
+                    <div class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
+                        <div class="modal-dialog" style="margin-top: 260.5px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title"><strong>¡Atenci&oacute;n!</strong></h4>
+                                    <div class="modal-body">
+                                        <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
+                                            <div class="text-left">
+                                                <div class="alert alert-danger"> Al eliminar un alimento se eliminar&aacute;n también los estudios asociados a &eacute;l.</div>
+                                            </div>
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END DELETE ALIMENTO MODAL-->
                 <!--DELETE ESTUDIO MODAL-->
                 <div>
                     <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
@@ -423,11 +456,10 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                    <h4 class="modal-title">¿Seguro que desea eliminar este estudio?</h4>
                                     <div class="modal-body">
                                         <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
                                             <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            {{estudioPorReferencia}}
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                         </form>
                                     </div>
@@ -449,7 +481,8 @@
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
-        <!-- PAGE LEVEL SCRIPT-->
+        <!--BEGIN PAGE LEVEL SCRIPT-->
+        <!--END PAGE LEVEL SCRIPT-->
     </body>
     <!-- END BODY-->
 </html>

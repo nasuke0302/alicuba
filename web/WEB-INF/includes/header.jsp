@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
-
 <div id="top">
     <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
         <a data-original-title="Show/Hide Menu" data-placement="bottom" 
@@ -23,6 +22,28 @@
         </header>
         <!--END LOGO SECTION--> 
         <ul class="nav navbar-top-links navbar-right">
+            <!--EGIN NOTIFICATIONS SECTION-->
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="label label-success">2</span>
+                    <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a href="#">
+                            <div>
+                                <strong>{{msj[0].titulo}}</strong>
+                                <span class="pull-right text-muted">
+                                    <em>{{msj[0].fecha}}</em>
+                                </span>
+                            </div>
+                            <div>{{msj[0].mensaje}}</div>
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+            </li>
+            <!--END NOTIFICATIONS SECTION-->
             <!--ADMIN SETTINGS SECTIONS--> 
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">

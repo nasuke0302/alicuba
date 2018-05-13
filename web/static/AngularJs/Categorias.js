@@ -1,5 +1,6 @@
 var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap']);
 appCategorias.controller("CategoriasController", function ($scope, $http, $window) {
+    $scope.msj = {};
     $scope.categoria = {
         idCategoria: "",
         categoria: ""
@@ -64,4 +65,16 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
             categoria: a.categoria
         };
     };
+
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.msj = JSON.parse(res.body);
+            notify = new Notification($scope.msj.titulo, {
+                body: $scope.msj.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
 });

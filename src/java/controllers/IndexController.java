@@ -5,13 +5,30 @@
  */
 package controllers;
 
+import com.sun.xml.internal.ws.api.message.Message;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import models.Mensaje;
 import models.Referencias;
+import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessagingException;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +41,11 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
 import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
+import repositorios.MensajeRepo;
 import repositorios.ReferenciasRepo;
 
 @Controller
+@EnableScheduling
 public class IndexController {
 
     @Autowired
@@ -41,6 +60,22 @@ public class IndexController {
     @Autowired
     CategoriaRepo categoriasRepo;
 
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    List<Mensaje> notificaciones;
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+    @Scheduled(fixedRate = 5000)
+    public void getMessages() throws InterruptedException {
+        notificaciones = mensajeRepo.findAll();
+        this.messagingTemplate.convertAndSend("/topic/notifications", notificaciones);
+    }
+
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
         return new ModelAndView("index");
@@ -54,13 +89,18 @@ public class IndexController {
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getReferencias")
     public @ResponseBody
-    Map<String, ? extends Object> getReferencias() {
+    Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", referenciasRepo.findAll());
+            if ("Colaborador".equals(principal.getIdRol().toString())) {
+                map.put("data", referenciasRepo.findAllByIdUsuario(principal));
+            } else {
+                map.put("data", referenciasRepo.findAll());
+            }
             map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }
@@ -82,9 +122,8 @@ public class IndexController {
     @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/index/addReferencia")
-    public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        r.setIdUsuario((Usuarios) principal);
+    public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
+        r.setIdUsuario(principal);
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
@@ -94,35 +133,27 @@ public class IndexController {
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/index/editReferencia")
-    public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map) {
+    public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Referencias r1 = referenciasRepo.findOne(r.getIdReferencia());
-        r1.setIdUsuario(r.getIdUsuario());
-        r1.setAutoresList(r.getAutoresList());
-        r1.setArcPublication(r.getArcPublication());
-        r1.setCategoriaList(r.getCategoriaList());
-        r1.setEdition(r.getEdition());
-        r1.setEditorial(r.getEditorial());
-        r1.setFecha(r.getFecha());
-        r1.setFechaMod(r.getFechaMod());
-        r1.setIdFuente(r.getIdFuente());
-        r1.setInformeInstitution(r.getInformeInstitution());
-        r1.setInformeNum(r.getInformeNum());
-        r1.setInformeSerie(r.getInformeSerie());
-        r1.setInformeTipo(r.getInformeTipo());
-        r1.setLugar(r.getLugar());
-        r1.setMetadatosAlimentosGList(r.getMetadatosAlimentosGList());
-        r1.setNota(r.getNota());
-        r1.setNumVol(r.getNumVol());
-        r1.setPages(r.getPages());
-        r1.setSecclTitle(r.getSecclTitle());
-        r1.setTesisUniversidad(r.getTesisUniversidad());
-        r1.setTitle(r.getTitle());
-        r1.setUrl(r.getUrl());
-        r1.setVolumen(r.getVolumen());
+        r1 = r;
         try {
             referenciasRepo.saveAndFlush(r1);
             map.put("mensaje", "Referencia editada correctamente");
             map.put("data", r1);
+            if ("Editor".equals(principal.getIdRol().toString())) {
+                Mensaje mensaje = new Mensaje();
+                Date fecha = new Date();
+                mensaje.setFecha(dateFormat.format(fecha));
+                mensaje.setLeido(Boolean.FALSE);
+                mensaje.setSender(principal.getNombre());
+                mensaje.setTitulo("Referencia editada");
+                mensaje.setReceiver(r1.getIdUsuario().getNombre().toLowerCase());
+                mensaje.setMensaje(principal.getNombre() + " ha editado la referencia con título: "
+                        + r1.getTitle());
+                mensajeRepo.saveAndFlush(mensaje);
+                messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
+                        "/queue/enviar", mensaje);
+            }
         } catch (Exception e) {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);

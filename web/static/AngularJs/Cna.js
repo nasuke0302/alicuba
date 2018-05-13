@@ -7,7 +7,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.years.push(i);
     }
 //    END GENERAR AÑOS
-
+    $scope.estudioToDelete = {
+        nutrientes: "",
+        tablaCnaGeneralPK: "",
+        valor: ""
+    };
+    $scope.metadato = {};
     $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
     $scope.referenciaEdit = {
         idReferencia: "",
@@ -19,7 +24,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         informeTipo: "",
         informeSerie: "",
         informeInstitution: "",
-        arcPublication: "",
+        arcPublication: "a.arcPublication",
         volumen: "",
         numVol: "",
         edition: "",
@@ -29,6 +34,8 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         tesisUniversidad: "",
         pages: "",
         fecha: "",
+        fechaAd: "",
+        fechaMod: "",
         idUsuario: ""
     };
     $scope.selectedYear = {};
@@ -75,11 +82,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         console.log($scope.referenciaEdit);
         $http.post("../index/editReferencia", $scope.referenciaEdit).then(function (r) {
             window.localStorage.setItem("referencia", JSON.stringify($scope.referenciaEdit));
+            $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
             $window.alert(r.data.mensaje);
         });
         $("#modalNuevaReferencia").modal("toggle");
     };
-    //NUEVO ESTUDIO
+    //nuevo estudio
     $scope.nuevoEstudio = function () {
         $window.location.href = "../estudio/gestionar";
     };
@@ -111,7 +119,8 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             pages: a.pages,
             fecha: a.fecha,
             fechaAd: a.fechaAd,
-            fechaMod: new Date()
+            fechaMod: new Date(),
+            idUsuario: a.idUsuario
         };
     };
     $scope.abrirModalAddAutor = function () {
@@ -146,4 +155,52 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
+
+    $scope.eliminarEstudio = function () {
+        $("#formModalEliminar").modal("toggle");
+        $http.post("../estudio/deleteEstudio", $scope.estudioToDelete.tablaCnaGeneralPK, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
+                $scope.estudioPorReferencia = data.data.data;
+            });
+        });
+    };
+    $scope.eliminarAlimento = function () {
+        $("#formModalEliminarAlimento").modal("toggle");
+        $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
+                $scope.estudioPorReferencia = data.data.data;
+            });
+        });
+    };
+    $scope.abrirEliminarModal = function (indice1, indice2) {
+        console.log($scope.estudioPorReferencia);
+        var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
+        $scope.estudioToDelete = {
+            nutrientes: a.nutrientes,
+            tablaCnaGeneralPK: a.tablaCnaGeneralPK,
+            valor: a.valor
+        };
+        console.log($scope.estudioToDelete);
+    };
+    $scope.abrirEliminarAlimentoModal = function (indice) {
+        $scope.metadato = $scope.estudioPorReferencia[indice];
+    };
+    $scope.editarMetadatos = function (indice) {
+        $scope.metadato = $scope.estudioPorReferencia[indice];
+        window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
+        $window.location.href = "../estudio/gestionar";
+    };
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.msj = JSON.parse(res.body);
+            notify = new Notification($scope.msj.titulo, {
+                body: $scope.msj.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
 });

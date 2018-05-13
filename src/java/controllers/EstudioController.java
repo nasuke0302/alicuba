@@ -14,12 +14,14 @@ import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -283,6 +285,7 @@ public class EstudioController {
         try {
             metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
+            map.put("data", mag);
         } catch (Exception e) {
             map.put("mensaje", "Error al insertar Estudio");
             map.put("Error", e);
@@ -313,6 +316,37 @@ public class EstudioController {
     public ModelAndView getLastEstudio(ModelMap map) {
         map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
         map.put("success", Boolean.TRUE);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @Secured(value = "Colaborador")
+    @ResponseBody
+    @RequestMapping(value = "/estudio/deleteEstudio", method = RequestMethod.POST)
+    public ModelAndView deleteEstudio(@RequestBody TablaCnaGeneralPK cnaGeneralPK) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            tablaCnaGeneralRepo.delete(cnaGeneralPK);
+            map.put("mensaje", "Estudio eliminado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al eliminar el estudio");
+            map.put("error", e);
+        }
+
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+    
+    @Secured(value = "Colaborador")
+    @ResponseBody
+    @RequestMapping(value = "/estudio/deleteAlimentoMetadatos/{idMetadatos}", method = RequestMethod.DELETE)
+    public ModelAndView deleteAlimentoMetadatos(@PathVariable Integer idMetadatos, ModelMap map) {
+        try {
+            metadatosAlimentosRepo.delete(idMetadatos);
+            map.put("mensaje", "Alimento eliminado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al eliminar el alimento");
+            map.put("error", e);
+        }
+
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }
