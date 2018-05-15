@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
-<script>
+<!--<script>
     appIndex.controller("HeaderController", function ($scope, $http) {
 
         $scope.notificaciones = [];
@@ -23,8 +23,9 @@
         $http.get("header/getMessages").then(function (res) {
             $scope.AllNotifications = res.data.data;
         });
-    });</script>
-<div id="top" data-ng-controller="HeaderController">
+    });</script>-->
+<div id="top" >
+     <!--data-ng-controller="HeaderController">-->
     <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
         <a data-original-title="Show/Hide Menu" data-placement="bottom" 
            data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" 
@@ -46,7 +47,7 @@
                     <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
-                    <li data-ng-repeat="notif in AllNotifications">
+<!--                    <li data-ng-repeat="notif in AllNotifications">
                         <a href="#">
                             <div>
                                 <strong>{{notif.titulo}}</strong>
@@ -56,12 +57,12 @@
                             </div>
                             <div>{{notif.mensaje}}</div>
                         </a>
-                    </li>
+                    </li>-->
                     <li>
                         <div class="divider"></div>
                     </li>
                     <li>
-                        <a class="text-center" href="#">
+                        <a class="text-center" href="${pageContext.request.contextPath}/notificaciones/gestionar">
                             <strong>Leer Todos</strong>
                             <i class="icon-angle-right"></i>
                         </a>
