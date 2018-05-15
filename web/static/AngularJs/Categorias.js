@@ -23,25 +23,25 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
     };
 
     //Obtener Lista de Categorias
-    $http.get("get").then(function (data) {
+    $http.get("getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Crear o Editar Categoria
     $scope.createOrEditCategoria = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         if ($scope.categoria.idCategoria === "") {
-            $http.post("add", $scope.categoria, {}).then(function (r) {
+            $http.post("addCategoria", $scope.categoria, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de categorias
-                $http.get("get").then(function (data) {
+                $http.get("getCategorias").then(function (data) {
                     $scope.allCategorias = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.categoria, {}).then(function (r) {
+            $http.post("editCategoria", $scope.categoria, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de Categorias
-                $http.get("get").then(function (data) {
+                $http.get("getCategorias").then(function (data) {
                     $scope.allCategorias = data.data.data;
                 });
             });
@@ -50,10 +50,10 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
     // Eliminar Categoria
     $scope.eliminarCategoria = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.categoria.idCategoria).then(function (r) {
+        $http.delete("deleteCategoria/" + $scope.categoria.idCategoria).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("get").then(function (data) {
+            $http.get("getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
         });
@@ -93,20 +93,4 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
                 icon: "/alicuba/static/IconWebSocket.png"});
         });
     });
-
-    $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
-    });
-
 });

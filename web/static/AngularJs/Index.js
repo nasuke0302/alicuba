@@ -13,29 +13,28 @@ function headerController($http, $scope) {
     $http.get("./header/getMessages").then(function (data) {
         $scope.allNotificaciones = data.data.data;
     });
-}
-appIndex.controller("headerController", headerController);
-appIndex.controller("IndexController", function ($scope, $http, $window) {
-
-    $scope.notification = {};
-    $scope.msj = [];
+    
+    $scope.newNotification = {};
     var socket = new SockJS("../alicuba/websocket/configuration");
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.notification = JSON.parse(res.body);
-            notify = new Notification($scope.notification.titulo, {
-                body: $scope.notification.mensaje,
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
-            setTimeout($scope.notification.close(), 1 * 1000);
+            setTimeout($scope.newNotification.close(), 1 * 1000);
         });
 
         stompClient.subscribe("/topic/notifications", function (res) {
-//            self.index().getMessages(JSON.parse(res.body));
-            $scope.msj.push(JSON.parse(res.body));
+            $scope.allNotificaciones.push(JSON.parse(res.body));
         });
     });
+}
+appIndex.controller("headerController", headerController);
+appIndex.controller("IndexController", function ($scope, $http, $window) {
+
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {
@@ -88,11 +87,11 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         $scope.allReferencias = data.data.data;
     });
     //Obtener Lista de Autores
-    $http.get("autores/get").then(function (data) {
+    $http.get("autores/getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Obtener Listado de Categorias
-    $http.get("categorias/get").then(function (data) {
+    $http.get("categorias/getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Obtener Lista de Fuentes de Informacion
@@ -121,7 +120,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     // Eliminar Referencia
     $scope.eliminarReferencia = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.post("index/delete/" + $scope.referencia.idReferencia).then(function (r) {
+        $http.post("index/deleteReferencia/" + $scope.referencia.idReferencia).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Listado de Referencias
             $http.get("index/getReferencias").then(function (data) {
@@ -200,10 +199,10 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
-        $http.post("autores/add", $scope.autor, {}).then(function (r) {
+        $http.post("autores/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("autores/get").then(function (data) {
+            $http.get("autores/getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
             $("#modalAddOrEditAutor").modal("toggle");
@@ -215,30 +214,15 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
-        $http.post("categorias/add", $scope.categoria, {}).then(function (r) {
+        $http.post("categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("categorias/get").then(function (data) {
+            $http.get("categorias/getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-
-    $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
-    });
 });
 appIndex.directive('allowOnlyNumbers', function () {
     return {

@@ -62,7 +62,7 @@ public class AlimentosController {
     }
 
     @Secured(value = "Colaborador, Editor")
-    @RequestMapping(value = "/alimentos/get")
+    @RequestMapping(value = "/alimentos/getAlimentos")
     public @ResponseBody
     Map<String, ? extends Object> getAlimentos(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
@@ -124,7 +124,7 @@ public class AlimentosController {
 
     @Secured(value = "Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/alimentos/add")
+    @RequestMapping(value = "/alimentos/addAlimento")
     public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         r.setIdUsuario(principal);
         alimentosRepo.saveAndFlush(r);
@@ -134,7 +134,7 @@ public class AlimentosController {
 
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
-    @RequestMapping(value = "/alimentos/edit")
+    @RequestMapping(value = "/alimentos/editAlimento")
     public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Alimentos r1 = alimentosRepo.findOne(r.getIdAlimento());
         r1 = r;
@@ -162,7 +162,7 @@ public class AlimentosController {
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/alimentos/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/alimentos/deleteAlimento/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAlimento(@PathVariable Integer id, ModelMap map) {
         alimentosRepo.delete(id);
         map.put("mensaje", "Alimento eliminado correctamente");

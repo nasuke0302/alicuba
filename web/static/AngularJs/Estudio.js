@@ -87,7 +87,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.allNutrientes = data.data.data;
     });
     //Obtener Lista de Alimentos
-    $http.get("../alimentos/get").then(function (data) {
+    $http.get("../alimentos/getAlimentos").then(function (data) {
         $scope.allAlimentos = data.data.data;
     });
     //Obtener Lista de Calidades
@@ -156,7 +156,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $http.post("addAlimento", $scope.alimento, {}).then(function (response) {
             $window.alert(response.data.mensaje);
             //Obtener Lista de Alimentos
-            $http.get("../alimentos/get").then(function (data) {
+            $http.get("../alimentos/getAlimentos").then(function (data) {
                 $scope.allAlimentos = data.data.data;
             });
         });
@@ -197,19 +197,4 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
     };
-     $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
-    });
-    
 });

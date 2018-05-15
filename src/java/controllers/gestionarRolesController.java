@@ -26,7 +26,7 @@ public class gestionarRolesController {
     RolesRepo repo;
 
     @Secured(value= "Administrador")
-    @RequestMapping(value = "/roles/get")
+    @RequestMapping(value = "/roles/getRoles")
     public @ResponseBody
     Map<String, ? extends Object> getRoles(Roles r) {
         Map<String, Object> map = new HashMap<>();

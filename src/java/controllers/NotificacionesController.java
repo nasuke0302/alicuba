@@ -38,7 +38,7 @@ public class NotificacionesController {
     }
     
     @Secured(value= "Colaborador, Editor")
-    @RequestMapping(value = "/notificaciones/get")
+    @RequestMapping(value = "/notificaciones/getNotificaciones")
     public @ResponseBody
     Map<String, ? extends Object> getNotificaciones(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
@@ -52,7 +52,7 @@ public class NotificacionesController {
     }
     
     @Secured(value= "Colaborador, Editor")
-    @RequestMapping(value = "/notificaciones/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/notificaciones/deleteNotificacion/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteNotificaciones(@PathVariable Integer id, ModelMap map) {
         mensajeRepo.delete(id);
         map.put("mensaje", "Notificacion eliminada correctamente");

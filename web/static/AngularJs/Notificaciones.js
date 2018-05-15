@@ -25,9 +25,8 @@ appNotificaciones.controller("NotificacionesController", function ($scope, $http
         fecha: "",
         titulo: ""
     };
-
     //Obtener Lista de notificaciones
-    $http.get("get").then(function (data) {
+    $http.get("getNotificaciones").then(function (data) {
         $scope.allNotificaciones = data.data.data;
     });
     // Eliminar Notificaciones

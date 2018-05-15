@@ -79,7 +79,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         });
     };
     //Obtener Listado de Categorias
-    $http.get("../categorias/get").then(function (data) {
+    $http.get("../categorias/getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Obtener Lista de Fuentes de Informacion
@@ -87,7 +87,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.allFuentes = data.data.data;
     });
     //Obtener Lista de Autores
-    $http.get("../autores/get").then(function (data) {
+    $http.get("../autores/getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     $scope.saveReferencia = function () {
@@ -147,10 +147,10 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
-        $http.post("../autor/add", $scope.autor, {}).then(function (r) {
+        $http.post("../autor/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("../autor/get").then(function (data) {
+            $http.get("../autor/getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
             $("#modalAddOrEditAutor").modal("toggle");
@@ -162,10 +162,10 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
-        $http.post("../categorias/add", $scope.categoria, {}).then(function (r) {
+        $http.post("../categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("../categorias/get").then(function (data) {
+            $http.get("../categorias/getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
             $("#modalAddOrEditCategoria").modal("toggle");
@@ -218,20 +218,5 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
                 body: $scope.msj.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
         });
-    });
-    
-     $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
     });
 });

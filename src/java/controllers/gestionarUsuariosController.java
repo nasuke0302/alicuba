@@ -37,7 +37,7 @@ public class gestionarUsuariosController {
     }
 
     @Secured(value= "Administrador")
-    @RequestMapping(value = "/usuarios/get")
+    @RequestMapping(value = "/usuarios/getUsuarios")
     public @ResponseBody
     Map<String, ? extends Object> getUsuarios() {
         Map<String, Object> map = new HashMap<>();
@@ -52,7 +52,7 @@ public class gestionarUsuariosController {
 
     @Secured(value= "Administrador")
     @ResponseBody
-    @RequestMapping(value = "/usuarios/add")
+    @RequestMapping(value = "/usuarios/addUsuario")
     public ModelAndView addUsuario(@RequestBody Usuarios r, ModelMap map) {
         repo.saveAndFlush(r);
         map.put("mensaje", "Usuario insertado correctamente");
@@ -61,7 +61,7 @@ public class gestionarUsuariosController {
 
     @Secured(value= "Administrador")
     @ResponseBody
-    @RequestMapping(value = "/usuarios/edit")
+    @RequestMapping(value = "/usuarios/editUsuario")
     public ModelAndView editUsuario(@RequestBody Usuarios r, ModelMap map) {
         Usuarios u = repo.findOne(r.getIdUsuario());
         u.setEmail(r.getEmail());
@@ -75,7 +75,7 @@ public class gestionarUsuariosController {
 
     @Secured(value= "Administrador")
     @ResponseBody
-    @RequestMapping(value = "/usuarios/delete/{idUsuario}")
+    @RequestMapping(value = "/usuarios/deleteUsuario/{idUsuario}")
     public ModelAndView deleteUsuario(@PathVariable Integer idUsuario, ModelMap map) {
         repo.delete(idUsuario);
         map.put("mensaje", "Usuario eliminado correctamente");

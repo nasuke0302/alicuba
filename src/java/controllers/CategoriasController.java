@@ -58,7 +58,7 @@ public class CategoriasController {
     }
 
     @Secured(value = "Colaborador, Editor")
-    @RequestMapping(value = "/categorias/get")
+    @RequestMapping(value = "/categorias/getCategorias")
     public @ResponseBody
     Map<String, ? extends Object> getCategorias(@AuthenticationPrincipal Usuarios usuario) {
         Map<String, Object> map = new HashMap<>();
@@ -74,7 +74,7 @@ public class CategoriasController {
 
     @Secured(value = "Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/categorias/add")
+    @RequestMapping(value = "/categorias/addCategoria")
     public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
@@ -92,7 +92,7 @@ public class CategoriasController {
 
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
-    @RequestMapping(value = "/categorias/edit")
+    @RequestMapping(value = "/categorias/editCategoria")
     public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map) {
         Categoria cat1 = categoriaRepo.findOne(cat.getIdCategoria());
         cat1.setCategoria(cat.getCategoria());
@@ -102,7 +102,7 @@ public class CategoriasController {
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/categorias/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/categorias/deleteCategoria/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteCategorias(@PathVariable Integer id, ModelMap map) {
         categoriaRepo.delete(id);
         map.put("mensaje", "Categoría eliminada correctamente");

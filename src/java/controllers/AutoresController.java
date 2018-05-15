@@ -38,7 +38,7 @@ public class AutoresController {
     }
     
     @Secured(value= "Colaborador, Editor")
-    @RequestMapping(value = "/autores/get")
+    @RequestMapping(value = "/autores/getAutores")
     public @ResponseBody
     Map<String, ? extends Object> getAutores() {
         Map<String, Object> map = new HashMap<>();
@@ -53,7 +53,7 @@ public class AutoresController {
     
     @Secured(value= "Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/autores/add")
+    @RequestMapping(value = "/autores/addAutor")
     public ModelAndView addAutor(@RequestBody Autores a, ModelMap map) {
         autoresRepo.saveAndFlush(a);
         map.put("mensaje", "Autor insertado correctamente");
@@ -62,7 +62,7 @@ public class AutoresController {
     
     @Secured(value= "Colaborador, Editor")
     @ResponseBody
-    @RequestMapping(value = "/autores/edit")
+    @RequestMapping(value = "/autores/editAutor")
     public ModelAndView editAutores(@RequestBody Autores a, ModelMap map) {
         Autores a1 = autoresRepo.findOne(a.getIdAutor());
         a1.setNombre(a.getNombre());
@@ -74,7 +74,7 @@ public class AutoresController {
     }
     
     @Secured(value= "Colaborador")
-    @RequestMapping(value = "/autores/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/autores/deleteAutor/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAutores(@PathVariable Integer id, ModelMap map) {
         autoresRepo.delete(id);
         map.put("mensaje", "Autor eliminado correctamente");

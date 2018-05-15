@@ -25,11 +25,11 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         idRol: ""
     };
     //Obtener Lista de usuarios
-    $http.get("get").then(function (data) {
+    $http.get("getUsuarios").then(function (data) {
         $scope.allUsuarios = data.data.data;
     });
     //Obtener Lista de Roles
-    $http.get("../roles/get").then(function (data) {
+    $http.get("../roles/getRoles").then(function (data) {
         $scope.allRoles = data.data.data;
     });
     //Enviar Usuario editado al Servidor
@@ -37,18 +37,18 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         $("#formModalCreateOrEdit").modal("toggle");
         $scope.indiceRegistro.idRol = $scope.selectedRol;
         if ($scope.indiceRegistro.idUsuario === "") {
-            $http.post("add", $scope.indiceRegistro, {}).then(function (r) {
+            $http.post("addUsuario", $scope.indiceRegistro, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de usuarios
-                $http.get("get").then(function (data) {
+                $http.get("getUsuarios").then(function (data) {
                     $scope.allUsuarios = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.indiceRegistro, {}).then(function (r) {
+            $http.post("editUsuario", $scope.indiceRegistro, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de usuarios
-                $http.get("get").then(function (data) {
+                $http.get("getUsuarios").then(function (data) {
                     $scope.allUsuarios = data.data.data;
                 });
             });
@@ -57,9 +57,9 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
     // Eliminar Usuario
     $scope.eliminarUsuario = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.post("delete/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
+        $http.post("deleteUsuario/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
             $window.alert(r.data.mensaje);
-            $http.get("get").then(function (data) {
+            $http.get("getUsuarios").then(function (data) {
                 $scope.allUsuarios = data.data.data;
             });
         });
@@ -86,19 +86,4 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             apellidos: a.apellidos
         };
     };
-    
-     $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
-    });
 });

@@ -145,7 +145,7 @@ public class IndexController {
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/index/delete/{idReferencia}", method = RequestMethod.POST)
+    @RequestMapping(value = "/index/deleteReferencia/{idReferencia}", method = RequestMethod.POST)
     public ModelAndView deleteReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         try {
             referenciasRepo.delete(idReferencia);

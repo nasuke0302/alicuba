@@ -24,25 +24,25 @@ appAutores.controller("AutoresController", function ($scope, $http, $window) {
     };
 
     //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
+    $http.get("getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Crear o Editar Autor
     $scope.createOrEditAutor = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         if ($scope.autor.idAutor === "") {
-            $http.post("add", $scope.autor, {}).then(function (r) {
+            $http.post("addAutor", $scope.autor, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de autores
-                $http.get("get").then(function (data) {
+                $http.get("getAutores").then(function (data) {
                     $scope.allAutores = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.autor, {}).then(function (r) {
+            $http.post("editAutor", $scope.autor, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de alimentos
-                $http.get("get").then(function (data) {
+                $http.get("getAutores").then(function (data) {
                     $scope.allAutores = data.data.data;
                 });
             });
@@ -51,10 +51,10 @@ appAutores.controller("AutoresController", function ($scope, $http, $window) {
     // Eliminar Autor
     $scope.eliminarAutor = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.autor.idAutor).then(function (r) {
+        $http.delete("deleteAutor/" + $scope.autor.idAutor).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("get").then(function (data) {
+            $http.get("getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
         });
@@ -88,19 +88,4 @@ appAutores.controller("AutoresController", function ($scope, $http, $window) {
             apellidos: a.apellidos
         };
     };
-    
-     $scope.notificacion = {
-        idMensaje: "",
-        mensaje: "",
-        sender: "",
-        receiver: "",
-        leido: "",
-        fecha: "",
-        titulo: ""
-    };
-
-    //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
-        $scope.allNotificaciones = data.data.data;
-    });
 });
