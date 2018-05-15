@@ -1,4 +1,20 @@
 var appEditarPerfil = angular.module("appEditarPerfil", ['ui.validate']);
+function headerController($http, $scope) {
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+}
+appEditarPerfil.controller("headerController", headerController);
 appEditarPerfil.controller("EditarPerfilController", function ($scope, $http, $window) {
     $scope.usuario = {
         idUsuario: "",

@@ -1,4 +1,20 @@
 var appRoles = angular.module("AppRoles", []);
+function headerController($http, $scope) {
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+}
+appRoles.controller("headerController", headerController);
 appRoles.controller("RolesController", function ($scope, $http) {
     $scope.indiceRegistro =
             {

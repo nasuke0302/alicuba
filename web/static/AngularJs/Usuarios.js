@@ -1,4 +1,20 @@
 var appUsuarios = angular.module("appUsuarios", ['datatables', 'datatables.bootstrap']);
+function headerController($http, $scope) {
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+}
+appUsuarios.controller("headerController", headerController);
 appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
     $scope.selectedRol = {};
     $scope.indiceRegistro = {

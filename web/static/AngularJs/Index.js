@@ -1,4 +1,20 @@
 var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
+function headerController($http, $scope) {
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+    //Obtener Lista de notificaciones
+    $http.get("./header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+}
+appIndex.controller("headerController", headerController);
 appIndex.controller("IndexController", function ($scope, $http, $window) {
 
     $scope.notification = {};
@@ -208,8 +224,8 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-    
-     $scope.notificacion = {
+
+    $scope.notificacion = {
         idMensaje: "",
         mensaje: "",
         sender: "",
@@ -254,5 +270,5 @@ appIndex.directive('allowOnlyNumbers', function () {
             });
         }
     };
-    
+
 });  

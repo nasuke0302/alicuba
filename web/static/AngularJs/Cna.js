@@ -1,4 +1,20 @@
 var appCna = angular.module("AppCna", ['ui.select']);
+function headerController($http, $scope) {
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+}
+appCna.controller("headerController", headerController);
 appCna.controller("CnaController", function ($scope, $http, $window) {
 //    GENERAR AÑOS
     $scope.currentyear = new Date().getFullYear();
