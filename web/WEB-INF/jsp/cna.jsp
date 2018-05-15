@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es" data-ng-app="AppCna">
-
     <!-- BEGIN HEAD-->
     <head>
         <meta charset="UTF-8" />
@@ -29,10 +28,8 @@
         <!--END PAGE LEVEL SCRIPTS-->
     </head>
     <!-- END  HEAD-->
-
     <!-- BEGIN BODY-->
     <body class="padTop53" data-ng-controller="CnaController">
-
         <!-- MAIN WRAPPER -->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -105,8 +102,7 @@
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
                                         </tr>
-                                        <tr data-ng-repeat="e in estudioPorReferencia track by e.idMetadatosAlimentosG" >
-                                            <!--data-ng-init="indexAlimentos = $index">-->
+                                        <tr data-ng-repeat="e in estudioPorReferencia" data-ng-init="indexAlimentos = $index">
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
                                                 <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
                                                 <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
@@ -124,24 +120,32 @@
                                             </td>
                                             <td>
                                                 <table class="table">
-                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
-                                                        <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
-                                                        <td>
-                                                            <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
-                                                            {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
-                                                        <td> {{nut.valor}}</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-xs" title="editar estudio">
-                                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    title="Eliminar estudio"
-                                                                    data-ng-click="abrirEliminarModal(indexAlimentos, $index)">
-                                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                                        </td> 
-                                                    </tr>
-                                                </table>
-                                            </td>
+                                                    <tr>
+                                                    <button class="btn btn-success" value="A&ntilde;adir nutriente"
+                                                            data-toggle="modal" data-target="#formModalCreateOrEditNutriente"
+                                                            data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
+                                                        Nuevo nutriente
+                                                    </button>
                                         </tr>
+                                        <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
+                                            <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
+                                            <td>
+                                                <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
+                                            <td> {{nut.valor}}</td>
+                                            <td>
+                                                <button class="btn btn-primary btn-xs" title="editar estudio"
+                                                        data-toggle="modal" data-target="#formModalCreateOrEditNutriente">
+                                                    <i class="glyphicon glyphicon-pencil"></i></button>
+                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                        title="Eliminar estudio"
+                                                        data-ng-click="abrirEliminarModal($parent.$index, $index)">
+                                                    <i class="glyphicon glyphicon-trash"></i></button>
+                                            </td> 
+                                        </tr>
+                                    </table>
+                                    </td>
+                                    </tr>
                                     </table>
                                 </div>
                             </div>
@@ -464,13 +468,68 @@
                                         </form>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                     <!--END DELETE ESTUDIO MODAL-->
                 </div>
                 <!--END DLETE MODAL-->
+                <!--BEGIN CREATE OR EDIT NUTRIENTE-->
+                <div class="col-lg-12">
+                    <div class="modal fade" id="formModalCreateOrEditNutriente" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Nutriente</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div >
+                                            <div>
+                                                <h4> Seleccione un Tipo de Datos</h4>
+                                                <ui-select data-ng-model="selectedNutriente.selected"
+                                                           theme="bootstrap" name="selectNutriente">
+                                                    <ui-select-match placeholder="Elija un Nutriente...">
+                                                        <strong>{{$select.selected.abreviatura}} </strong>
+                                                        {{$select.selected.nombre}} 
+                                                        <small><strong>Tipo de Dato: </strong>
+                                                            {{$select.selected.idTiposDatosAlimentos.nombreTipoDato}}
+                                                        </small>
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search" 
+                                                                       group-by="groupByNombreTipoDato"> 
+                                                        <strong>{{a.abreviatura}} </strong>
+                                                        {{a.nombre}}
+                                                    </ui-select-choices>
+                                                </ui-select> 
+                                            </div>
+                                            <br/>
+                                            <div data-ng-show="selectedNutriente.selected">
+                                                <form data-ng-submit="addTablaCnaGeneral()" method="post" name="formAddTablaCnaGeneral">
+                                                    <div class="input-group tooltip-demo">
+                                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
+                                                              title="{{selectedNutriente.selected.nombre}}">{{selectedNutriente.selected.abreviatura}}</span>
+                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""/>
+                                                        <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
+                                                    </div>
+                                                    <br />
+                                                    <button class="icon-pencil btn btn-success" type="submit" 
+                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid"> Guardar</button> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END CREATE OR EDIT NUTRIENTE-->
             </div>
             <!--END PAGE CONTENT -->
         </div>

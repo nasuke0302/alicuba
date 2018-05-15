@@ -33,13 +33,14 @@ function headerController($http, $scope) {
 }
 appCna.controller("headerController", headerController);
 appCna.controller("CnaController", function ($scope, $http, $window) {
-//    GENERAR AÑOS
+    $scope.selectedNutriente = {};
+    //GENERAR AÑOS
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {
         $scope.years.push(i);
     }
-//    END GENERAR AÑOS
+    //END GENERAR AÑOS
     $scope.estudioToDelete = {
         nutrientes: "",
         tablaCnaGeneralPK: "",
@@ -89,12 +90,23 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         categoria: ""
     };
     $scope.selectedCategoria = {};
+    $scope.selectedNutriente = {};
+    $scope.allNutrientes = {};
+    $scope.tablaCnaGeneral = {
+        valor: "",
+        idNutriente: "",
+        idMetadatosAlimentosG: ""
+    };
 
     $scope.estudiosPorReferencia = function (idReferencia) {
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;
         });
     };
+    //Obtener Listado de Nutrientes
+    $http.get("../estudio/getNutrientes").then(function (data) {
+        $scope.allNutrientes = data.data.data;
+    });
     //Obtener Listado de Categorias
     $http.get("../categorias/getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
@@ -208,14 +220,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         });
     };
     $scope.abrirEliminarModal = function (indice1, indice2) {
-        console.log($scope.estudioPorReferencia);
         var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
         $scope.estudioToDelete = {
             nutrientes: a.nutrientes,
             tablaCnaGeneralPK: a.tablaCnaGeneralPK,
             valor: a.valor
         };
-        console.log($scope.estudioToDelete);
     };
     $scope.abrirEliminarAlimentoModal = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
@@ -225,15 +235,29 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
         $window.location.href = "../estudio/gestionar";
     };
-    var socket = new SockJS("../websocket/configuration");
-    var stompClient = Stomp.over(socket);
-    var notify;
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.msj = JSON.parse(res.body);
-            notify = new Notification($scope.msj.titulo, {
-                body: $scope.msj.mensaje,
-                icon: "/alicuba/static/IconWebSocket.png"});
+
+    $scope.addTablaCnaGeneral = function () {
+        $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
+        $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.metadatoActual.idMetadatosAlimentosG;
+        $scope.tablaCnaGeneralPK = {
+            idNutriente: $scope.tablaCnaGeneral.idNutriente,
+            idMetadatosAlimentosG: $scope.tablaCnaGeneral.idMetadatosAlimentosG
+        };
+        $http.post("../estudio/addTablaCnaGeneral/" + $scope.tablaCnaGeneral.valor, $scope.tablaCnaGeneralPK, {}).then(function (data) {
+            $window.alert(data.data.mensaje);
+            $scope.tablaCnaGeneral.valor = "";
+            $scope.selectedNutriente.selected = "";
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
+                $scope.estudioPorReferencia = data.data.data;
+            });
         });
-    });
+    };
+
+    $scope.abrirNuevoNutrienteModal = function (indice) {
+        $scope.metadatoActual = $scope.estudioPorReferencia[indice];
+    };
+
+    $scope.groupByNombreTipoDato = function (item) {
+        return item.idTiposDatosAlimentos.nombreTipoDato;
+    };
 });

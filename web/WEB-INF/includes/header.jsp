@@ -34,7 +34,7 @@
                             <div>
                                 <strong>{{notif.titulo}}</strong>
                                 <span class="pull-right text-muted">
-                                    <em>{{notif.fecha}}</em>
+                                    <em><small>{{notif.fecha}}</small></em>
                                 </span>
                             </div>
                             <div>{{notif.mensaje}}</div>

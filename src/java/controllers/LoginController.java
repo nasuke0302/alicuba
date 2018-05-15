@@ -68,7 +68,7 @@ public class LoginController {
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
         mensaje.setMensaje(u.getNombre() + " se ha unido a AliCuba");
-        mensaje.setTitulo("Nuevo Colaborador");
+        mensaje.setTitulo("Nuevo colaborador");
         mensaje.setSender(u.getNombre());
         mensaje.setReceiver("todos");
         mensajeRepo.saveAndFlush(mensaje);

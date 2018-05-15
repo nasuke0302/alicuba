@@ -70,5 +70,11 @@
                         window.history.back();
                     }
         </script>
+        <!-- FOOTER -->
+        <jsp:include page="/WEB-INF/includes/footer.jsp"/>
+        <!--END FOOTER -->
+        <!--GLOBAL SCRIPTS-->
+        <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
+        <!--END GLOBAL SCRIPTS-->
     </body>
 </html>
