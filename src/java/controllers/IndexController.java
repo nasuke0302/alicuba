@@ -5,28 +5,18 @@
  */
 package controllers;
 
-import com.sun.xml.internal.ws.api.message.Message;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Mensaje;
 import models.Referencias;
-import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessagingException;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -45,7 +35,6 @@ import repositorios.MensajeRepo;
 import repositorios.ReferenciasRepo;
 
 @Controller
-@EnableScheduling
 public class IndexController {
 
     @Autowired
@@ -69,12 +58,6 @@ public class IndexController {
     List<Mensaje> notificaciones;
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-    @Scheduled(fixedRate = 5000)
-    public void getMessages() throws InterruptedException {
-        notificaciones = mensajeRepo.findAll();
-        this.messagingTemplate.convertAndSend("/topic/notifications", notificaciones);
-    }
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
