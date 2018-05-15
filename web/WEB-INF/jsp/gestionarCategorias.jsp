@@ -19,7 +19,6 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
-        <!--<script src="${pageContext.request.contextPath}/static/AngularJs/ng-stomp.min.js"></script>-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/Categorias.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
