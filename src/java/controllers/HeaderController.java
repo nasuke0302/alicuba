@@ -32,7 +32,7 @@ public class HeaderController {
     public ModelAndView getMessages(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", mensajeRepo.findAllByReceiver(principal.getNombre().toLowerCase()));
+            map.put("data", mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase()));
         } catch (Exception e) {
             map.put("error", e);
             map.put("mensaje", "Error al obtener lista de mensajes");

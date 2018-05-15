@@ -43,7 +43,7 @@ public class NotificacionesController {
     Map<String, ? extends Object> getNotificaciones(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", mensajeRepo.findAllByReceiver(principal.getNombre().toLowerCase()));
+            map.put("data", mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase()));
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);

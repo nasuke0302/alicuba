@@ -17,5 +17,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MensajeRepo extends JpaRepository<Mensaje, Integer>{
     
-    public List<Mensaje> findAllByReceiver(String s);
+    public List<Mensaje> findAllByReceiverOrderByFechaDesc(String s);
 }
