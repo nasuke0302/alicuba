@@ -13,6 +13,24 @@ function headerController($http, $scope) {
     $http.get("../header/getMessages").then(function (data) {
         $scope.allNotificaciones = data.data.data;
     });
+    
+    $scope.newNotification = {};
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+            setTimeout($scope.newNotification.close(), 1 * 1000);
+        });
+
+        stompClient.subscribe("/topic/notifications", function (res) {
+            $scope.allNotificaciones.push(JSON.parse(res.body));
+        });
+    });
 }
 appAlimentos.controller("headerController", headerController);
 appAlimentos.controller("AlimentosController", function ($scope, $http, $window) {
