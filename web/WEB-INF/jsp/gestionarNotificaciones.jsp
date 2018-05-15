@@ -45,10 +45,10 @@
                                 <!--TABLA NOTIFICACIONES-->
                                 <div class="panel-body">
                                     <div class="table-responsive">
-                                        <table  datatable="ng" id="tablaAutores" class="table table-striped table-hover">
+                                        <table  datatable="ng" id="tablaAutores" class="table table-striped table-hover table-condensed">
                                             <thead>
                                                 <tr>
-                                                    <th>Acciones</th>
+                                                    <!--<th>Acciones</th>-->
                                                     <th>T&iacute;tulo</th>
                                                     <th>Notificaci&oacute;n</th>
                                                     <th>Fecha</th>
@@ -56,12 +56,12 @@
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="a in allNotificaciones track by $index">
-                                                    <td>
+<!--                                                    <td>
                                                         <input type="hidden" value="{{a.idMensaje}}"/>
                                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                                 data-ng-click="abrirEliminarModal($index)">
                                                             <i class="glyphicon glyphicon-trash"></i></button>
-                                                    </td>
+                                                    </td>-->
                                                     <td>{{a.titulo}}</td>
                                                     <td>{{a.mensaje}}</td>
                                                     <td>{{a.fecha}}</td>

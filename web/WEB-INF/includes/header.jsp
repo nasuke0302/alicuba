@@ -25,11 +25,11 @@
             <!--BEGIN NOTIFICATIONS SECTION-->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="label label-success">2</span>
+                    <span class="label label-danger">{{allNotificaciones.length}}</span>
                     <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
                 </a>
-                <ul class="dropdown-menu dropdown-messages">
-                    <li data-ng-repeat="notif in allNotificaciones">
+                <ul class="dropdown-menu dropdown-messages" style="width: 300px">
+                    <li data-ng-repeat="notif in allNotificaciones | filter:{leido:'false'} | limitTo: 3">
                         <a href="#">
                             <div>
                                 <strong>{{notif.titulo}}</strong>
@@ -45,7 +45,7 @@
                     </li>
                     <li>
                         <a class="text-center" href="${pageContext.request.contextPath}/notificaciones/gestionar">
-                            <strong>Leer Todos</strong>
+                            <strong>Leer todas</strong>
                             <i class="icon-angle-right"></i>
                         </a>
                     </li>

@@ -36,14 +36,14 @@ public class LoginController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
-    
+
     @Autowired
     SimpMessagingTemplate messagingTemplate;
     @Autowired
     MensajeRepo mensajeRepo;
 
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm() {
@@ -62,7 +62,7 @@ public class LoginController {
         u.setIdRol(new Roles(2));
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         repo.saveAndFlush(u);
-        
+
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));

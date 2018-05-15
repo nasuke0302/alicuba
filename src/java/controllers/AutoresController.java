@@ -46,7 +46,7 @@ public class AutoresController {
     MensajeRepo mensajeRepo;
 
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/autores/gestionar")

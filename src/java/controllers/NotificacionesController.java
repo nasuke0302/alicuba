@@ -6,7 +6,9 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -42,8 +44,10 @@ public class NotificacionesController {
     public @ResponseBody
     Map<String, ? extends Object> getNotificaciones(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
+        List<Mensaje> mensajes = mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase());
+        mensajes.addAll(mensajeRepo.findAllByReceiverOrderByFechaDesc("todos"));
         try {
-            map.put("data", mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase()));
+            map.put("data", mensajes);
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);

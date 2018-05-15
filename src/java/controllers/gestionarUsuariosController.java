@@ -41,7 +41,7 @@ public class gestionarUsuariosController {
     MensajeRepo mensajeRepo;
 
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Secured(value= "Administrador")
     @RequestMapping(value = "/usuarios/gestionar")

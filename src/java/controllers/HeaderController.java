@@ -6,7 +6,9 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -31,8 +33,10 @@ public class HeaderController {
     @RequestMapping(value = "/header/getMessages")
     public ModelAndView getMessages(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
+        List<Mensaje> mensajes = mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase());
+        mensajes.addAll(mensajeRepo.findAllByReceiverOrderByFechaDesc("todos"));
         try {
-            map.put("data", mensajeRepo.findAllByReceiverOrderByFechaDesc(principal.getNombre().toLowerCase()));
+            map.put("data", mensajes);
         } catch (Exception e) {
             map.put("error", e);
             map.put("mensaje", "Error al obtener lista de mensajes");

@@ -57,7 +57,7 @@ public class IndexController {
 
     List<Mensaje> notificaciones;
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {

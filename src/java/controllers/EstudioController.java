@@ -7,15 +7,12 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map;
-import models.Alimentos;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
-import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;

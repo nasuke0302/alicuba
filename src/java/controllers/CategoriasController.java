@@ -46,7 +46,7 @@ public class CategoriasController {
     MensajeRepo mensajeRepo;
 
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/gestionar")
@@ -84,6 +84,7 @@ public class CategoriasController {
         msj.setFecha(dateFormat.format(fecha));
         msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria());
         msj.setReceiver("todos");
+        msj.setLeido(Boolean.FALSE);
         mensajeRepo.saveAndFlush(msj);
         messagingTemplate.convertAndSend("/topic/notifications", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
