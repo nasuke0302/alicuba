@@ -129,6 +129,17 @@ public class AlimentosController {
         r.setIdUsuario(principal);
         alimentosRepo.saveAndFlush(r);
         map.put("mensaje", "Alimento insertado correctamente");
+        
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(principal.getNombre() + " ha insertado un alimento: " + r.getNombre());
+        mensaje.setTitulo("Alimento insertado");
+        mensaje.setSender(principal.getNombre());
+        mensaje.setReceiver("editores");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -147,7 +158,7 @@ public class AlimentosController {
                 Date fecha = new Date();
                 mensaje.setFecha( dateFormat.format(fecha));
                 mensaje.setLeido(Boolean.FALSE);
-                mensaje.setMensaje(principal.getNombre() + " ha editado el alimento con nombre científico: "
+                mensaje.setMensaje(principal.getNombre() + " ha editado el alimento: "
                         + r1.getNombreCient());
                 mensajeRepo.saveAndFlush(mensaje);
                 messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
@@ -157,7 +168,6 @@ public class AlimentosController {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);
         }
-
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

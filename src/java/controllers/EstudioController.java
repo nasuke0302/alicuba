@@ -251,16 +251,6 @@ public class EstudioController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estudio/addAlimento")
-    public ModelAndView addAlimento(@RequestBody Alimentos a, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        a.setIdUsuario((Usuarios) principal);
-        alimentosRepo.saveAndFlush(a);
-        map.put("mensaje", "Alimento insertado correctamente");
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/estudio/addNutriente")
     public ModelAndView addNutriente(@RequestBody Nutrientes n, ModelMap map) {
         try {
@@ -312,12 +302,12 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/estudio/getLastEstudio")
-    public ModelAndView getLastEstudio(ModelMap map) {
-        map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
-        map.put("success", Boolean.TRUE);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
+//    @RequestMapping(value = "/estudio/getLastEstudio")
+//    public ModelAndView getLastEstudio(ModelMap map) {
+//        map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
+//        map.put("success", Boolean.TRUE);
+//        return new ModelAndView(new MappingJackson2JsonView(), map);
+//    }
 
     @Secured(value = "Colaborador")
     @ResponseBody

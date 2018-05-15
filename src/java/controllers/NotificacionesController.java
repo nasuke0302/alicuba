@@ -55,7 +55,7 @@ public class NotificacionesController {
     @RequestMapping(value = "/notificaciones/deleteNotificacion/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteNotificaciones(@PathVariable Integer id, ModelMap map) {
         mensajeRepo.delete(id);
-        map.put("mensaje", "Notificacion eliminada correctamente");
+        map.put("mensaje", "Notificación eliminada correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

@@ -5,10 +5,15 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import models.Mensaje;
 import models.Roles;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import repositorios.MensajeRepo;
 import repositorios.UsuariosRepo;
 
 /**
@@ -30,6 +36,14 @@ public class LoginController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String showLoginForm() {
@@ -48,6 +62,17 @@ public class LoginController {
         u.setIdRol(new Roles(2));
         u.setPassword(passwordEncoder.encode(u.getPassword()));
         repo.saveAndFlush(u);
+        
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(u.getNombre() + " se ha unido a AliCuba");
+        mensaje.setTitulo("Nuevo Colaborador");
+        mensaje.setSender(u.getNombre());
+        mensaje.setReceiver("todos");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return "redirect:/login";
     }
 }

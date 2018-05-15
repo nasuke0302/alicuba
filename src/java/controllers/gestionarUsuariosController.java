@@ -5,10 +5,15 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+import repositorios.MensajeRepo;
 import repositorios.UsuariosRepo;
 
 /**
@@ -29,6 +35,13 @@ public class gestionarUsuariosController {
 
     @Autowired
     UsuariosRepo repo;
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Secured(value= "Administrador")
     @RequestMapping(value = "/usuarios/gestionar")
@@ -52,15 +65,6 @@ public class gestionarUsuariosController {
 
     @Secured(value= "Administrador")
     @ResponseBody
-    @RequestMapping(value = "/usuarios/addUsuario")
-    public ModelAndView addUsuario(@RequestBody Usuarios r, ModelMap map) {
-        repo.saveAndFlush(r);
-        map.put("mensaje", "Usuario insertado correctamente");
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @Secured(value= "Administrador")
-    @ResponseBody
     @RequestMapping(value = "/usuarios/editUsuario")
     public ModelAndView editUsuario(@RequestBody Usuarios r, ModelMap map) {
         Usuarios u = repo.findOne(r.getIdUsuario());
@@ -70,6 +74,17 @@ public class gestionarUsuariosController {
         u.setIdRol(r.getIdRol());
         repo.saveAndFlush(u);
         map.put("mensaje", "Usuario editado correctamente");
+        
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(u.getNombre() + " es ahora Editor de AliCuba");
+        mensaje.setTitulo("Nuevo Editor");
+        mensaje.setSender(u.getNombre());
+        mensaje.setReceiver("todos");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

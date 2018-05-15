@@ -7,7 +7,6 @@ package controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,25 +76,37 @@ public class CategoriasController {
         categoriaRepo.saveAndFlush(cat);
         map.put("mensaje", "Categoría insertada correctamente");
         map.put("data", cat);
+        
         Mensaje msj = new Mensaje();
         msj.setSender(principal.getNombre());
         Date fecha = new Date();
         msj.setTitulo("Nueva categoría");
         msj.setFecha(dateFormat.format(fecha));
-        msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria().toUpperCase());
+        msj.setMensaje(principal.getNombre() + " ha insertado la categoría: " + cat.getCategoria());
+        msj.setReceiver("todos");
         mensajeRepo.saveAndFlush(msj);
-        messagingTemplate.convertAndSendToUser("feisy", "/queue/enviar", msj);
+        messagingTemplate.convertAndSend("/topic/notifications", msj);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/categorias/editCategoria")
-    public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map) {
+    public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Categoria cat1 = categoriaRepo.findOne(cat.getIdCategoria());
-        cat1.setCategoria(cat.getCategoria());
         categoriaRepo.saveAndFlush(cat1);
         map.put("mensaje", "Categoría editada correctamente");
+        if ("Editor".equals(principal.getIdRol().toString())) {
+            Mensaje mensaje = new Mensaje();
+            Date fecha = new Date();
+            mensaje.setFecha(dateFormat.format(fecha));
+            mensaje.setLeido(Boolean.FALSE);
+            mensaje.setMensaje(principal.getNombre() + " ha editado la categoría: " + cat1.getCategoria());
+            mensaje.setReceiver("todos");
+            mensaje.setTitulo("Categoría editada");
+            mensajeRepo.saveAndFlush(mensaje);
+            messagingTemplate.convertAndSend("/topic/notifications", mensaje);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

@@ -153,7 +153,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.alimento.idTipoCuba = $scope.selectedTipoCuba;
         $scope.alimento.idTipoFao = $scope.selectedTipoFao;
         $scope.alimento.idTipoNrc = $scope.selectedTipoNrc;
-        $http.post("addAlimento", $scope.alimento, {}).then(function (response) {
+        $http.post("../alimentos/addAlimento", $scope.alimento, {}).then(function (response) {
             $window.alert(response.data.mensaje);
             //Obtener Lista de Alimentos
             $http.get("../alimentos/getAlimentos").then(function (data) {

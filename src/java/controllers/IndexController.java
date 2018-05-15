@@ -110,6 +110,16 @@ public class IndexController {
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(principal.getNombre() + " ha insertado una referencia: " + r.getTitle());
+        mensaje.setTitulo("Referencia insertada");
+        mensaje.setSender(principal.getNombre());
+        mensaje.setReceiver("todos");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -156,5 +166,4 @@ public class IndexController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
 }
