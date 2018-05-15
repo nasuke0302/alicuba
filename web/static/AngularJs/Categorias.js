@@ -77,4 +77,20 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
                 icon: "/alicuba/static/IconWebSocket.png"});
         });
     });
+
+    $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+
+    //Obtener Lista de Autores
+    $http.get("get").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+
 });

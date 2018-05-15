@@ -70,4 +70,19 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             apellidos: a.apellidos
         };
     };
+    
+     $scope.notificacion = {
+        idMensaje: "",
+        mensaje: "",
+        sender: "",
+        receiver: "",
+        leido: "",
+        fecha: "",
+        titulo: ""
+    };
+
+    //Obtener Lista de Autores
+    $http.get("get").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
 });

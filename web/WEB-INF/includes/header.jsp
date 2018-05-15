@@ -7,26 +7,28 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="seg" uri="http://www.springframework.org/security/tags" %>
-<!--<script>
-    appIndex.controller("HeaderController", function ($scope, $http) {
-
-        $scope.notificaciones = [];
-        $scope.AllNotifications = {
-            fecha: "",
-            leido: "",
+<script>
+    var appHeader = angular.module("appHeader", []);
+    appHeader.controller("headerController", function ($scope, $http) {
+        $scope.notificacion = {
+            idMensaje: "",
             mensaje: "",
-            receiver: "",
             sender: "",
+            receiver: "",
+            leido: "",
+            fecha: "",
             titulo: ""
         };
-        //Obtener notificaciones
-        $http.get("header/getMessages").then(function (res) {
-            $scope.AllNotifications = res.data.data;
+
+        //Obtener Lista de notificaciones
+        $http.get("get").then(function (data) {
+            $scope.allNotificaciones = data.data.data;
         });
-    });</script>-->
-<div id="top" >
-     <!--data-ng-controller="HeaderController">-->
-    <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
+    });
+</script>
+<div id="top" data-ng-app="appHeader">
+    <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;"
+         data-ng-controller="headerController">
         <a data-original-title="Show/Hide Menu" data-placement="bottom" 
            data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" 
            data-toggle="collapse" href="#menu" id="menu-toggle">
@@ -47,7 +49,7 @@
                     <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages">
-<!--                    <li data-ng-repeat="notif in AllNotifications">
+                    <li data-ng-repeat="notif in AllNotifications">
                         <a href="#">
                             <div>
                                 <strong>{{notif.titulo}}</strong>
@@ -57,7 +59,7 @@
                             </div>
                             <div>{{notif.mensaje}}</div>
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         <div class="divider"></div>
                     </li>

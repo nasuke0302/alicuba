@@ -1,5 +1,5 @@
-var appAutores = angular.module("appNotificaciones", ['datatables', 'datatables.bootstrap']);
-appAutores.controller("NotificacionesController", function ($scope, $http, $window) {
+var appNotificaciones = angular.module("appNotificaciones", ['datatables', 'datatables.bootstrap']);
+appNotificaciones.controller("NotificacionesController", function ($scope, $http, $window) {
     $scope.notificacion = {
         idMensaje: "",
         mensaje: "",
@@ -10,12 +10,12 @@ appAutores.controller("NotificacionesController", function ($scope, $http, $wind
         titulo: ""
     };
 
-    //Obtener Lista de Autores
+    //Obtener Lista de notificaciones
     $http.get("get").then(function (data) {
         $scope.allNotificaciones = data.data.data;
     });
-    // Eliminar Autor
-    $scope.eliminarAutor = function () {
+    // Eliminar Notificaciones
+    $scope.eliminarNotificacion = function () {
         $("#formModalEliminar").modal("toggle");
         $http.delete("delete/" + $scope.autor.idAutor).then(function (r) {
             $window.alert(r.data.mensaje);
@@ -25,7 +25,7 @@ appAutores.controller("NotificacionesController", function ($scope, $http, $wind
             });
         });
     };
-    //Enviar Autor al Modal Eliminar
+    //Enviar notificacion al Modal Eliminar
     $scope.abrirEliminarModal = function (indice) {
         var a = $scope.allAutores[indice];
         $scope.notificacion = {
