@@ -48,7 +48,7 @@
                                     <p>Administradores</p>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-3" data-ng-repeat="u in usuariosAdmins">
+                                    <div class="col-md-4" data-ng-repeat="u in usuariosAdmins">
                                         <div class="panel panel-success">
                                             <div class="panel-heading">
                                                 <p>{{u.nombre}} {{u.segundoNombre}} {{u.apellidos}} <p>

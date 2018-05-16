@@ -112,7 +112,7 @@
                 <ul class="list-inline">
                     <li><a href="#login" data-toggle="tab">Acceder</a></li>
                     <li><a href="#signup" data-toggle="tab">Crear cuenta</a></li>
-                    <li><a href="${pageContext.request.contextPath}/helpPage">Ayuda</a></li>
+                    <!--<li><a href="${pageContext.request.contextPath}/helpPage">Ayuda</a></li>-->
                 </ul>
             </div>
 

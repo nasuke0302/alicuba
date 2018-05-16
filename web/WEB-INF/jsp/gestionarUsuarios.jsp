@@ -59,9 +59,9 @@
                                             <button class="btn btn-primary" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                     data-ng-click="abrirEditarModal($index)">
                                                 <i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#formModalEliminar"
+<!--                                            <button class="btn btn-danger" data-toggle="modal" data-target="#formModalEliminar"
                                                     data-ng-click="abrirEliminarModal($index)">
-                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                                <i class="glyphicon glyphicon-trash"></i></button>-->
                                         </td>
                                         <td>{{usuarios.email}}</td>
                                         <td>{{usuarios.nombre}} {{usuarios.apellidos}}</td>
