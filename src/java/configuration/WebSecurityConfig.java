@@ -5,6 +5,7 @@
  */
 package configuration;
 
+import controllers.CustomAuthenticationFailureHandler;
 import controllers.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -54,7 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").successHandler(authenticationSuccessHandler())
+                .loginPage("/login")
+                .successHandler(authenticationSuccessHandler())
+                .failureHandler(authenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()
@@ -95,5 +98,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CustomAuthenticationSuccessHandler authenticationSuccessHandler(){
         return new CustomAuthenticationSuccessHandler();
+    }
+    
+    @Bean
+    public CustomAuthenticationFailureHandler authenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
     }
 }

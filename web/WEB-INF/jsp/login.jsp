@@ -56,7 +56,7 @@
 
                         <div class="text-center">
                             <c:if test="${param.error != null}">
-                                <span class="help-block">Usuario y/o contraseña incorrectos</span>
+                                <span class="help-block">${LAST_EXCEPTION}</span>
                             </c:if>
                         </div>
                         <button class="btn text-muted text-center btn-success" type="submit" data-ng-disabled="loginForm.$invalid">Acceder</button>
