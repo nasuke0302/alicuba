@@ -21,6 +21,9 @@ public class ServicioInicioSesion implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuarios usuario = repo.findByEmail(email);
+        if (!usuario.getActivo()) {
+            throw new UsernameNotFoundException("Cuenta de usuario bloqueada");
+        }
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuario con email" + email + "  no encontrado");
         }

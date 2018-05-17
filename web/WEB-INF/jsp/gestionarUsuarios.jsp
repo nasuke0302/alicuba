@@ -74,9 +74,8 @@
                                         <td>{{usuarios.idRol.tipoRol}}</td>
                                         <td class="text-center">
                                             <span class="label label-success" data-ng-show="usuarios.activo">Habilitado</span>
-                                            <span class="label label-danger" data-ng-show="!usuarios.activo">Bloquedao</span>
+                                            <span class="label label-danger" data-ng-show="!usuarios.activo">Bloqueado</span>
                                         </td>
-                                        <!--<td data-ng-show="!usuarios.activo" class="label-danger text-center">Bloqueado</td>-->
                                     </tr>
                                 </tbody>
                             </table>

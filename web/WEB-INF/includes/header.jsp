@@ -55,7 +55,10 @@
             <!--ADMIN SETTINGS SECTIONS--> 
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="icon-user "> <seg:authentication property="principal.username"></seg:authentication>${user}</i>&nbsp; <i class="icon-chevron-down "></i>
+                    <i class="icon-user "> 
+                        <seg:authentication property="principal.nombre"></seg:authentication>${user}
+                        (<seg:authentication property="principal.idRol"></seg:authentication>${user})
+                    </i>&nbsp; <i class="icon-chevron-down "></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="${pageContext.request.contextPath}/editarPerfil/show"><i class="icon-user"></i> Editar mi perfil </a></li>
