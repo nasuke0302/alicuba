@@ -61,6 +61,7 @@ public class LoginController {
         }
         u.setIdRol(new Roles(2));
         u.setPassword(passwordEncoder.encode(u.getPassword()));
+        u.setActivo(Boolean.TRUE);
         repo.saveAndFlush(u);
 
         Mensaje mensaje = new Mensaje();

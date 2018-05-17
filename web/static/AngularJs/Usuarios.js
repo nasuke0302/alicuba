@@ -39,6 +39,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         email: "",
         nombre: "",
         apellidos: "",
+        activo: "",
         idRol: ""
     };
     //Obtener Lista de usuarios
@@ -72,9 +73,9 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         }
     };
     // Eliminar Usuario
-    $scope.eliminarUsuario = function () {
-        $("#formModalEliminar").modal("toggle");
-        $http.post("deleteUsuario/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
+    $scope.lockUser = function () {
+        $("#formModalLockUser").modal("toggle");
+        $http.post("lockUser/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             $http.get("getUsuarios").then(function (data) {
                 $scope.allUsuarios = data.data.data;
@@ -89,6 +90,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             email: a.email,
             nombre: a.nombre,
             apellidos: a.apellidos,
+            activo: a.activo,
             idRol: a.idRol
         };
         $scope.selectedRol = $scope.indiceRegistro.idRol.idRoles;
@@ -100,6 +102,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             idUsuario: a.idUsuario,
             email: a.email,
             nombre: a.nombre,
+            activo: a.activo,
             apellidos: a.apellidos
         };
     };

@@ -9,12 +9,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,19 +45,21 @@ public class gestionarUsuariosController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value= "Administrador")
+    @Secured(value = "Administrador")
     @RequestMapping(value = "/usuarios/gestionar")
     public ModelAndView showGestionarUsuarios() {
         return new ModelAndView("gestionarUsuarios");
     }
 
-    @Secured(value= "Administrador")
+    @Secured(value = "Administrador")
     @RequestMapping(value = "/usuarios/getUsuarios")
     public @ResponseBody
-    Map<String, ? extends Object> getUsuarios() {
+    Map<String, ? extends Object> getUsuarios(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
+        List<Usuarios> usuariosList = repo.findAll();
+        usuariosList.remove(principal);
         try {
-            map.put("data", repo.findAll());
+            map.put("data", usuariosList);
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
@@ -63,7 +67,7 @@ public class gestionarUsuariosController {
         return map;
     }
 
-    @Secured(value= "Administrador")
+    @Secured(value = "Administrador")
     @ResponseBody
     @RequestMapping(value = "/usuarios/editUsuario")
     public ModelAndView editUsuario(@RequestBody Usuarios r, ModelMap map) {
@@ -74,13 +78,13 @@ public class gestionarUsuariosController {
         u.setIdRol(r.getIdRol());
         repo.saveAndFlush(u);
         map.put("mensaje", "Usuario editado correctamente");
-        
+
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
-        mensaje.setMensaje(u.getNombre() + " es ahora Editor de AliCuba");
-        mensaje.setTitulo("Nuevo Editor");
+        mensaje.setMensaje(u.getNombre() + " es ahora " + u.getIdRol().getTipoRol() + " de AliCuba");
+        mensaje.setTitulo("Usuario Editado");
         mensaje.setSender(u.getNombre());
         mensaje.setReceiver("todos");
         mensajeRepo.saveAndFlush(mensaje);
@@ -88,12 +92,29 @@ public class gestionarUsuariosController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value= "Administrador")
+    @Secured(value = "Administrador")
     @ResponseBody
     @RequestMapping(value = "/usuarios/deleteUsuario/{idUsuario}")
     public ModelAndView deleteUsuario(@PathVariable Integer idUsuario, ModelMap map) {
         repo.delete(idUsuario);
         map.put("mensaje", "Usuario eliminado correctamente");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @Secured(value = "Administrador")
+    @ResponseBody
+    @RequestMapping(value = "/usuarios/lockUser/{idUsuario}")
+    public ModelAndView lockUser(@PathVariable Integer idUsuario, ModelMap map) {
+        Usuarios u = repo.findOne(idUsuario);
+        if (u.getActivo()) {
+            u.setActivo(Boolean.FALSE);
+            repo.saveAndFlush(u);
+            map.put("mensaje", "Usuario desactivado");
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        u.setActivo(Boolean.TRUE);
+        repo.saveAndFlush(u);
+        map.put("mensaje", "Usuario activado");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }
