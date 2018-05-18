@@ -121,7 +121,7 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
                                                             <select class="form-control" required=""
-                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego">
+                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego track by tipo.tipo2">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">
@@ -224,7 +224,7 @@
                                                     type="submit" 
                                                     data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
                                         </form>
-                                        <div >
+                                        <div data-ng-show="estudioInsertado">
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
                                                 <ui-select data-ng-model="selectedNutriente.selected"
@@ -261,7 +261,7 @@
                                 </div>                            
                             </div>
                             <!--BEGIN NUTRIENTES INSERTADOS-->
-                            <div class="panel panel-primary">
+                            <div class="panel panel-primary" data-ng-show="estudioInsertado">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
                                     <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada track by $index">

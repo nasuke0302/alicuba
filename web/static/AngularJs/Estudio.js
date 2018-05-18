@@ -84,14 +84,16 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.selectedMesIni = 13;
     $scope.selectedMesFin = 13;
     $scope.selectedNivelFert = 1;
-    $scope.selectedPais = {};
+    $scope.selectedPais = {
+        selected: {pais: "Cuba", alpha3: "CUB", alpha2: "CU", idPaises: 192}
+    };
     $scope.selectedProvincia = 17;
     $scope.selectedRangoEdad = 5;
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
     $scope.tablaCnaGeneralInsertada = [];
-    $scope.estudioInsertado = true;
+    $scope.estudioInsertado = false;
     $scope.tiposRiego = {
         tipo1: "Sí",
         tipo2: "No",
