@@ -148,6 +148,31 @@ public class Usuarios implements Serializable, UserDetails {
     public void setAlimentosList(List<Alimentos> alimentosList) {
         this.alimentosList = alimentosList;
     }
+    
+     public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    @XmlTransient
+    public List<Referencias> getReferenciasList() {
+        return referenciasList;
+    }
+
+    public void setReferenciasList(List<Referencias> referenciasList) {
+        this.referenciasList = referenciasList;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
 
     @Override
     public int hashCode() {
@@ -194,7 +219,7 @@ public class Usuarios implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return this.activo;
     }
 
     @Override
@@ -206,30 +231,4 @@ public class Usuarios implements Serializable, UserDetails {
     public boolean isEnabled() {
         return activo;
     }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    @XmlTransient
-    public List<Referencias> getReferenciasList() {
-        return referenciasList;
-    }
-
-    public void setReferenciasList(List<Referencias> referenciasList) {
-        this.referenciasList = referenciasList;
-    }
-
-    public Boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-
 }
