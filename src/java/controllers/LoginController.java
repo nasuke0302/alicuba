@@ -76,4 +76,9 @@ public class LoginController {
         messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return "redirect:/login";
     }
+    
+    @RequestMapping(value = "/login/loginHelpPage", method = RequestMethod.GET)
+    public String showLoginHelpPage() {
+        return "loginHelpPage";
+    }
 }

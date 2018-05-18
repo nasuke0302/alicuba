@@ -37,4 +37,7 @@ appHelp.controller("helpPageController", function ($scope, $http) {
     $http.get("helpPage/getUsuariosAdministradores").then(function(data){
         $scope.usuariosAdmins = data.data.data;
     });
+    $http.get("helpPage/getUsuariosEditores").then(function(data){
+        $scope.usuariosEditores = data.data.data;
+    });
 });

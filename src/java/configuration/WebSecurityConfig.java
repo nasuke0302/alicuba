@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/addUsuarios", "/helpPage/**").permitAll()
+                .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
                 .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", "/categorias/**")
                 .hasAnyAuthority("Editor", "Colaborador")
@@ -57,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 .successHandler(authenticationSuccessHandler())
-//                .failureHandler(authenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()
@@ -70,9 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/static/**");
+        web.ignoring().antMatchers("/static/**");
     }
 
     @Bean(name = "authenticationManager")
@@ -94,14 +91,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
-    
+
     @Bean
-    public CustomAuthenticationSuccessHandler authenticationSuccessHandler(){
+    public CustomAuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
     }
-    
+
     @Bean
-    public CustomAuthenticationFailureHandler authenticationFailureHandler(){
+    public CustomAuthenticationFailureHandler authenticationFailureHandler() {
         return new CustomAuthenticationFailureHandler();
     }
 }

@@ -112,12 +112,10 @@
                 <ul class="list-inline">
                     <li><a href="#login" data-toggle="tab">Acceder</a></li>
                     <li><a href="#signup" data-toggle="tab">Crear cuenta</a></li>
-                    <!--<li><a href="${pageContext.request.contextPath}/helpPage">Ayuda</a></li>-->
+                    <li><a href="${pageContext.request.contextPath}/login/loginHelpPage">Ayuda y Contacto</a></li>
                 </ul>
             </div>
-
         </div>
-
         <!-- PAGE LEVEL SCRIPTS -->
         <script src="${pageContext.request.contextPath}/static/plugins/jquery-2.0.3.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>

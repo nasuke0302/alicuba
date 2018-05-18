@@ -39,4 +39,13 @@ public class HelpPageController {
         map.put("data", usuariosAdmins);
         return map;
     }
+    
+    @RequestMapping(value = "/helpPage/getUsuariosEditores")
+    public @ResponseBody
+    Map<String, ? extends Object> getUsuariosEditores() {
+        Map<String, Object> map = new HashMap<>();
+        List<Usuarios> usuariosAdmins = usuariosRepo.findAllByIdRol(new Roles(3));
+        map.put("data", usuariosAdmins);
+        return map;
+    }
 }
