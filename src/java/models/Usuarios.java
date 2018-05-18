@@ -194,7 +194,7 @@ public class Usuarios implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
 
     @Override
