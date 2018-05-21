@@ -240,7 +240,7 @@
                                                         </small>
                                                     </ui-select-match>
                                                     <ui-select-choices repeat="a in allNutrientes| filter: $select.search" 
-                                                                       group-by="groupByNombreTipoDato"> 
+                                                                       group-by="groupByNombreTipoDato">
                                                         <strong>{{a.abreviatura}} </strong>
                                                         {{a.nombre}}
                                                     </ui-select-choices>

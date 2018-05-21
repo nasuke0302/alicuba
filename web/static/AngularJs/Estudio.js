@@ -217,9 +217,6 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
             $scope.tablaCnaGeneral.valor = "";
             $scope.selectedNutriente.selected = "";
             $scope.tablaCnaGeneralInsertada.push(data.data);
-            for (var i = 0; i < $scope.tablaCnaGeneralInsertada.length; i++) {
-                $scope.allNutrientes.pop($scope.tablaCnaGeneralInsertada[i].nutriente);
-            }
         });
     };
     $scope.groupByNombreTipoDato = function (item) {
