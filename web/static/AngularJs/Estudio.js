@@ -39,6 +39,11 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         idMetadatosAlimentosG: ""
     };
     $scope.oneTDA = {};
+    $scope.npk = {
+        n: "",
+        p: "",
+        k: ""
+    };
     $scope.estudio = {
         idMetadatosAlimentosG: "",
         idReferencia: "",
@@ -193,6 +198,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.estudio.idProvincia = $scope.selectedProvincia;
         $scope.estudio.idRangoEdades = $scope.selectedRangoEdad;
         $scope.estudio.idReferencia = $scope.referencia.idReferencia;
+        $scope.estudio.npk = $scope.npk.n + "-" + $scope.npk.p + "-" + $scope.npk.k;
         $http.post("addEstudio", $scope.estudio, {}).then(function (response) {
             window.localStorage.setItem("metadato", JSON.stringify(response.data.data));
             $window.alert(response.data.mensaje);

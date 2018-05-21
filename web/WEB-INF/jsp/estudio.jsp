@@ -120,17 +120,20 @@
                                                     <div id="div-1" class="accordion-body collapse in body">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
-                                                            <select class="form-control" required=""
-                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego track by tipo.tipo2">
+                                                            <select class="form-control" data-ng-model="estudio.riego" 
+                                                                    data-ng-options="tipo for tipo in tiposRiego track by tipo.tipo2">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N</span>
-                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.n"/>                                                  
+                                                            <input type="number" class="form-control" min="0"
+                                                                   data-ng-model="estudio.n"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N-P-K</span>
-                                                            <input type="text" class="form-control" data-ng-model="estudio.npk"/>                                                  
+                                                            <input type="number" min="0" data-ng-model="npk.n"/> -
+                                                            <input type="number" min="0" data-ng-model="npk.p"/> -                                                 
+                                                            <input type="number" min="0" data-ng-model="npk.k"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Edad</span>
