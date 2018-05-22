@@ -36,7 +36,6 @@ public class CnaController {
     @Autowired
     TablaCnaGeneralRepo tablaCnaGeneralRepo;
 
-    
     @RequestMapping(value = "/cna/gestionar")
     public ModelAndView showCna() {
         return new ModelAndView("cna");
