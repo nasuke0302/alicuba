@@ -304,15 +304,13 @@ public class EstudioController {
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
             @PathVariable Float valor, ModelMap map) {
         try {
-            TablaCnaGeneral cnaGeneral = new TablaCnaGeneral();
-            cnaGeneral.setTablaCnaGeneralPK(cnaGeneralPK);
+            TablaCnaGeneral cnaGeneral = tablaCnaGeneralRepo.findOne(cnaGeneralPK);
             cnaGeneral.setValor(valor);
             tablaCnaGeneralRepo.saveAndFlush(cnaGeneral);
-            map.put("nutriente", nutrientesRepo.findOne(cnaGeneralPK.getIdNutriente()));
-            map.put("valor", cnaGeneral);
-            map.put("mensaje", "Valor insertado correctamente");
+            map.put("data", cnaGeneral);
+            map.put("mensaje", "Valor editado correctamente");
         } catch (Exception e) {
-            map.put("mensaje", "Error al insertar valor");
+            map.put("mensaje", "Error al editar valor");
             map.put("Error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);

@@ -273,7 +273,14 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     //Editar un Nutriente
     $scope.editTablaCnaGeneral = function () {
-        
+        $http.post("../estudio/editTablaCnaGeneral/" + $scope.estudioToEdit.valor,
+                $scope.estudioToEdit.tablaCnaGeneralPK, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
+                $scope.estudioPorReferencia = data.data.data;
+                $("#formModalEditNutriente").modal("toggle");
+            });
+        });
     };
     $scope.abrirEditarNutrienteModal = function (indice1, indice2) {
         var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
