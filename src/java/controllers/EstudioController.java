@@ -298,13 +298,25 @@ public class EstudioController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
-//    @RequestMapping(value = "/estudio/getLastEstudio")
-//    public ModelAndView getLastEstudio(ModelMap map) {
-//        map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
-//        map.put("success", Boolean.TRUE);
-//        return new ModelAndView(new MappingJackson2JsonView(), map);
-//    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
+    public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
+            @PathVariable Float valor, ModelMap map) {
+        try {
+            TablaCnaGeneral cnaGeneral = new TablaCnaGeneral();
+            cnaGeneral.setTablaCnaGeneralPK(cnaGeneralPK);
+            cnaGeneral.setValor(valor);
+            tablaCnaGeneralRepo.saveAndFlush(cnaGeneral);
+            map.put("nutriente", nutrientesRepo.findOne(cnaGeneralPK.getIdNutriente()));
+            map.put("valor", cnaGeneral);
+            map.put("mensaje", "Valor insertado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al insertar valor");
+            map.put("Error", e);
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 
     @Secured(value = "Colaborador")
     @ResponseBody

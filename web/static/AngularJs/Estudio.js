@@ -222,4 +222,10 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
     };
+    $scope.refreshNutrientesList = function () {
+        for (var i = 0; i < $scope.tablaCnaGeneralInsertada.length; i++) {
+            $scope.allNutrientes.pop($scope.tablaCnaGeneralInsertada[i].nutriente);
+            console.log($scope.tablaCnaGeneralInsertada[i].nutriente);
+        }
+    };
 });

@@ -240,7 +240,8 @@
                                                         </small>
                                                     </ui-select-match>
                                                     <ui-select-choices repeat="a in allNutrientes| filter: $select.search" 
-                                                                       group-by="groupByNombreTipoDato">
+                                                                       group-by="groupByNombreTipoDato"
+                                                                       refresh=refreshNutrientesList()> 
                                                         <strong>{{a.abreviatura}} </strong>
                                                         {{a.nombre}}
                                                     </ui-select-choices>
@@ -267,6 +268,9 @@
                             <div class="panel panel-primary" data-ng-show="estudioInsertado">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
+                                    <div data-ng-show="tablaCnaGeneralInsertada.length === 0">
+                                        <p>No ha insertado ning&uacute;n nutriente a&uacute;n</p>
+                                    </div>
                                     <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada track by $index">
                                         <span class="input-group-addon">{{tCGI.nutriente.idTiposDatosAlimentos.nombreTipoDato}}</span>
                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutriente.nombre}}">{{tCGI.nutriente.abreviatura}}</span>

@@ -98,6 +98,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         idMetadatosAlimentosG: ""
     };
 
+
     $scope.estudiosPorReferencia = function (idReferencia) {
         $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
             $scope.estudioPorReferencia = data.data.data;
@@ -119,6 +120,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     $http.get("../autores/getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
+    //Guardar referencia editada
     $scope.saveReferencia = function () {
         $scope.referenciaEdit.idFuente = $scope.selectedFuente.selected;
         $scope.referenciaEdit.autoresList = $scope.selectedAutores.selected;
@@ -168,6 +170,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             idUsuario: a.idUsuario
         };
     };
+    //Enviar Autor al modal
     $scope.abrirModalAddAutor = function () {
         $scope.autor = {
             nombre: "",
@@ -175,6 +178,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             apellidos: ""
         };
     };
+    //Crear un nuevo autor
     $scope.addAutor = function () {
         $http.post("../autor/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
@@ -185,11 +189,13 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             $("#modalAddOrEditAutor").modal("toggle");
         });
     };
+    //Limpiar modal abrir categoria
     $scope.abrirModalAddCategoria = function () {
         $scope.categoria = {
             categoria: ""
         };
     };
+    // Crear una nueva categoria
     $scope.addCategoria = function () {
         $http.post("../categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
@@ -200,7 +206,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-
+    //Eliminar un estudio
     $scope.eliminarEstudio = function () {
         $("#formModalEliminar").modal("toggle");
         $http.post("../estudio/deleteEstudio", $scope.estudioToDelete.tablaCnaGeneralPK, {}).then(function (res) {
@@ -210,6 +216,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             });
         });
     };
+    //Eliminar un alimento
     $scope.eliminarAlimento = function () {
         $("#formModalEliminarAlimento").modal("toggle");
         $http.delete("../estudio/deleteAlimentoMetadatos/" + $scope.metadato.idMetadatosAlimentosG, {}).then(function (res) {
@@ -219,6 +226,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             });
         });
     };
+    //Enviar estudio al modal eliminar
     $scope.abrirEliminarModal = function (indice1, indice2) {
         var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
         $scope.estudioToDelete = {
@@ -227,15 +235,17 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             valor: a.valor
         };
     };
+    //enviar alimento con metadato al modal
     $scope.abrirEliminarAlimentoModal = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
     };
+    //editar un alimento con metadato
     $scope.editarMetadatos = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
         window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
         $window.location.href = "../estudio/gestionar";
     };
-
+    //Añadir un nuevo estudio
     $scope.addTablaCnaGeneral = function () {
         $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
         $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.metadatoActual.idMetadatosAlimentosG;
@@ -249,15 +259,28 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             $scope.selectedNutriente.selected = "";
             $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
                 $scope.estudioPorReferencia = data.data.data;
+                $("#formModalCreateNutriente").modal("toggle");
             });
         });
     };
-
+    //Enviar alimento con metadato al modal para crear un estudio nuevo
     $scope.abrirNuevoNutrienteModal = function (indice) {
         $scope.metadatoActual = $scope.estudioPorReferencia[indice];
     };
-
+    //Filtro para el select de nutriente para agrupar por TiposDatosAlimentos
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
+    };
+    //Editar un Nutriente
+    $scope.editTablaCnaGeneral = function () {
+        
+    };
+    $scope.abrirEditarNutrienteModal = function (indice1, indice2) {
+        var a = $scope.estudioPorReferencia[indice1].tablaCnaGeneralList[indice2];
+        $scope.estudioToEdit = {
+            nutrientes: a.nutrientes,
+            tablaCnaGeneralPK: a.tablaCnaGeneralPK,
+            valor: a.valor
+        };
     };
 });

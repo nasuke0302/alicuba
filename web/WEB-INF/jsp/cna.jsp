@@ -122,7 +122,7 @@
                                                 <table class="table">
                                                     <tr>
                                                     <button class="btn btn-success" value="A&ntilde;adir nutriente"
-                                                            data-toggle="modal" data-target="#formModalCreateOrEditNutriente"
+                                                            data-toggle="modal" data-target="#formModalCreateNutriente"
                                                             data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
                                                         Nuevo nutriente
                                                     </button>
@@ -134,8 +134,8 @@
                                                 {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                             <td> {{nut.valor}}</td>
                                             <td>
-                                                <button class="btn btn-primary btn-xs" title="editar estudio"
-                                                        data-toggle="modal" data-target="#formModalCreateOrEditNutriente">
+                                                <button class="btn btn-primary btn-xs" title="Editar estudio"
+                                                        data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
                                                     <i class="glyphicon glyphicon-pencil"></i></button>
                                                 <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                         title="Eliminar estudio"
@@ -430,25 +430,23 @@
                 </div>
                 <!--END CREATE CATEGORIA-->
                 <!--DELETE ALIMENTO MODAL-->
-                <div>
-                    <div class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
-                        <div class="modal-dialog" style="margin-top: 260.5px;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"><strong>¡Atenci&oacute;n!</strong></h4>
-                                    <div class="modal-body">
-                                        <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
-                                            <div class="text-left">
-                                                <div class="alert alert-danger"> Al eliminar un alimento se eliminar&aacute;n también los estudios asociados a &eacute;l.</div>
-                                            </div>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </form>
-                                    </div>
+                <div class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
+                    <div class="modal-dialog" style="margin-top: 260.5px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title"><strong>¡Atenci&oacute;n!</strong></h4>
+                                <div class="modal-body">
+                                    <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
+                                        <div class="text-left">
+                                            <div class="alert alert-danger"> Al eliminar un alimento se eliminar&aacute;n también los estudios asociados a &eacute;l.</div>
+                                        </div>
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    </form>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -474,9 +472,9 @@
                     <!--END DELETE ESTUDIO MODAL-->
                 </div>
                 <!--END DLETE MODAL-->
-                <!--BEGIN CREATE OR EDIT NUTRIENTE-->
+                <!--BEGIN CREATE NUTRIENTE-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="formModalCreateOrEditNutriente" tabindex="-1" 
+                    <div class="modal fade" id="formModalCreateNutriente" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -529,7 +527,41 @@
                         </div>
                     </div>
                 </div>
-                <!--END CREATE OR EDIT NUTRIENTE-->
+                <!--END CREATE NUTRIENTE-->
+                <!--BEGIN EDIT NUTRIENTE-->
+                <div class="col-lg-12">
+                    <div class="modal fade" id="formModalEditNutriente" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Nutriente</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                    <div>
+                                        <form data-ng-submit="editTablaCnaGeneral()" method="post" name="formEditTablaCnaGeneral">
+                                            <div class="input-group tooltip-demo">
+                                                <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
+                                                      title="{{estudioToEdit.nutrientes.nombre}}">{{estudioToEdit.nutrientes.abreviatura}}</span>
+                                                <input type="text" class="form-control" data-ng-model="estudioToEdit.valor" required=""/>
+                                                <span class="input-group-addon">{{estudioToEdit.nutrientes.idUnidadMedida.unidadMedida}}</span>
+                                            </div>
+                                            <br />
+                                            <button class="icon-pencil btn btn-success" type="submit" 
+                                                    data-ng-disabled="formEditTablaCnaGeneral.$invalid"> Guardar</button> 
+                                        </form>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END EDIT NUTRIENTE-->
             </div>
             <!--END PAGE CONTENT -->
         </div>
