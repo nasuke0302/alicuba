@@ -299,6 +299,7 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     
+    @Secured(value = "Editor, Colaborador")
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
@@ -329,6 +330,22 @@ public class EstudioController {
             map.put("error", e);
         }
 
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/estudio/editMetadatosAlimentosG")
+    public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map) {
+        try {
+            MetadatosAlimentosG alimentosG1 = metadatosAlimentosRepo.findOne(alimentosG.getIdMetadatosAlimentosG());
+            alimentosG1 = alimentosG;
+            metadatosAlimentosRepo.saveAndFlush(alimentosG1);
+            map.put("data", alimentosG1);
+            map.put("mensaje", "Estudio editado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al editar estudio");
+            map.put("Error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     

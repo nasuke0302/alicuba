@@ -328,7 +328,18 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             $scope.allRangoEdades = data.data.data;
         });
         $scope.metadatoActual = $scope.estudioPorReferencia[indice];
-        $scope.npk.n = $scope.metadatoActual.npk;
-        console.log($scope.metadatoActual);
+        var npkDividido = $scope.metadatoActual.npk.toString().split("-");
+        $scope.npk.n = parseInt(npkDividido[0]);
+        $scope.npk.p = parseInt(npkDividido[1]);
+        $scope.npk.k = parseInt(npkDividido[2]);
+    };
+
+    $scope.editMetadatosAlimentosG = function () {
+        $scope.metadatoActual.npk = $scope.npk.n + "-" + $scope.npk.p + "-" + $scope.npk.k;
+        $http.post("../estudio/editMetadatosAlimentosG", $scope.metadatoActual, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $scope.estudiosPorReferencia($scope.referencia.idReferencia);
+            $("#formModalEditAlimento").modal("toggle");
+        });
     };
 });

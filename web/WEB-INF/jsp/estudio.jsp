@@ -257,7 +257,7 @@
                                                         <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
                                                     </div>
                                                     <button class="icon-pencil btn btn-success" type="submit" 
-                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid"> Guardar</button> 
+                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid || formAddTablaCnaGeneral.$pristine"> Guardar</button> 
                                                 </form>
                                             </div>
                                         </div>
@@ -366,7 +366,7 @@
                                             </select>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddAlimento.$invalid">Aceptar</button>
+                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddAlimento.$invalid || formAddAlimento.$pristine">Aceptar</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                         </div>                            
                                     </div>
