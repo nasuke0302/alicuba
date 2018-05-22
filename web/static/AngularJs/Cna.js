@@ -33,6 +33,11 @@ function headerController($http, $scope) {
 }
 appCna.controller("headerController", headerController);
 appCna.controller("CnaController", function ($scope, $http, $window) {
+    $scope.npk = {
+        n: "",
+        p: "",
+        k: ""
+    };
     $scope.selectedNutriente = {};
     //GENERAR AÑOS
     $scope.currentyear = new Date().getFullYear();
@@ -96,6 +101,11 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         valor: "",
         idNutriente: "",
         idMetadatosAlimentosG: ""
+    };
+    $scope.tiposRiego = {
+        tipo1: "Sí",
+        tipo2: "No",
+        tipo3: "Sin definir riego"
     };
 
 
@@ -239,12 +249,6 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     $scope.abrirEliminarAlimentoModal = function (indice) {
         $scope.metadato = $scope.estudioPorReferencia[indice];
     };
-    //editar un alimento con metadato
-    $scope.editarMetadatos = function (indice) {
-        $scope.metadato = $scope.estudioPorReferencia[indice];
-        window.localStorage.setItem("metadato", JSON.stringify($scope.metadato));
-        $window.location.href = "../estudio/gestionar";
-    };
     //Añadir un nuevo estudio
     $scope.addTablaCnaGeneral = function () {
         $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
@@ -289,5 +293,42 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             tablaCnaGeneralPK: a.tablaCnaGeneralPK,
             valor: a.valor
         };
+    };
+
+    $scope.abrirModalEditarMetadatos = function (indice) {
+        $http.get("../estudio/getCalidades").then(function (data) {
+            $scope.allCalidades = data.data.data;
+        });
+        //Obtener Lista de Epocas
+        $http.get("../estudio/getEpocas").then(function (data) {
+            $scope.allEpocas = data.data.data;
+        });
+        //Obtener Lista de Fertilizado
+        $http.get("../estudio/getFertilizado").then(function (data) {
+            $scope.allFertilizado = data.data.data;
+        });
+        //Obtener Lista de Meses
+        $http.get("../estudio/getMeses").then(function (data) {
+            $scope.allMeses = data.data.data;
+        });
+        //Obtener Lista de Niveles de Fertilizacion
+        $http.get("../estudio/getNivelFert").then(function (data) {
+            $scope.allNivelFert = data.data.data;
+        });
+        //Obtener Lista de Paises
+        $http.get("../estudio/getPaises").then(function (data) {
+            $scope.allPaises = data.data.data;
+        });
+        //Obtener Lista de Provincias
+        $http.get("../estudio/getProvincias").then(function (data) {
+            $scope.allProvincias = data.data.data;
+        });
+        //Obtener Lista de Rango de Edades
+        $http.get("../estudio/getRangoEdades").then(function (data) {
+            $scope.allRangoEdades = data.data.data;
+        });
+        $scope.metadatoActual = $scope.estudioPorReferencia[indice];
+        $scope.npk.n = $scope.metadatoActual.npk;
+        console.log($scope.metadatoActual);
     };
 });
