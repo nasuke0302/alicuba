@@ -75,15 +75,6 @@ public class IndexController {
     public @ResponseBody
     Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
-        JEP parser = new JEP();
-        parser.addVariable("x", 2);
-        parser.addVariable("y", 4);
-        parser.parseExpression("x+y");
-        if (parser.hasError()) {
-            System.out.println("Not parsed");
-        }
-        Double result = parser.getValue();
-        System.out.println("result: " + result);
         try {
             if ("Colaborador".equals(principal.getIdRol().toString())) {
                 map.put("data", referenciasRepo.findAllByIdUsuario(principal));
