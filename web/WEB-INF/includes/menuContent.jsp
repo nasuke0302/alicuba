@@ -31,6 +31,9 @@
                     <span class="pull-right">
                         <i class="icon-angle-left"></i>
                     </span>
+                    <ul class="in" id="captacion-nav">
+                        <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
+                    </ul>
                 </a>                    
             </li>
             <li class="panel">
