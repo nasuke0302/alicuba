@@ -32,11 +32,17 @@ function headerController($http, $scope) {
     });
 }
 appEstimacion.controller("headerController", headerController);
-appEstimacion.controller("EstimacionController", function ($scope, $http) {
+appEstimacion.controller("EstimacionController", function ($scope, $http, $window) {
 
     $scope.selectedMetadato = {};
-    
-    
+    $scope.formula = "";
+    $scope.resultado = "";
+    $scope.variables = {
+        x: "",
+        y: ""
+    };
+    $scope.nutrientesMetadatos = {};
+
     //Cargar todas las referencia
     $http.get("getAllReferencias").then(function (res) {
         $scope.allReferencias = res.data.data;
@@ -46,5 +52,20 @@ appEstimacion.controller("EstimacionController", function ($scope, $http) {
     $http.get("getAllMetadatos").then(function (res) {
         $scope.allMetadatos = res.data.data;
         console.log($scope.allMetadatos);
+        $scope.nutrientesMetadatos = $scope.allMetadatos[0].tablaCnaGeneralList;
+        console.log($scope.nutrientesMetadatos);
     });
+
+    $scope.parseExp = function () {
+        $http.post("parseExp", $scope.formula).then(function (res) {
+            if (!res.data.success) {
+                $window.alert(res.data.mensaje);
+            }
+            $scope.resultado = res.data.data;
+        });
+    };
+
+    $scope.addVariable = function () {
+        console.log("New button needs to pop up");
+    };
 });

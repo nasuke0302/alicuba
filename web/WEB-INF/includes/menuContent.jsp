@@ -31,10 +31,10 @@
                     <span class="pull-right">
                         <i class="icon-angle-left"></i>
                     </span>
-                    <ul class="in" id="captacion-nav">
-                        <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
-                    </ul>
-                </a>                    
+                </a>       
+                <ul class="in" id="captacion-nav">
+                    <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
+                </ul>
             </li>
             <li class="panel">
                 <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#DDL-nav">

@@ -55,10 +55,46 @@
                                             </ui-select-choices>
                                         </ui-select>   
                                     </div>
-                                    <p>Nutrientes insertados del alimento seleccionado</p>
+                                    <p>Nutrientes insertados del alimento seleccionado:</p>
                                     <ul data-ng-repeat="a in selectedMetadato.selected.tablaCnaGeneralList">
                                         <li>{{a.nutrientes.nombre}}, valor: {{a.valor}}</li>
                                     </ul>
+                                    <div class="divider"></div>
+                                    <div>
+                                        <div class="col-md-4">
+                                            <label>Introducir variables: </label>
+                                            <button class="form-control btn btn-primary" data-ng-click="addVariable()">Add Variable</button>
+
+                                            <label>X: </label>
+                                            <ui-select data-ng-model="selectedMetadato.selected" 
+                                                       theme="bootstrap">
+                                                <ui-select-match placeholder="Elija un metadato...">
+                                                    {{$select.selected.valor}}
+                                                </ui-select-match>
+                                                <ui-select-choices repeat="a in nutrientesMetadatos| filter: $select.search">
+                                                    {{a.idAlimento.nutrientes.nombre}}
+                                                    <small>{{a.idAlimento.valor}}</small>
+                                                </ui-select-choices>
+                                            </ui-select> 
+
+                                            <label>Y: </label>
+                                            <input id="inputY" class="form-control" type="text" placeholder="Valor de Y"
+                                                   data-ng-model="variables.y" />
+                                        </div>
+                                        <br />
+                                        <form method="post" data-ng-submit="parseExp()" name="formAddExp">
+                                            <div class="input-group col-md-4">
+                                                <label>Formula:</label>
+                                                <input class="form-control" type="text" placeholder="Introduzca una formula aqui"
+                                                       data-ng-model="formula" required=""/>
+                                            </div>
+                                            <br />
+                                            <input class="btn btn-success" type="submit" value="Evaluar"
+                                                   data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine"/>
+                                        </form>
+                                        <br />
+                                        <p>Resultado: {{resultado}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
