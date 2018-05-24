@@ -22,6 +22,7 @@
         <!--PAGE LEVEL SCRIPTS-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/angular-sanitize-1.2.19.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/EstimacionValores.js"></script>
         <!--END PAGE LEVEL SCRIPTS-->
     </head>
@@ -111,8 +112,12 @@
                                             <input id="inputFormula" class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
                                                    data-ng-model="nuevaFormula.formula" required=""/>
                                         </div>
-                                        
-                                        
+                                        <div class="col-md-offset-2">
+                                            <button class="btn btn-success" data-ng-click="addVariable()">
+                                                <span class="glyphicon glyphicon-plus"></span>Agregar Variable
+                                            </button>
+                                        </div>
+                                        <div data-ng-bind-html="divHtmlVar"></div>
                                         <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
                                         <div class="col-md-2" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
                                         <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')">

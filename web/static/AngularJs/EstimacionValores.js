@@ -1,4 +1,4 @@
-var appEstimacion = angular.module("appEstimacion", ['ui.select']);
+var appEstimacion = angular.module("appEstimacion", ['ui.select', 'ngSanitize']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $http.get("../header/getMessages").then(function (data) {
@@ -40,6 +40,7 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
         idNutriente: "",
         variablesFormulasList: []
     };
+    $scope.listaVariables = [];
     $scope.variables = {
         nombre: "",
         nutriente: ""
@@ -76,4 +77,10 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
             };
         });
     };
+
+    $scope.addVariable = function () {
+        $scope.divHtmlVar = $scope.divHtmlVar + 'hola';
+    };
+
+    $scope.divHtmlVar = "<p>Variables</p>";
 });
