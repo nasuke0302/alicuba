@@ -103,7 +103,7 @@
                     </div>
                     <!--CREATE OR EDIT MODAL-->
                     <div class="col-lg-12">
-                        <div class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
+                        <div style="overflow-y: auto" class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
                              role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -131,32 +131,17 @@
                                                 </div>
                                                 <label>Variedad</label>
                                                 <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputVariedad"
-                                                       required="" data-ng-model="indiceRegistro.variedad"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputVariedad.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
+                                                       data-ng-model="indiceRegistro.variedad"/>
                                                 <label>Parte</label>
                                                 <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputParte"
-                                                       required="" data-ng-model="indiceRegistro.parte"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputParte.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
+                                                       data-ng-model="indiceRegistro.parte"/>
                                                 <label>Proceso</label>
                                                 <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputProceso"
-                                                       required="" data-ng-model="indiceRegistro.proceso"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputProceso.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
+                                                       data-ng-model="indiceRegistro.proceso"/>
+
                                                 <label>Mezcla</label>
                                                 <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputMezcla"
-                                                       required="" data-ng-model="indiceRegistro.mezcla"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputMezcla.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
+                                                       data-ng-model="indiceRegistro.mezcla"/>
                                                 <label>Tipo en Cuba</label>
                                                 <br>
                                                 <select class="form-control" 

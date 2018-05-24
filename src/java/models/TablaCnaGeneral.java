@@ -31,12 +31,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TablaCnaGeneral.findByValor", query = "SELECT t FROM TablaCnaGeneral t WHERE t.valor = :valor")})
 public class TablaCnaGeneral implements Serializable {
 
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "valor")
+    private Double valor;
+
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TablaCnaGeneralPK tablaCnaGeneralPK;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "valor")
-    private Float valor;
     @JsonIgnore
     @JoinColumn(name = "id_metadatos_alimentos_g", referencedColumnName = "id_metadatos_alimentos_g", insertable = false, updatable = false)
     @ManyToOne(optional = false)
@@ -64,13 +65,6 @@ public class TablaCnaGeneral implements Serializable {
         this.tablaCnaGeneralPK = tablaCnaGeneralPK;
     }
 
-    public Float getValor() {
-        return valor;
-    }
-
-    public void setValor(Float valor) {
-        this.valor = valor;
-    }
 
     public MetadatosAlimentosG getMetadatosAlimentosG() {
         return metadatosAlimentosG;
@@ -111,6 +105,14 @@ public class TablaCnaGeneral implements Serializable {
     @Override
     public String toString() {
         return "models.TablaCnaGeneral[ tablaCnaGeneralPK=" + tablaCnaGeneralPK + " ]";
+    }
+
+    public Double getValor() {
+        return valor;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
     }
     
 }

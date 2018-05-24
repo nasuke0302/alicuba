@@ -123,31 +123,33 @@
                                             <td>
                                                 <table class="table">
                                                     <tr>
-                                                    <button class="btn btn-success" value="A&ntilde;adir nutriente"
-                                                            data-toggle="modal" data-target="#formModalCreateNutriente"
-                                                            data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
-                                                        Nuevo nutriente
-                                                    </button>
+                                                        <td>
+                                                            <button class="btn btn-success" value="A&ntilde;adir nutriente"
+                                                                    data-toggle="modal" data-target="#formModalCreateNutriente"
+                                                                    data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
+                                                                Nuevo nutriente
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
+                                                        <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
+                                                        <td>
+                                                            <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                            {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
+                                                        <td> {{nut.valor}}</td>
+                                                        <td>
+                                                            <button class="btn btn-primary btn-xs" title="Editar estudio"
+                                                                    data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
+                                                                <i class="glyphicon glyphicon-pencil"></i></button>
+                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                    title="Eliminar estudio"
+                                                                    data-ng-click="abrirEliminarModal($parent.$index, $index)">
+                                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                                        </td> 
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
-                                        <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
-                                            <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
-                                            <td>
-                                                <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
-                                                {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
-                                            <td> {{nut.valor}}</td>
-                                            <td>
-                                                <button class="btn btn-primary btn-xs" title="Editar estudio"
-                                                        data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
-                                                    <i class="glyphicon glyphicon-pencil"></i></button>
-                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                        title="Eliminar estudio"
-                                                        data-ng-click="abrirEliminarModal($parent.$index, $index)">
-                                                    <i class="glyphicon glyphicon-trash"></i></button>
-                                            </td> 
-                                        </tr>
-                                    </table>
-                                    </td>
-                                    </tr>
                                     </table>
                                 </div>
                             </div>
@@ -156,7 +158,7 @@
                 </div>
                 <!--MODAL EDITAR REFERENCIA-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div style="overflow-y: auto" class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form name="formAddReferencias" role="form" data-ng-submit="saveReferencia()" method="post">
                                 <div class="modal-content">
@@ -355,7 +357,7 @@
                 <!--END MODAL EDITAR REFERENCIA-->
                 <!--CREATE AUTOR-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalAddOrEditAutor" tabindex="-1" 
+                    <div style="overflow-y: auto" class="modal fade" id="modalAddOrEditAutor" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -402,7 +404,7 @@
                 <!--END CREATE AUTOR-->
                 <!--CREATE CATEGORIA--> 
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalAddOrEditCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div style="overflow-y: auto" class="modal fade" id="modalAddOrEditCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -433,8 +435,8 @@
                 </div>
                 <!--END CREATE CATEGORIA-->
                 <!--DELETE ALIMENTO MODAL-->
-                <div class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
-                    <div class="modal-dialog" style="margin-top: 260.5px;">
+                <div style="overflow-y: auto" class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
+                    <div style="overflow-y: auto" class="modal-dialog" style="margin-top: 260.5px;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -455,29 +457,26 @@
                 </div>
                 <!--END DELETE ALIMENTO MODAL-->
                 <!--DELETE ESTUDIO MODAL-->
-                <div>
-                    <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                        <div class="modal-dialog" style="margin-top: 260.5px;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">¿Seguro que desea eliminar este estudio?</h4>
-                                    <div class="modal-body">
-                                        <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </form>
-                                    </div>
+                <div style="overflow-y: auto" class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                    <div class="modal-dialog" style="margin-top: 260.5px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">¿Seguro que desea eliminar este estudio?</h4>
+                                <div class="modal-body">
+                                    <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--END DELETE ESTUDIO MODAL-->
                 </div>
-                <!--END DLETE MODAL-->
+                <!--END DELETE ESTUDIO MODAL-->
                 <!--BEGIN CREATE NUTRIENTE-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="formModalCreateNutriente" tabindex="-1" 
+                    <div style="overflow-y: auto" class="modal fade" id="formModalCreateNutriente" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -512,7 +511,8 @@
                                                     <div class="input-group tooltip-demo">
                                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
                                                               title="{{selectedNutriente.selected.nombre}}">{{selectedNutriente.selected.abreviatura}}</span>
-                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""/>
+                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required
+                                                               allow-decimal-numbers/>
                                                         <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
                                                     </div>
                                                     <br />
@@ -533,7 +533,7 @@
                 <!--END CREATE NUTRIENTE-->
                 <!--BEGIN EDIT NUTRIENTE-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="formModalEditNutriente" tabindex="-1" 
+                    <div style="overflow-y: auto" class="modal fade" id="formModalEditNutriente" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -566,9 +566,9 @@
                     </div>
                 </div>
                 <!--END EDIT NUTRIENTE-->
-                <!--BEGIN EDIT Alimento-->
+                <!--BEGIN EDIT ALIMENTO-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="formModalEditAlimento" tabindex="-1" 
+                    <div style="overflow-y: auto" class="modal fade" id="formModalEditAlimento" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">

@@ -281,9 +281,9 @@ public class EstudioController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor}")
+    @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor:.+}")
     public ModelAndView addTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
-            @PathVariable Float valor, ModelMap map) {
+            @PathVariable Double valor, ModelMap map) {
         try {
             TablaCnaGeneral cnaGeneral = new TablaCnaGeneral();
             cnaGeneral.setTablaCnaGeneralPK(cnaGeneralPK);
@@ -303,7 +303,7 @@ public class EstudioController {
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
-            @PathVariable Float valor, ModelMap map) {
+            @PathVariable Double valor, ModelMap map) {
         try {
             TablaCnaGeneral cnaGeneral = tablaCnaGeneralRepo.findOne(cnaGeneralPK);
             cnaGeneral.setValor(valor);

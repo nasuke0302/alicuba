@@ -222,36 +222,31 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-});
-appIndex.directive('allowOnlyNumbers', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, elm, attrs, ctrl) {
-            elm.on('keydown', function (event) {
-                var $input = $(this);
-                var value = $input.val();
-                value = value.replace(/[^0-9]/g, '');
-                $input.val(value);
-                if (event.which === 64 || event.which === 16) {
-                    // to allow numbers  
-                    return false;
-                } else if (event.which >= 48 && event.which <= 57) {
-                    // to allow numbers  
-                    return true;
-                } else if (event.which >= 96 && event.which <= 105) {
-                    // to allow numpad number  
-                    return true;
-                } else if ([8, 13, 27, 37, 38, 39, 40].indexOf(event.which) > -1) {
-                    // to allow backspace, enter, escape, arrows  
-                    return true;
-                } else {
-                    event.preventDefault();
-                    // to stop others  
-                    //alert("Sorry Only Numbers Allowed");  
+
+    /*
+     *  Function to allow decimal numbers to be entered in the text box
+     *   - allows integers, backspace and delete
+     *   - does not allow alphabets
+     *   - allows only one decimal point
+     *   - allows only two digits after decimal point
+     */
+    function isNumberKey(evt, element) {
+        var charCode = (evt.which) ? evt.which : window.event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode === 46 || charCode === 8))
+            return false;
+        else {
+            var len = $(element).val().length;
+            var index = $(element).val().indexOf('.');
+            if (index > 0 && charCode === 46) {
+                return false;
+            }
+            if (index > 0) {
+                var CharAfterdot = (len + 1) - index;
+                if (CharAfterdot > 3) {
                     return false;
                 }
-            });
+            }
         }
-    };
-
-});  
+        return true;
+    }
+});

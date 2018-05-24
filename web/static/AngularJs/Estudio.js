@@ -206,6 +206,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         });
     };
     $scope.addTablaCnaGeneral = function () {
+        console.log("el valor es: " + $scope.tablaCnaGeneral);
         $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
         $scope.tablaCnaGeneral.idMetadatosAlimentosG = JSON.parse(window.localStorage.getItem("metadato")).idMetadatosAlimentosG;
         $scope.tablaCnaGeneralPK = {
