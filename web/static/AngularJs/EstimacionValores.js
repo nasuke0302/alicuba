@@ -35,15 +35,15 @@ appEstimacion.controller("headerController", headerController);
 appEstimacion.controller("EstimacionController", function ($scope, $http, $window) {
 
     $scope.nuevaFormula = {
-        nombre: "",
+        nombreFormula: "",
         formula: "",
         idNutriente: "",
-        variables: {
-            x: "",
-            y: ""
-        }
+        variablesFormulasList: []
     };
-
+    $scope.variables = {
+        nombre: "",
+        nutriente: ""
+    };
 
     //Obtener lista de todos los nutrientes
     $http.get("../estudio/getNutrientes").then(function (res) {
@@ -55,11 +55,25 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     });
 
     $scope.parseExp = function () {
-        console.log($scope.nuevaFormula);
+//        $scope.variables.x.nombresVariable = "x";
+//        $scope.variables.y.nombresVariable = "y";
+//        $scope.nuevaFormula.variablesFormulasList.push($scope.variables.x);
+//        $scope.nuevaFormula.variablesFormulasList.push($scope.variables.y);
         $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
-            if (!res.data.success) {
-                $window.alert(res.data.mensaje);
-            }
+            $window.alert(res.data.mensaje);
+            $http.get("../estimacion/getFormulas").then(function (res) {
+                $scope.allFormulas = res.data.data;
+            });
+            $scope.nuevaFormula = {
+                nombreFormula: "",
+                formula: "",
+                idNutriente: "",
+                variablesFormulasList: []
+            };
+            $scope.variables = {
+                nombre: "",
+                nutriente: ""
+            };
         });
     };
 });

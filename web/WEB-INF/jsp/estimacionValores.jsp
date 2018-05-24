@@ -88,6 +88,10 @@
                                     </div>
                                     <!--BEGIN ADD FORMULAS-->
                                     <form method="post" data-ng-submit="parseExp()" name="formAddExp">
+                                        <div class="row">
+                                            <label class="col-md-2">Nombre de f&oacute;rmula</label>
+                                            <input class="col-md-3" type="text" data-ng-model="nuevaFormula.nombreFormula"/>
+                                        </div>
 
                                         <div class="col-md-2">Nutriente:</div>
                                         <div class="input-group col-md-10">F&oacute;rmula:</div>
@@ -107,6 +111,8 @@
                                             <input id="inputFormula" class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
                                                    data-ng-model="nuevaFormula.formula" required=""/>
                                         </div>
+                                        
+                                        
                                         <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
                                         <div class="col-md-2" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
                                         <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')">
@@ -114,7 +120,7 @@
                                                 X:
                                             </div>
                                             <div class="col-md-3">
-                                                <ui-select data-ng-model="nuevaFormula.variables.x" 
+                                                <ui-select data-ng-model="variables.x" 
                                                            theme="bootstrap">
                                                     <ui-select-match placeholder="Elija un nutriente...">
                                                         {{$select.selected.abreviatura}}
@@ -132,7 +138,7 @@
                                                 Y:
                                             </div>
                                             <div class="col-md-3">
-                                                <ui-select data-ng-model="nuevaFormula.variables.y" 
+                                                <ui-select data-ng-model="variables.y" 
                                                            theme="bootstrap">
                                                     <ui-select-match placeholder="Elija un nutriente...">
                                                         {{$select.selected.abreviatura}}
@@ -144,6 +150,7 @@
                                                 </ui-select> 
                                             </div>
                                         </div>
+                                        <br />
                                         <div class="text-right row col-md-12">
                                             <input class="btn btn-success" type="submit" value="Evaluar y guardar"
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine

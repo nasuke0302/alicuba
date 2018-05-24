@@ -67,13 +67,21 @@ public class EstimacionController {
     Map<String, ? extends Object> parseExp(@RequestBody Formulas formula) {
         Map<String, Object> map = new HashMap<>();
         parser.setImplicitMul(true);
+//        parser.setAllowUndeclared(true);
         parser.parseExpression(formula.getFormula());
         if (parser.hasError()) {
             map.put("mensaje", parser.getErrorInfo());
             map.put("success", Boolean.FALSE);
             return map;
         } else {
-            formulasRepo.saveAndFlush(formula);
+            Formulas formulaGuardada = formulasRepo.saveAndFlush(formula);
+            if (!formula.getVariablesFormulasList().isEmpty()) {
+                for (int i = 0; i < formula.getVariablesFormulasList().size(); i++) {
+                    VariablesFormulas variablesFormulas = formula.getVariablesFormulasList().get(i);
+                    variablesFormulas.setIdFormula(formulaGuardada);
+                    variablesFormulasRepo.saveAndFlush(variablesFormulas);
+                }
+            }
             map.put("mensaje", "Expresion correcta");
             map.put("success", Boolean.TRUE);
         }
