@@ -43,66 +43,49 @@
                                     <p>Estimar</p>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="form-group">
-                                        <label>Alimentos con metadatos insertados</label>
-                                        <ui-select data-ng-model="selectedMetadato.selected" 
-                                                   theme="bootstrap">
-                                            <ui-select-match placeholder="Elija un metadato...">
-                                                {{$select.selected.idAlimento.nombre}}
-                                            </ui-select-match>
-                                            <ui-select-choices repeat="a in allMetadatos| filter: $select.search">
-                                                {{a.idAlimento.nombre}}
-                                            </ui-select-choices>
-                                        </ui-select>   
-                                    </div>
-                                    <p>Nutrientes insertados del alimento seleccionado:</p>
-                                    <ul data-ng-repeat="a in selectedMetadato.selected.tablaCnaGeneralList">
-                                        <li>{{a.nutrientes.nombre}}, valor: {{a.valor}}</li>
-                                    </ul>
-                                    <div class="divider"></div>
-                                    <div>
-                                        <div class="col-md-4">
-                                            <label>Introducir variables: </label>
-                                            <button class="form-control btn btn-primary" data-ng-click="addVariable()">Add Variable</button>
-
-                                            <label>X: </label>
-                                            <ui-select data-ng-model="variables.x" 
+                                    <form method="post" data-ng-submit="parseExp()" name="formAddExp">
+                                        <div class="col-md-2">Nutriente:</div>
+                                        <div class="input-group col-md-10">F&oacute;rmula:</div>
+                                        <div class="col-md-2">
+                                            <ui-select data-ng-model="NutrienteResultado.selected" 
                                                        theme="bootstrap">
-                                                <ui-select-match placeholder="Elija un metadato...">
-                                                    {{$select.selected.valor}}
+                                                <ui-select-match placeholder="Elija un nutriente...">
+                                                    {{$select.selected.abreviatura}}
                                                 </ui-select-match>
-                                                <ui-select-choices repeat="a in nutrientesMetadatos| filter: $select.search">
-                                                    {{a.nutrientes.nombre}}
-                                                    <small>{{a.valor}}</small>
+                                                <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                    {{a.abreviatura}}
+                                                    <small>{{a.nombre}}</small>
                                                 </ui-select-choices>
                                             </ui-select> 
-
-                                            <label>Y: </label>
-                                            <ui-select data-ng-model="variables.y" 
-                                                       theme="bootstrap">
-                                                <ui-select-match placeholder="Elija un metadato...">
-                                                    {{$select.selected.valor}}
-                                                </ui-select-match>
-                                                <ui-select-choices repeat="a in nutrientesMetadatos| filter: $select.search">
-                                                    {{a.nutrientes.nombre}}
-                                                    <small>{{a.valor}}</small>
-                                                </ui-select-choices>
-                                            </ui-select>
                                         </div>
-                                        <br />
-                                        <form method="post" data-ng-submit="parseExp()" name="formAddExp">
-                                            <div class="input-group col-md-4">
-                                                <label>Formula:</label>
-                                                <input class="form-control" type="text" placeholder="Introduzca una formula aqui"
-                                                       data-ng-model="formula" required=""/>
+                                        <div class="input-group col-md-10">
+                                            <input class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
+                                                   data-ng-model="formula" required=""/>
+                                        </div>
+                                        <div class="row"></div>
+                                        <div class="col-md-2"></div>
+                                        <div class="row">
+                                            <div class="col-md-1 text-right">
+                                                X:
                                             </div>
-                                            <br />
+                                            <div class="col-md-3">
+                                                <ui-select data-ng-model="variables.x" 
+                                                           theme="bootstrap">
+                                                    <ui-select-match placeholder="Elija un nutriente...">
+                                                        {{$select.selected.abreviatura}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                        {{a.abreviatura}}
+                                                        <small>{{a.nombre}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select> 
+                                            </div>
+                                        </div>
+                                        <div class="text-right row col-md-12">
                                             <input class="btn btn-success" type="submit" value="Evaluar"
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine"/>
-                                        </form>
-                                        <br />
-                                        <p>Resultado: {{resultado}}</p>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

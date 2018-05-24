@@ -21,7 +21,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.i18n.FixedLocaleResolver;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "repositorios")
@@ -31,7 +30,7 @@ public class Config {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/alicuba", "postgres", "albert123");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "albert123");
         dataSource.setDriverClassName("org.postgresql.Driver");
         return dataSource;
     }

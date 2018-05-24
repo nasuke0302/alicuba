@@ -34,26 +34,17 @@ function headerController($http, $scope) {
 appEstimacion.controller("headerController", headerController);
 appEstimacion.controller("EstimacionController", function ($scope, $http, $window) {
 
-    $scope.selectedMetadato = {};
     $scope.formula = "";
     $scope.resultado = "";
     $scope.variables = {
         x: "",
         y: ""
     };
-    $scope.nutrientesMetadatos = {};
+    $scope.allNutrientes = {};
 
-    //Cargar todas las referencia
-    $http.get("getAllReferencias").then(function (res) {
-        $scope.allReferencias = res.data.data;
-    });
-
-    //Cargar todos los metadatos
-    $http.get("getAllMetadatos").then(function (res) {
-        $scope.allMetadatos = res.data.data;
-        console.log($scope.allMetadatos);
-        $scope.nutrientesMetadatos = $scope.allMetadatos[0].tablaCnaGeneralList;
-        console.log($scope.nutrientesMetadatos);
+    $http.get("../estudio/getNutrientes").then(function (res) {
+        $scope.allNutrientes = res.data.data;
+        console.log($scope.allNutrientes);
     });
 
     $scope.parseExp = function () {

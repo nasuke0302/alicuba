@@ -33,6 +33,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Nutrientes.findAll", query = "SELECT n FROM Nutrientes n")})
 public class Nutrientes implements Serializable {
 
+    @OneToMany(mappedBy = "idNutriente")
+    private List<Formulas> formulasList;
+    @OneToMany(mappedBy = "idNutriente")
+    private List<VariablesFormulas> variablesFormulasList;
+
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nutrientes")
     private List<TablaCnaGeneral> tablaCnaGeneralList;
@@ -134,6 +139,24 @@ public class Nutrientes implements Serializable {
 
     public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
         this.tablaCnaGeneralList = tablaCnaGeneralList;
+    }
+
+    @XmlTransient
+    public List<Formulas> getFormulasList() {
+        return formulasList;
+    }
+
+    public void setFormulasList(List<Formulas> formulasList) {
+        this.formulasList = formulasList;
+    }
+
+    @XmlTransient
+    public List<VariablesFormulas> getVariablesFormulasList() {
+        return variablesFormulasList;
+    }
+
+    public void setVariablesFormulasList(List<VariablesFormulas> variablesFormulasList) {
+        this.variablesFormulasList = variablesFormulasList;
     }
 
 }
