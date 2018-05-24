@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,10 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "variables_formulas")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "VariablesFormulas.findAll", query = "SELECT v FROM VariablesFormulas v")
-    , @NamedQuery(name = "VariablesFormulas.findByIdVariable", query = "SELECT v FROM VariablesFormulas v WHERE v.idVariable = :idVariable")
-    , @NamedQuery(name = "VariablesFormulas.findByVariable", query = "SELECT v FROM VariablesFormulas v WHERE v.variable = :variable")})
 public class VariablesFormulas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,15 +34,16 @@ public class VariablesFormulas implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_variable")
     private Integer idVariable;
-    @Size(max = 2147483647)
-    @Column(name = "variable")
-    private String variable;
     @JoinColumn(name = "id_formula", referencedColumnName = "id_formula")
+    @JsonIgnore
     @ManyToOne
     private Formulas idFormula;
     @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente")
     @ManyToOne
     private Nutrientes idNutriente;
+    @Size(max = 2147483647)
+    @Column(name = "nombres_variable")
+    private String nombresVariable;
 
     public VariablesFormulas() {
     }
@@ -62,14 +58,6 @@ public class VariablesFormulas implements Serializable {
 
     public void setIdVariable(Integer idVariable) {
         this.idVariable = idVariable;
-    }
-
-    public String getVariable() {
-        return variable;
-    }
-
-    public void setVariable(String variable) {
-        this.variable = variable;
     }
 
     public Formulas getIdFormula() {
@@ -112,5 +100,13 @@ public class VariablesFormulas implements Serializable {
     public String toString() {
         return "models.VariablesFormulas[ idVariable=" + idVariable + " ]";
     }
-    
+
+    public String getNombresVariable() {
+        return nombresVariable;
+    }
+
+    public void setNombresVariable(String nombresVariables) {
+        this.nombresVariable = nombresVariables;
+    }
+
 }

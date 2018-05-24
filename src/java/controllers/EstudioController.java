@@ -216,7 +216,7 @@ public class EstudioController {
             map.put("data", datosAlimentosRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }
@@ -229,7 +229,7 @@ public class EstudioController {
             map.put("data", nutrientesRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }
@@ -242,7 +242,7 @@ public class EstudioController {
             map.put("data", unidadesMedidaRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }

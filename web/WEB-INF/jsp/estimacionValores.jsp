@@ -4,6 +4,8 @@
     Author     : Tesis
 --%>
 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib  prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html data-ng-app="appEstimacion">
@@ -43,6 +45,45 @@
                                     <p>Estimar</p>
                                 </div>
                                 <div class="panel-body">
+                                    <!--BEGIN TABLE FORMULAS-->
+                                    <table class="table table-condensed table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Acciones</th>
+                                                <th>Nombre</th>
+                                                <th>Nutriente resultado</th>
+                                                <th>F&oacute;rmula</th>
+                                                <th>Variables</th>
+                                            <tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="f in allFormulas track by $index">
+                                                <td>
+                                                    <button class="btn btn-primary btn-xs">
+                                                        <i class="glyphicon glyphicon-pencil"></i>
+                                                    </button>
+                                                    <sec:authorize access="hasAuthority('Colaborador')">
+                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                        </button>
+                                                    </sec:authorize>
+                                                </td>
+                                                <td>{{f.nombreFormula}}</td>
+                                                <td>{{f.idNutriente.abreviatura}}, {{f.idNutriente.nombre}}</td>
+                                                <td>{{f.formula}}</td>
+                                                <td>
+                                                    <span data-ng-repeat="v in f.variablesFormulasList">
+                                                        <strong> {{v.nombresVariable}}: </strong>
+                                                        {{v.idNutriente.abreviatura}} - {{v.idNutriente.nombre}}
+                                                        <br>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--END TABLE FORMULAS-->
+                                    <hr />
+                                    <!--BEGIN ADD FORMULAS-->
                                     <form method="post" data-ng-submit="parseExp()" name="formAddExp">
                                         <div class="col-md-2">Nutriente:</div>
                                         <div class="input-group col-md-10">F&oacute;rmula:</div>
@@ -104,6 +145,7 @@
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine"/>
                                         </div>
                                     </form>
+                                    <!--END ADD FORMULAS-->
                                 </div>
                             </div>
                         </div>

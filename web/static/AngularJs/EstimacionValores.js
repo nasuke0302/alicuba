@@ -44,7 +44,11 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
 
     $http.get("../estudio/getNutrientes").then(function (res) {
         $scope.allNutrientes = res.data.data;
-        console.log($scope.allNutrientes);
+    });
+
+    $http.get("../estimacion/getFormulas").then(function (res) {
+        $scope.allFormulas = res.data.data;
+        console.log($scope.allFormulas);
     });
 
     $scope.parseExp = function () {

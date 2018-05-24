@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import repositorios.FormulasRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.ReferenciasRepo;
 
@@ -31,6 +32,9 @@ public class EstimacionController {
     @Autowired
     MetadatosAlimentosRepo metadatosAlimentosRepo;
 
+    @Autowired
+    FormulasRepo formulasRepo;
+
     JEP parser = new JEP();
 
     @RequestMapping(value = "/estimacion/gestionar")
@@ -38,28 +42,15 @@ public class EstimacionController {
         return new ModelAndView("estimacionValores");
     }
 
-    @RequestMapping(value = "/estimacion/getAllReferencias")
+    @RequestMapping(value = "/estimacion/getFormulas")
     public @ResponseBody
-    Map<String, ? extends Object> getAllReferencias() {
+    Map<String, ? extends Object> getFormulas() {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", referenciasRepo.findAll());
+            map.put("data", formulasRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
-        }
-        return map;
-    }
-
-    @RequestMapping(value = "/estimacion/getAllMetadatos")
-    public @ResponseBody
-    Map<String, ? extends Object> getAllMetadatos() {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("data", metadatosAlimentosRepo.findAll());
-            map.put("success", Boolean.TRUE);
-        } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
+            map.put("fail", Boolean.FALSE);
         }
         return map;
     }
