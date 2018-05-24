@@ -6,7 +6,10 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import models.Formulas;
+import models.VariablesFormulas;
 import org.nfunk.jep.JEP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import repositorios.FormulasRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.ReferenciasRepo;
+import repositorios.VariablesFormulasRepo;
 
 /**
  *
@@ -34,6 +38,9 @@ public class EstimacionController {
 
     @Autowired
     FormulasRepo formulasRepo;
+
+    @Autowired
+    VariablesFormulasRepo variablesFormulasRepo;
 
     JEP parser = new JEP();
 
@@ -57,18 +64,17 @@ public class EstimacionController {
 
     @RequestMapping(value = "/estimacion/parseExp")
     public @ResponseBody
-    Map<String, ? extends Object> parseExp(@RequestBody String expression) {
+    Map<String, ? extends Object> parseExp(@RequestBody Formulas formula) {
         Map<String, Object> map = new HashMap<>();
         parser.setImplicitMul(true);
-        parser.parseExpression(expression);
+        parser.parseExpression(formula.getFormula());
         if (parser.hasError()) {
             map.put("mensaje", parser.getErrorInfo());
             map.put("success", Boolean.FALSE);
             return map;
         } else {
-            double result = parser.getValue();
+            formulasRepo.saveAndFlush(formula);
             map.put("mensaje", "Expresion correcta");
-            map.put("data", result);
             map.put("success", Boolean.TRUE);
         }
         return map;

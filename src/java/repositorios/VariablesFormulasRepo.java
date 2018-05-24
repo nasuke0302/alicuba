@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author Tesis
  */
 @Repository
-public interface VariablesRepo extends JpaRepository<VariablesFormulas, Integer>{
+public interface VariablesFormulasRepo extends JpaRepository<VariablesFormulas, Integer>{
     
 }

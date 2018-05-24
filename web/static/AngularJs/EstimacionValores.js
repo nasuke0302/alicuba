@@ -34,33 +34,32 @@ function headerController($http, $scope) {
 appEstimacion.controller("headerController", headerController);
 appEstimacion.controller("EstimacionController", function ($scope, $http, $window) {
 
-    $scope.formula = "";
-    $scope.resultado = "";
-    $scope.variables = {
-        x: "",
-        y: ""
+    $scope.nuevaFormula = {
+        nombre: "",
+        formula: "",
+        idNutriente: "",
+        variables: {
+            x: "",
+            y: ""
+        }
     };
-    $scope.allNutrientes = {};
 
+
+    //Obtener lista de todos los nutrientes
     $http.get("../estudio/getNutrientes").then(function (res) {
         $scope.allNutrientes = res.data.data;
     });
-
+    //Obtener lista de todas las formulas
     $http.get("../estimacion/getFormulas").then(function (res) {
         $scope.allFormulas = res.data.data;
-        console.log($scope.allFormulas);
     });
 
     $scope.parseExp = function () {
-        $http.post("parseExp", $scope.formula).then(function (res) {
+        console.log($scope.nuevaFormula);
+        $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
             if (!res.data.success) {
                 $window.alert(res.data.mensaje);
             }
-            $scope.resultado = res.data.data;
         });
-    };
-
-    $scope.addVariable = function () {
-        console.log("New button needs to pop up");
     };
 });
