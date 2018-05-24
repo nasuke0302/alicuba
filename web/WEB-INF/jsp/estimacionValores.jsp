@@ -81,6 +81,24 @@
                                                 </ui-select> 
                                             </div>
                                         </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="row">
+                                            <div class="col-md-1 text-right">
+                                                Y:
+                                            </div>
+                                            <div class="col-md-3">
+                                                <ui-select data-ng-model="variables.y" 
+                                                           theme="bootstrap">
+                                                    <ui-select-match placeholder="Elija un nutriente...">
+                                                        {{$select.selected.abreviatura}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                        {{a.abreviatura}}
+                                                        <small>{{a.nombre}}</small>
+                                                    </ui-select-choices>
+                                                </ui-select> 
+                                            </div>
+                                        </div>
                                         <div class="text-right row col-md-12">
                                             <input class="btn btn-success" type="submit" value="Evaluar"
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine"/>
