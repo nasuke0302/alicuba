@@ -7,15 +7,12 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map;
-import models.Alimentos;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
-import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -219,7 +216,7 @@ public class EstudioController {
             map.put("data", datosAlimentosRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }
@@ -232,7 +229,7 @@ public class EstudioController {
             map.put("data", nutrientesRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }
@@ -245,19 +242,9 @@ public class EstudioController {
             map.put("data", unidadesMedidaRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/estudio/addAlimento")
-    public ModelAndView addAlimento(@RequestBody Alimentos a, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        a.setIdUsuario((Usuarios) principal);
-        alimentosRepo.saveAndFlush(a);
-        map.put("mensaje", "Alimento insertado correctamente");
-        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @ResponseBody
@@ -294,9 +281,9 @@ public class EstudioController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor}")
+    @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor:.+}")
     public ModelAndView addTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
-            @PathVariable Float valor, ModelMap map) {
+            @PathVariable Double valor, ModelMap map) {
         try {
             TablaCnaGeneral cnaGeneral = new TablaCnaGeneral();
             cnaGeneral.setTablaCnaGeneralPK(cnaGeneralPK);
@@ -311,11 +298,22 @@ public class EstudioController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
-    @RequestMapping(value = "/estudio/getLastEstudio")
-    public ModelAndView getLastEstudio(ModelMap map) {
-        map.put("data", metadatosAlimentosRepo.findTopByOrderByIdMetadatosAlimentosGDesc());
-        map.put("success", Boolean.TRUE);
+    
+    @Secured(value = "Editor, Colaborador")
+    @ResponseBody
+    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
+    public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
+            @PathVariable Double valor, ModelMap map) {
+        try {
+            TablaCnaGeneral cnaGeneral = tablaCnaGeneralRepo.findOne(cnaGeneralPK);
+            cnaGeneral.setValor(valor);
+            tablaCnaGeneralRepo.saveAndFlush(cnaGeneral);
+            map.put("data", cnaGeneral);
+            map.put("mensaje", "Valor editado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al editar valor");
+            map.put("Error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -332,6 +330,22 @@ public class EstudioController {
             map.put("error", e);
         }
 
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/estudio/editMetadatosAlimentosG")
+    public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map) {
+        try {
+            MetadatosAlimentosG alimentosG1 = metadatosAlimentosRepo.findOne(alimentosG.getIdMetadatosAlimentosG());
+            alimentosG1 = alimentosG;
+            metadatosAlimentosRepo.saveAndFlush(alimentosG1);
+            map.put("data", alimentosG1);
+            map.put("mensaje", "Estudio editado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al editar estudio");
+            map.put("Error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     

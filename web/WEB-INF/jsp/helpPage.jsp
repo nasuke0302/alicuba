@@ -45,11 +45,28 @@
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <p>Administradores</p>
+                                    <p><strong>Administradores</strong></p>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="col-md-3" data-ng-repeat="u in usuariosAdmins">
-                                        <div class="panel panel-success">
+                                    <div class="col-md-4" data-ng-repeat="u in usuariosAdmins">
+                                        <div class="panel panel-primary">
+                                            <div class="panel-heading">
+                                                <p>{{u.nombre}} {{u.segundoNombre}} {{u.apellidos}} <p>
+                                            </div>
+                                            <div class="panel-body">
+                                                <p> Email: {{u.email}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <p><strong>Editores</strong></p>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-md-4" data-ng-repeat="u in usuariosEditores">
+                                        <div class="panel panel-primary">
                                             <div class="panel-heading">
                                                 <p>{{u.nombre}} {{u.segundoNombre}} {{u.apellidos}} <p>
                                             </div>
@@ -64,11 +81,18 @@
                     </div>
                 </div>
             </div>
+            <!--END PAGE CONTENT-->
         </div>
         <script>
                     function regresar() {
                         window.history.back();
                     }
         </script>
+        <!-- FOOTER -->
+        <jsp:include page="/WEB-INF/includes/footer.jsp"/>
+        <!--END FOOTER -->
+        <!--GLOBAL SCRIPTS-->
+        <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
+        <!--END GLOBAL SCRIPTS-->
     </body>
 </html>

@@ -7,7 +7,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es" data-ng-app="AppCna">
-
     <!-- BEGIN HEAD-->
     <head>
         <meta charset="UTF-8" />
@@ -29,10 +28,8 @@
         <!--END PAGE LEVEL SCRIPTS-->
     </head>
     <!-- END  HEAD-->
-
     <!-- BEGIN BODY-->
     <body class="padTop53" data-ng-controller="CnaController">
-
         <!-- MAIN WRAPPER -->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -105,8 +102,7 @@
                                             <td><strong>Estudio</strong></td>
                                             <td><strong>Nutrientes</strong></td>
                                         </tr>
-                                        <tr data-ng-repeat="e in estudioPorReferencia track by e.idMetadatosAlimentosG" >
-                                            <!--data-ng-init="indexAlimentos = $index">-->
+                                        <tr data-ng-repeat="e in estudioPorReferencia" data-ng-init="indexAlimentos = $index">
                                             <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
                                                 <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
                                                 <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
@@ -115,7 +111,9 @@
                                                 <abbr title="Riego">{{e.riego}}</abbr>-
                                                 <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
                                                 <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
-                                                <button class="btn btn-primary btn-xs" title="Editar alimento" data-ng-click="editarMetadatos($index)">
+                                                <button class="btn btn-primary btn-xs" title="Editar alimento" 
+                                                        data-toggle="modal" data-target="#formModalEditAlimento"
+                                                        data-ng-click="abrirModalEditarMetadatos($index)">
                                                     <i class="glyphicon glyphicon-pencil"></i></button>
                                                 <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
                                                         title="Eliminar alimento"
@@ -124,6 +122,15 @@
                                             </td>
                                             <td>
                                                 <table class="table">
+                                                    <tr>
+                                                        <td>
+                                                            <button class="btn btn-success" value="A&ntilde;adir nutriente"
+                                                                    data-toggle="modal" data-target="#formModalCreateNutriente"
+                                                                    data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
+                                                                Nuevo nutriente
+                                                            </button>
+                                                        </td>
+                                                    </tr>
                                                     <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
                                                         <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
                                                         <td>
@@ -131,11 +138,12 @@
                                                             {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                         <td> {{nut.valor}}</td>
                                                         <td>
-                                                            <button class="btn btn-primary btn-xs" title="editar estudio">
+                                                            <button class="btn btn-primary btn-xs" title="Editar estudio"
+                                                                    data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
                                                                 <i class="glyphicon glyphicon-pencil"></i></button>
                                                             <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                                     title="Eliminar estudio"
-                                                                    data-ng-click="abrirEliminarModal(indexAlimentos, $index)">
+                                                                    data-ng-click="abrirEliminarModal($parent.$index, $index)">
                                                                 <i class="glyphicon glyphicon-trash"></i></button>
                                                         </td> 
                                                     </tr>
@@ -150,7 +158,7 @@
                 </div>
                 <!--MODAL EDITAR REFERENCIA-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div style="overflow-y: auto" class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form name="formAddReferencias" role="form" data-ng-submit="saveReferencia()" method="post">
                                 <div class="modal-content">
@@ -338,7 +346,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid">Aceptar</button>
+                                        <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid || formAddReferencias.$pristine">Aceptar</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                     </div>                            
                                 </div>
@@ -349,7 +357,7 @@
                 <!--END MODAL EDITAR REFERENCIA-->
                 <!--CREATE AUTOR-->
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalAddOrEditAutor" tabindex="-1" 
+                    <div style="overflow-y: auto" class="modal fade" id="modalAddOrEditAutor" tabindex="-1" 
                          role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -384,7 +392,7 @@
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <button type="submit" class="btn btn-success" data-ng-disabled="formAddAutor.$invalid">Guardar</button>
+                                            <button type="submit" class="btn btn-success" data-ng-disabled="formAddAutor.$invalid || formAddAutor.$pristine">Guardar</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                         </div>
                                     </form>
@@ -396,7 +404,7 @@
                 <!--END CREATE AUTOR-->
                 <!--CREATE CATEGORIA--> 
                 <div class="col-lg-12">
-                    <div class="modal fade" id="modalAddOrEditCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div style="overflow-y: auto" class="modal fade" id="modalAddOrEditCategoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -415,7 +423,8 @@
                                             </div>
                                         </div>
                                         <div class="text-right">
-                                            <button type="submit" class="btn btn-success" data-ng-disabled="formAddCategoria.$invalid">Guardar</button>
+                                            <button type="submit" class="btn btn-success" 
+                                                    data-ng-disabled="formAddCategoria.$invalid || formAddCategoria.$pristine">Guardar</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                         </div>
                                     </form>
@@ -426,51 +435,282 @@
                 </div>
                 <!--END CREATE CATEGORIA-->
                 <!--DELETE ALIMENTO MODAL-->
-                <div>
-                    <div class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
-                        <div class="modal-dialog" style="margin-top: 260.5px;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title"><strong>¡Atenci&oacute;n!</strong></h4>
-                                    <div class="modal-body">
-                                        <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
-                                            <div class="text-left">
-                                                <div class="alert alert-danger"> Al eliminar un alimento se eliminar&aacute;n también los estudios asociados a &eacute;l.</div>
-                                            </div>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </form>
-                                    </div>
+                <div style="overflow-y: auto" class="modal fade" id="formModalEliminarAlimento" role="dialog" style="display: none;">
+                    <div style="overflow-y: auto" class="modal-dialog" style="margin-top: 260.5px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title"><strong>¡Atenci&oacute;n!</strong></h4>
+                                <div class="modal-body">
+                                    <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
+                                        <div class="text-left">
+                                            <div class="alert alert-danger"> Al eliminar un alimento se eliminar&aacute;n también los estudios asociados a &eacute;l.</div>
+                                        </div>
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    </form>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
                 <!--END DELETE ALIMENTO MODAL-->
                 <!--DELETE ESTUDIO MODAL-->
-                <div>
-                    <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                        <div class="modal-dialog" style="margin-top: 260.5px;">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">¿Seguro que desea eliminar este estudio?</h4>
-                                    <div class="modal-body">
-                                        <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                        </form>
-                                    </div>
+                <div style="overflow-y: auto" class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                    <div class="modal-dialog" style="margin-top: 260.5px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">¿Seguro que desea eliminar este estudio?</h4>
+                                <div class="modal-body">
+                                    <form role="form" method="post" data-ng-submit="eliminarEstudio()" id="delete_data" class="text-right">
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    <!--END DELETE ESTUDIO MODAL-->
                 </div>
-                <!--END DLETE MODAL-->
+                <!--END DELETE ESTUDIO MODAL-->
+                <!--BEGIN CREATE NUTRIENTE-->
+                <div class="col-lg-12">
+                    <div style="overflow-y: auto" class="modal fade" id="formModalCreateNutriente" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Nutriente</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div >
+                                            <div>
+                                                <h4> Seleccione un Tipo de Datos</h4>
+                                                <ui-select data-ng-model="selectedNutriente.selected"
+                                                           theme="bootstrap" name="selectNutriente">
+                                                    <ui-select-match placeholder="Elija un Nutriente...">
+                                                        <strong>{{$select.selected.abreviatura}} </strong>
+                                                        {{$select.selected.nombre}} 
+                                                        <small><strong>Tipo de Dato: </strong>
+                                                            {{$select.selected.idTiposDatosAlimentos.nombreTipoDato}}
+                                                        </small>
+                                                    </ui-select-match>
+                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search" 
+                                                                       group-by="groupByNombreTipoDato"> 
+                                                        <strong>{{a.abreviatura}} </strong>
+                                                        {{a.nombre}}
+                                                    </ui-select-choices>
+                                                </ui-select> 
+                                            </div>
+                                            <br/>
+                                            <div data-ng-show="selectedNutriente.selected">
+                                                <form data-ng-submit="addTablaCnaGeneral()" method="post" name="formAddTablaCnaGeneral">
+                                                    <div class="input-group tooltip-demo">
+                                                        <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
+                                                              title="{{selectedNutriente.selected.nombre}}">{{selectedNutriente.selected.abreviatura}}</span>
+                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required
+                                                               allow-decimal-numbers/>
+                                                        <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
+                                                    </div>
+                                                    <br />
+                                                    <button class="icon-pencil btn btn-success" type="submit" 
+                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid || formAddTablaCnaGeneral.$pristine"> Guardar</button> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END CREATE NUTRIENTE-->
+                <!--BEGIN EDIT NUTRIENTE-->
+                <div class="col-lg-12">
+                    <div style="overflow-y: auto" class="modal fade" id="formModalEditNutriente" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Nutriente</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <div>
+                                            <form data-ng-submit="editTablaCnaGeneral()" method="post" name="formEditTablaCnaGeneral">
+                                                <div class="input-group tooltip-demo">
+                                                    <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
+                                                          title="{{estudioToEdit.nutrientes.nombre}}">{{estudioToEdit.nutrientes.abreviatura}}</span>
+                                                    <input type="text" class="form-control" data-ng-model="estudioToEdit.valor" required=""/>
+                                                    <span class="input-group-addon">{{estudioToEdit.nutrientes.idUnidadMedida.unidadMedida}}</span>
+                                                </div>
+                                                <br />
+                                                <button class="icon-pencil btn btn-success" type="submit" 
+                                                        data-ng-disabled="formEditTablaCnaGeneral.$invalid || formEditTablaCnaGeneral.$pristine"> Guardar</button> 
+                                            </form>
+                                            <div class="text-right">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END EDIT NUTRIENTE-->
+                <!--BEGIN EDIT ALIMENTO-->
+                <div class="col-lg-12">
+                    <div style="overflow-y: auto" class="modal fade" id="formModalEditAlimento" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="H2">Editar alimento</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form name="formEditEstudio" role="form" method="POST" data-ng-submit="editMetadatosAlimentosG()">
+                                        <div class="form-group">
+                                            <h4>
+                                                <strong>Alimento: </strong> 
+                                                <br />
+                                                <em data-toggle="tooltip" data-placement="top" title="Nombre cient&iacute;fico">{{metadatoActual.idAlimento.nombreCient}}</em>,
+                                                <em data-toggle="tooltip" data-placement="top" title="Nombre com&uacute;n">{{metadatoActual.idAlimento.nombre}}</em>,
+                                                <em data-toggle="tooltip" data-placement="top" title="Variedad">{{metadatoActual.idAlimento.variedad}}</em>,
+                                                <em data-toggle="tooltip" data-placement="top" title="Parte">{{metadatoActual.idAlimento.parte}}</em>.
+                                                <em data-toggle="tooltip" data-placement="top" title="Proceso">{{metadatoActual.idAlimento.proceso}}</em>.
+                                                <em data-toggle="tooltip" data-placement="top" title="Mezcla">{{metadatoActual.idAlimento.mezcla}}</em>.
+                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en Cuba">{{metadatoActual.idAlimento.idTipoCuba.tipoCuba}}</em>.
+                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en la FAO">{{metadatoActual.idAlimento.idTipoFao.tipoFao}}</em>.
+                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en NRC">{{metadatoActual.idAlimento.idTipoNrc.tipoNrc}}</em>.
+                                            </h4>
+
+                                            <div id="div-1" class="accordion-body collapse in body">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Riego</span>
+                                                    <select class="form-control" data-ng-model="metadatoActual.riego" 
+                                                            data-ng-options="tipo for tipo in tiposRiego">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">N</span>
+                                                    <input type="number" class="form-control" min="0"
+                                                           data-ng-model="metadatoActual.n"/>                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">N-P-K</span>
+                                                    <input type="number" min="0" data-ng-model="npk.n" /> -
+                                                    <input type="number" min="0" data-ng-model="npk.p" /> -                                                 
+                                                    <input type="number" min="0" data-ng-model="npk.k" />                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Edad</span>
+                                                    <input type="number" class="form-control" min="0" data-ng-model="metadatoActual.edad"/>                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Corte</span>
+                                                    <input type="text" class="form-control" data-ng-model="metadatoActual.corte">                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Tecnolog&iacute;a</span>
+                                                    <input type="text" class="form-control" data-ng-model="metadatoActual.tecnolog">                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Tratamiento</span>
+                                                    <input type="text" class="form-control" data-ng-model="metadatoActual.tratamiento"/>                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Presentaci&oacute;n</span>
+                                                    <input type="text" class="form-control" data-ng-model="metadatoActual.presentation">                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Otras Caracter&iacute;sticas</span>
+                                                    <input type="text" class="form-control" data-ng-model="metadatoActual.otrasCaract">                                                  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Calidad</span>
+                                                    <select class="form-control" data-ng-options="calidad.idCalidad as calidad.calidad for calidad in allCalidades" 
+                                                            data-ng-model="metadatoActual.calidad.idCalidad" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">&Eacute;poca</span>
+                                                    <select class="form-control" data-ng-options="epoca.idEpoca as epoca.nombre for epoca in allEpocas" 
+                                                            data-ng-model="metadatoActual.idEpoca.idEpoca" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Fertilizado</span>
+                                                    <select class="form-control" data-ng-options="fer.idFertilizado as fer.fertilizado for fer in allFertilizado" 
+                                                            data-ng-model="metadatoActual.fertilizado.idFertilizado" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Mes de Inicio</span>
+                                                    <select class="form-control" data-ng-options="m.idMes as m.mes for m in allMeses" 
+                                                            data-ng-model="metadatoActual.mesIni.idMes" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Mes de Finalizaci&oacute;n</span>
+                                                    <select class="form-control" data-ng-options="m.idMes as m.mes for m in allMeses" 
+                                                            data-ng-model="metadatoActual.mesFin.idMes" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Nivel de Fertilizaci&oacute;n</span>
+                                                    <select class="form-control" data-ng-options="nivelFert.idNivelFert as nivelFert.nivel for nivelFert in allNivelFert" 
+                                                            data-ng-model="metadatoActual.idNivelFert.idNivelFert" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Pa&iacute;s de importaci&oacute;n</span>
+                                                    <ui-select data-ng-model="metadatoActual.import1" 
+                                                               theme="bootstrap">
+                                                        <ui-select-match placeholder="Elija un pa&iacute;s...">
+                                                            {{$select.selected.pais}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices repeat="a in allPaises| filter: $select.search">
+                                                            {{a.pais}}
+                                                            <small> &LT;{{a.alpha2}}&GT;</small>
+                                                        </ui-select-choices>
+                                                    </ui-select>  
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Provincia</span>
+                                                    <select class="form-control" data-ng-options="prov.idProvincia as prov.provinciaNombre for prov in allProvincias" 
+                                                            data-ng-model="metadatoActual.idProvincia.idProvincia" required="">
+                                                    </select>
+                                                </div>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Rango de Edades</span>
+                                                    <select class="form-control" data-ng-options="ranEd.idRangoEdades as ranEd.rango for ranEd in allRangoEdades" 
+                                                            data-ng-model="metadatoActual.idRangoEdades.idRangoEdades" required="">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="text-right">
+                                                <button type="submit" class="btn btn-success"
+                                                        data-ng-disabled="formEditEstudio.$invalid || formEditEstudio.$pristine">Guardar</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END EDIT ALIMENTO-->
             </div>
             <!--END PAGE CONTENT -->
         </div>
@@ -486,4 +726,3 @@
     </body>
     <!-- END BODY-->
 </html>
-

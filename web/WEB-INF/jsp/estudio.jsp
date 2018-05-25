@@ -120,17 +120,20 @@
                                                     <div id="div-1" class="accordion-body collapse in body">
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
-                                                            <select class="form-control" required=""
-                                                                    data-ng-model="estudio.riego" data-ng-options="tipo for tipo in tiposRiego">
+                                                            <select class="form-control" data-ng-model="estudio.riego" 
+                                                                    data-ng-options="tipo for tipo in tiposRiego track by tipo.tipo2">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N</span>
-                                                            <input type="number" class="form-control" min="0" data-ng-model="estudio.n"/>                                                  
+                                                            <input type="number" class="form-control" min="0"
+                                                                   data-ng-model="estudio.n"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">N-P-K</span>
-                                                            <input type="text" class="form-control" data-ng-model="estudio.npk"/>                                                  
+                                                            <input type="number" min="0" data-ng-model="npk.n"/> -
+                                                            <input type="number" min="0" data-ng-model="npk.p"/> -                                                 
+                                                            <input type="number" min="0" data-ng-model="npk.k"/>                                                  
                                                         </div>
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Edad</span>
@@ -224,7 +227,7 @@
                                                     type="submit" 
                                                     data-ng-disabled="formAddEstudio.$invalid"> Guardar Metadatos de Alimento</button>
                                         </form>
-                                        <div >
+                                        <div data-ng-show="estudioInsertado">
                                             <div>
                                                 <h4> Seleccione un Tipo de Datos</h4>
                                                 <ui-select data-ng-model="selectedNutriente.selected"
@@ -237,7 +240,8 @@
                                                         </small>
                                                     </ui-select-match>
                                                     <ui-select-choices repeat="a in allNutrientes| filter: $select.search" 
-                                                                       group-by="groupByNombreTipoDato"> 
+                                                                       group-by="groupByNombreTipoDato"
+                                                                       refresh=refreshNutrientesList()> 
                                                         <strong>{{a.abreviatura}} </strong>
                                                         {{a.nombre}}
                                                     </ui-select-choices>
@@ -253,7 +257,7 @@
                                                         <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
                                                     </div>
                                                     <button class="icon-pencil btn btn-success" type="submit" 
-                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid"> Guardar</button> 
+                                                            data-ng-disabled="formAddTablaCnaGeneral.$invalid || formAddTablaCnaGeneral.$pristine"> Guardar</button> 
                                                 </form>
                                             </div>
                                         </div>
@@ -261,9 +265,12 @@
                                 </div>                            
                             </div>
                             <!--BEGIN NUTRIENTES INSERTADOS-->
-                            <div class="panel panel-primary">
+                            <div class="panel panel-primary" data-ng-show="estudioInsertado">
                                 <div class="panel-heading">Valores Insertados</div>
                                 <div class="panel-body">
+                                    <div data-ng-show="tablaCnaGeneralInsertada.length === 0">
+                                        <p>No ha insertado ning&uacute;n nutriente a&uacute;n</p>
+                                    </div>
                                     <div class="input-group tooltip-demo" data-ng-repeat="tCGI in tablaCnaGeneralInsertada track by $index">
                                         <span class="input-group-addon">{{tCGI.nutriente.idTiposDatosAlimentos.nombreTipoDato}}</span>
                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left" title="{{tCGI.nutriente.nombre}}">{{tCGI.nutriente.abreviatura}}</span>
@@ -359,7 +366,7 @@
                                             </select>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddAlimento.$invalid">Aceptar</button>
+                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddAlimento.$invalid || formAddAlimento.$pristine">Aceptar</button>
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                         </div>                            
                                     </div>

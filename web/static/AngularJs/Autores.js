@@ -1,4 +1,37 @@
 var appAutores = angular.module("appAutores", ['datatables', 'datatables.bootstrap']);
+function headerController($http, $scope) {
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+
+    $scope.notifNoLeidas = function (item) {
+        if (item.leido === "false") {
+            return item;
+        }
+    };
+    $scope.newNotification = {};
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+
+        stompClient.subscribe("/topic/notifications", function (res) {
+            $scope.allNotificaciones.unshift(JSON.parse(res.body));
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
+}
+appAutores.controller("headerController", headerController);
 appAutores.controller("AutoresController", function ($scope, $http, $window) {
     $scope.autor = {
         idAutor: "",
@@ -8,25 +41,25 @@ appAutores.controller("AutoresController", function ($scope, $http, $window) {
     };
 
     //Obtener Lista de Autores
-    $http.get("get").then(function (data) {
+    $http.get("getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Crear o Editar Autor
     $scope.createOrEditAutor = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         if ($scope.autor.idAutor === "") {
-            $http.post("add", $scope.autor, {}).then(function (r) {
+            $http.post("addAutor", $scope.autor, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de autores
-                $http.get("get").then(function (data) {
+                $http.get("getAutores").then(function (data) {
                     $scope.allAutores = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.autor, {}).then(function (r) {
+            $http.post("editAutor", $scope.autor, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de alimentos
-                $http.get("get").then(function (data) {
+                $http.get("getAutores").then(function (data) {
                     $scope.allAutores = data.data.data;
                 });
             });
@@ -35,10 +68,10 @@ appAutores.controller("AutoresController", function ($scope, $http, $window) {
     // Eliminar Autor
     $scope.eliminarAutor = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.autor.idAutor).then(function (r) {
+        $http.delete("deleteAutor/" + $scope.autor.idAutor).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("get").then(function (data) {
+            $http.get("getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
         });

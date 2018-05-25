@@ -1,25 +1,39 @@
 var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
-appIndex.controller("IndexController", function ($scope, $http, $window) {
+function headerController($http, $scope) {
+    //Obtener Lista de notificaciones
+    $http.get("./header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
 
-    $scope.notification = {};
-    $scope.msj = [];
-    var socket = new SockJS("../alicuba/websocket/configuration");
+    $scope.notifNoLeidas = function (item) {
+        if (item.leido === "false") {
+            return item;
+        }
+    };
+    $scope.newNotification = {};
+    var socket = new SockJS("./websocket/configuration");
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.notification = JSON.parse(res.body);
-            notify = new Notification($scope.notification.titulo, {
-                body: $scope.notification.mensaje,
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
-            setTimeout($scope.notification.close(), 1 * 1000);
         });
 
         stompClient.subscribe("/topic/notifications", function (res) {
-//            self.index().getMessages(JSON.parse(res.body));
-            $scope.msj.push(JSON.parse(res.body));
+            $scope.allNotificaciones.unshift(JSON.parse(res.body));
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
         });
     });
+}
+appIndex.controller("headerController", headerController);
+appIndex.controller("IndexController", function ($scope, $http, $window) {
+
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {
@@ -72,11 +86,11 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         $scope.allReferencias = data.data.data;
     });
     //Obtener Lista de Autores
-    $http.get("autores/get").then(function (data) {
+    $http.get("autores/getAutores").then(function (data) {
         $scope.allAutores = data.data.data;
     });
     //Obtener Listado de Categorias
-    $http.get("categorias/get").then(function (data) {
+    $http.get("categorias/getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Obtener Lista de Fuentes de Informacion
@@ -105,7 +119,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     // Eliminar Referencia
     $scope.eliminarReferencia = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.post("index/delete/" + $scope.referencia.idReferencia).then(function (r) {
+        $http.post("index/deleteReferencia/" + $scope.referencia.idReferencia).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Listado de Referencias
             $http.get("index/getReferencias").then(function (data) {
@@ -184,10 +198,10 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
-        $http.post("autores/add", $scope.autor, {}).then(function (r) {
+        $http.post("autores/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
-            $http.get("autores/get").then(function (data) {
+            $http.get("autores/getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
             $("#modalAddOrEditAutor").modal("toggle");
@@ -199,44 +213,40 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
-        $http.post("categorias/add", $scope.categoria, {}).then(function (r) {
+        $http.post("categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("categorias/get").then(function (data) {
+            $http.get("categorias/getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-});
-appIndex.directive('allowOnlyNumbers', function () {
-    return {
-        restrict: 'A',
-        link: function (scope, elm, attrs, ctrl) {
-            elm.on('keydown', function (event) {
-                var $input = $(this);
-                var value = $input.val();
-                value = value.replace(/[^0-9]/g, '');
-                $input.val(value);
-                if (event.which === 64 || event.which === 16) {
-                    // to allow numbers  
-                    return false;
-                } else if (event.which >= 48 && event.which <= 57) {
-                    // to allow numbers  
-                    return true;
-                } else if (event.which >= 96 && event.which <= 105) {
-                    // to allow numpad number  
-                    return true;
-                } else if ([8, 13, 27, 37, 38, 39, 40].indexOf(event.which) > -1) {
-                    // to allow backspace, enter, escape, arrows  
-                    return true;
-                } else {
-                    event.preventDefault();
-                    // to stop others  
-                    //alert("Sorry Only Numbers Allowed");  
+
+    /*
+     *  Function to allow decimal numbers to be entered in the text box
+     *   - allows integers, backspace and delete
+     *   - does not allow alphabets
+     *   - allows only one decimal point
+     *   - allows only two digits after decimal point
+     */
+    function isNumberKey(evt, element) {
+        var charCode = (evt.which) ? evt.which : window.event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode === 46 || charCode === 8))
+            return false;
+        else {
+            var len = $(element).val().length;
+            var index = $(element).val().indexOf('.');
+            if (index > 0 && charCode === 46) {
+                return false;
+            }
+            if (index > 0) {
+                var CharAfterdot = (len + 1) - index;
+                if (CharAfterdot > 3) {
                     return false;
                 }
-            });
+            }
         }
-    };
-});  
+        return true;
+    }
+});

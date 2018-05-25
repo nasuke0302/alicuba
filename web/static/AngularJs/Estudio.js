@@ -1,4 +1,37 @@
 var estudioApp = angular.module('AppEstudio', ['ui.select']);
+function headerController($http, $scope) {
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+
+    $scope.notifNoLeidas = function (item) {
+        if (item.leido === "false") {
+            return item;
+        }
+    };
+    $scope.newNotification = {};
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+
+        stompClient.subscribe("/topic/notifications", function (res) {
+            $scope.allNotificaciones.unshift(JSON.parse(res.body));
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
+}
+estudioApp.controller("headerController", headerController);
 estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.tablaCnaGeneral = {
         valor: "",
@@ -6,6 +39,11 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         idMetadatosAlimentosG: ""
     };
     $scope.oneTDA = {};
+    $scope.npk = {
+        n: "",
+        p: "",
+        k: ""
+    };
     $scope.estudio = {
         idMetadatosAlimentosG: "",
         idReferencia: "",
@@ -51,14 +89,16 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.selectedMesIni = 13;
     $scope.selectedMesFin = 13;
     $scope.selectedNivelFert = 1;
-    $scope.selectedPais = {};
+    $scope.selectedPais = {
+        selected: {pais: "Cuba", alpha3: "CUB", alpha2: "CU", idPaises: 192}
+    };
     $scope.selectedProvincia = 17;
     $scope.selectedRangoEdad = 5;
     $scope.allNutrientes = {};
     $scope.selectedNutriente = {};
     $scope.selectedTDA = {};
     $scope.tablaCnaGeneralInsertada = [];
-    $scope.estudioInsertado = true;
+    $scope.estudioInsertado = false;
     $scope.tiposRiego = {
         tipo1: "Sí",
         tipo2: "No",
@@ -71,7 +111,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.allNutrientes = data.data.data;
     });
     //Obtener Lista de Alimentos
-    $http.get("../alimentos/get").then(function (data) {
+    $http.get("../alimentos/getAlimentos").then(function (data) {
         $scope.allAlimentos = data.data.data;
     });
     //Obtener Lista de Calidades
@@ -137,10 +177,10 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.alimento.idTipoCuba = $scope.selectedTipoCuba;
         $scope.alimento.idTipoFao = $scope.selectedTipoFao;
         $scope.alimento.idTipoNrc = $scope.selectedTipoNrc;
-        $http.post("addAlimento", $scope.alimento, {}).then(function (response) {
+        $http.post("../alimentos/addAlimento", $scope.alimento, {}).then(function (response) {
             $window.alert(response.data.mensaje);
             //Obtener Lista de Alimentos
-            $http.get("../alimentos/get").then(function (data) {
+            $http.get("../alimentos/getAlimentos").then(function (data) {
                 $scope.allAlimentos = data.data.data;
             });
         });
@@ -158,6 +198,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         $scope.estudio.idProvincia = $scope.selectedProvincia;
         $scope.estudio.idRangoEdades = $scope.selectedRangoEdad;
         $scope.estudio.idReferencia = $scope.referencia.idReferencia;
+        $scope.estudio.npk = $scope.npk.n + "-" + $scope.npk.p + "-" + $scope.npk.k;
         $http.post("addEstudio", $scope.estudio, {}).then(function (response) {
             window.localStorage.setItem("metadato", JSON.stringify(response.data.data));
             $window.alert(response.data.mensaje);
@@ -165,6 +206,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
         });
     };
     $scope.addTablaCnaGeneral = function () {
+        console.log("el valor es: " + $scope.tablaCnaGeneral);
         $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
         $scope.tablaCnaGeneral.idMetadatosAlimentosG = JSON.parse(window.localStorage.getItem("metadato")).idMetadatosAlimentosG;
         $scope.tablaCnaGeneralPK = {
@@ -180,5 +222,10 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     };
     $scope.groupByNombreTipoDato = function (item) {
         return item.idTiposDatosAlimentos.nombreTipoDato;
+    };
+    $scope.refreshNutrientesList = function () {
+        for (var i = 0; i < $scope.tablaCnaGeneralInsertada.length; i++) {
+            $scope.allNutrientes.pop($scope.tablaCnaGeneralInsertada[i].nutriente);
+        }
     };
 });

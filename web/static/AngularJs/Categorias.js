@@ -1,4 +1,37 @@
 var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap']);
+function headerController($http, $scope) {
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+
+    $scope.notifNoLeidas = function (item) {
+        if (item.leido === "false") {
+            return item;
+        }
+    };
+    $scope.newNotification = {};
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+
+        stompClient.subscribe("/topic/notifications", function (res) {
+            $scope.allNotificaciones.unshift(JSON.parse(res.body));
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
+}
+appCategorias.controller("headerController", headerController);
 appCategorias.controller("CategoriasController", function ($scope, $http, $window) {
     $scope.msj = {};
     $scope.categoria = {
@@ -7,25 +40,25 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
     };
 
     //Obtener Lista de Categorias
-    $http.get("get").then(function (data) {
+    $http.get("getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
     });
     //Crear o Editar Categoria
     $scope.createOrEditCategoria = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         if ($scope.categoria.idCategoria === "") {
-            $http.post("add", $scope.categoria, {}).then(function (r) {
+            $http.post("addCategoria", $scope.categoria, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de categorias
-                $http.get("get").then(function (data) {
+                $http.get("getCategorias").then(function (data) {
                     $scope.allCategorias = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.categoria, {}).then(function (r) {
+            $http.post("editCategoria", $scope.categoria, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de Categorias
-                $http.get("get").then(function (data) {
+                $http.get("getCategorias").then(function (data) {
                     $scope.allCategorias = data.data.data;
                 });
             });
@@ -34,10 +67,10 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
     // Eliminar Categoria
     $scope.eliminarCategoria = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.categoria.idCategoria).then(function (r) {
+        $http.delete("deleteCategoria/" + $scope.categoria.idCategoria).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
-            $http.get("get").then(function (data) {
+            $http.get("getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
         });
@@ -65,16 +98,4 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
             categoria: a.categoria
         };
     };
-
-    var socket = new SockJS("../websocket/configuration");
-    var stompClient = Stomp.over(socket);
-    var notify;
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.msj = JSON.parse(res.body);
-            notify = new Notification($scope.msj.titulo, {
-                body: $scope.msj.mensaje,
-                icon: "/alicuba/static/IconWebSocket.png"});
-        });
-    });
 });

@@ -6,9 +6,11 @@
 package configuration;
 
 import javax.sql.DataSource;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -17,6 +19,8 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "repositorios")
@@ -26,7 +30,7 @@ public class Config {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "123");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "albert123");
         dataSource.setDriverClassName("org.postgresql.Driver");
         return dataSource;
     }
@@ -51,4 +55,17 @@ public class Config {
         return manager;
     }
 
+    @Bean(name = "messageSource")
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("/WEB-INF/messages");
+        messageSource.setCacheSeconds(5);
+        messageSource.setDefaultEncoding("UTF-8");
+        return messageSource;
+    }
+    
+    @Bean
+    public LocaleResolver localeResolver(){
+        return new CookieLocaleResolver();
+    }
 }

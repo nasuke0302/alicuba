@@ -1,4 +1,32 @@
 var appAlimentos = angular.module("appAlimentos", ['datatables', 'datatables.bootstrap']);
+function headerController($http, $scope) {
+    //Obtener Lista de notificaciones
+    $http.get("../header/getMessages").then(function (data) {
+        $scope.allNotificaciones = data.data.data;
+    });
+
+    $scope.newNotification = {};
+    var socket = new SockJS("../websocket/configuration");
+    var stompClient = Stomp.over(socket);
+    var notify;
+    stompClient.connect({}, function (frame) {
+        stompClient.subscribe("/user/queue/enviar", function (res) {
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+
+        stompClient.subscribe("/topic/notifications", function (res) {
+            $scope.allNotificaciones.unshift(JSON.parse(res.body));
+            $scope.newNotification = JSON.parse(res.body);
+            notify = new Notification($scope.newNotification.titulo, {
+                body: $scope.newNotification.mensaje,
+                icon: "/alicuba/static/IconWebSocket.png"});
+        });
+    });
+}
+appAlimentos.controller("headerController", headerController);
 appAlimentos.controller("AlimentosController", function ($scope, $http, $window) {
     $scope.selectedTipoCuba = "";
     $scope.selectedTipoFao = "";
@@ -17,7 +45,7 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
     };
 
     //Obtener Lista de alimentos
-    $http.get("get").then(function (data) {
+    $http.get("getAlimentos").then(function (data) {
         $scope.allAlimentos = data.data.data;
     });
     //Obtener Lista de TipoCuba
@@ -39,18 +67,18 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
         $scope.indiceRegistro.idTipoFao = $scope.selectedTipoFao;
         $scope.indiceRegistro.idTipoNrc = $scope.selectedTipoNrc;
         if ($scope.indiceRegistro.idAlimento === "") {
-            $http.post("add", $scope.indiceRegistro, {}).then(function (r) {
+            $http.post("addAlimento", $scope.indiceRegistro, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de alimentos
-                $http.get("get").then(function (data) {
+                $http.get("getAlimentos").then(function (data) {
                     $scope.allAlimentos = data.data.data;
                 });
             });
         } else {
-            $http.post("edit", $scope.indiceRegistro, {}).then(function (r) {
+            $http.post("editAlimento", $scope.indiceRegistro, {}).then(function (r) {
                 $window.alert(r.data.mensaje);
                 //Obtener Lista de alimentos
-                $http.get("get").then(function (data) {
+                $http.get("getAlimentos").then(function (data) {
                     $scope.allAlimentos = data.data.data;
                 });
             });
@@ -59,9 +87,9 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
     // Eliminar Alimento
     $scope.eliminarAlimento = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.indiceRegistro.idAlimento).then(function (r) {
+        $http.delete("deleteAlimento/" + $scope.indiceRegistro.idAlimento).then(function (r) {
             $window.alert(r);
-            $http.get("get").then(function (data) {
+            $http.get("getAlimentos").then(function (data) {
                 $scope.allAlimentos = data.data.data;
             });
         });
@@ -121,16 +149,4 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
             idUsuario: a.idUsuario
         };
     };
-    
-    var socket = new SockJS("../websocket/configuration");
-    var stompClient = Stomp.over(socket);
-    var notify;
-    stompClient.connect({}, function (frame) {
-        stompClient.subscribe("/user/queue/enviar", function (res) {
-            $scope.msj = JSON.parse(res.body);
-            notify = new Notification($scope.msj.titulo, {
-                body: $scope.msj.mensaje,
-                icon: "/alicuba/static/IconWebSocket.png"});
-        });
-    });
 });

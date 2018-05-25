@@ -53,7 +53,7 @@ public class AlimentosController {
     MensajeRepo mensajeRepo;
 
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/gestionar")
@@ -62,7 +62,7 @@ public class AlimentosController {
     }
 
     @Secured(value = "Colaborador, Editor")
-    @RequestMapping(value = "/alimentos/get")
+    @RequestMapping(value = "/alimentos/getAlimentos")
     public @ResponseBody
     Map<String, ? extends Object> getAlimentos(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
@@ -124,17 +124,28 @@ public class AlimentosController {
 
     @Secured(value = "Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/alimentos/add")
+    @RequestMapping(value = "/alimentos/addAlimento")
     public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         r.setIdUsuario(principal);
         alimentosRepo.saveAndFlush(r);
         map.put("mensaje", "Alimento insertado correctamente");
+        
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(principal.getNombre() + " ha insertado un alimento: " + r.getNombre());
+        mensaje.setTitulo("Alimento insertado");
+        mensaje.setSender(principal.getNombre());
+        mensaje.setReceiver("editores");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @Secured(value = "Colaborador, Editor")
     @ResponseBody
-    @RequestMapping(value = "/alimentos/edit")
+    @RequestMapping(value = "/alimentos/editAlimento")
     public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Alimentos r1 = alimentosRepo.findOne(r.getIdAlimento());
         r1 = r;
@@ -147,7 +158,7 @@ public class AlimentosController {
                 Date fecha = new Date();
                 mensaje.setFecha( dateFormat.format(fecha));
                 mensaje.setLeido(Boolean.FALSE);
-                mensaje.setMensaje(principal.getNombre() + " ha editado el alimento con nombre científico: "
+                mensaje.setMensaje(principal.getNombre() + " ha editado el alimento: "
                         + r1.getNombreCient());
                 mensajeRepo.saveAndFlush(mensaje);
                 messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
@@ -157,12 +168,11 @@ public class AlimentosController {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);
         }
-
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/alimentos/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/alimentos/deleteAlimento/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAlimento(@PathVariable Integer id, ModelMap map) {
         alimentosRepo.delete(id);
         map.put("mensaje", "Alimento eliminado correctamente");

@@ -5,28 +5,19 @@
  */
 package controllers;
 
-import com.sun.xml.internal.ws.api.message.Message;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Mensaje;
 import models.Referencias;
-import models.Roles;
 import models.Usuarios;
+import org.nfunk.jep.JEP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessagingException;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
-import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -45,7 +36,6 @@ import repositorios.MensajeRepo;
 import repositorios.ReferenciasRepo;
 
 @Controller
-@EnableScheduling
 public class IndexController {
 
     @Autowired
@@ -68,13 +58,7 @@ public class IndexController {
 
     List<Mensaje> notificaciones;
     String username = "";
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-    @Scheduled(fixedRate = 5000)
-    public void getMessages() throws InterruptedException {
-        notificaciones = mensajeRepo.findAll();
-        this.messagingTemplate.convertAndSend("/topic/notifications", notificaciones);
-    }
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
@@ -127,6 +111,16 @@ public class IndexController {
         referenciasRepo.saveAndFlush(r);
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(principal.getNombre() + " ha insertado una referencia: " + r.getTitle());
+        mensaje.setTitulo("Referencia insertada");
+        mensaje.setSender(principal.getNombre());
+        mensaje.setReceiver("todos");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -162,7 +156,7 @@ public class IndexController {
     }
 
     @Secured(value = "Colaborador")
-    @RequestMapping(value = "/index/delete/{idReferencia}", method = RequestMethod.POST)
+    @RequestMapping(value = "/index/deleteReferencia/{idReferencia}", method = RequestMethod.POST)
     public ModelAndView deleteReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         try {
             referenciasRepo.delete(idReferencia);
@@ -173,5 +167,4 @@ public class IndexController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
 }

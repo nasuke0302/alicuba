@@ -43,13 +43,14 @@
                             <h1 class="text-center">Administraci&oacute;n de usuarios</h1>
                             <br/>
                             <!--TABLA USUARIOS-->
-                            <table datatable="ng" class="table table-striped table-hover">
+                            <table datatable="ng" id="tablaUsuarios" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
                                         <th>Acciones</th>
                                         <th>Email</th>
                                         <th>Nombre y Apellidos</th>
                                         <th>Rol</th>
+                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,13 +60,22 @@
                                             <button class="btn btn-primary" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                     data-ng-click="abrirEditarModal($index)">
                                                 <i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#formModalEliminar"
-                                                    data-ng-click="abrirEliminarModal($index)">
-                                                <i class="glyphicon glyphicon-trash"></i></button>
+                                            <button class="btn btn-danger" data-toggle="modal" data-target="#formModalLockUser"
+                                                    data-ng-click="abrirEliminarModal($index)"
+                                                    data-ng-show="usuarios.activo">
+                                                <i class="glyphicon glyphicon-lock"></i></button>
+                                            <button class="btn btn-success" data-toggle="modal" data-target="#formModalLockUser"
+                                                    data-ng-click="abrirEliminarModal($index)"
+                                                    data-ng-show="!usuarios.activo">
+                                                <i class="glyphicon glyphicon-ok"></i></button>
                                         </td>
                                         <td>{{usuarios.email}}</td>
                                         <td>{{usuarios.nombre}} {{usuarios.apellidos}}</td>
                                         <td>{{usuarios.idRol.tipoRol}}</td>
+                                        <td class="text-center">
+                                            <span class="label label-success" data-ng-show="usuarios.activo">Habilitado</span>
+                                            <span class="label label-danger" data-ng-show="!usuarios.activo">Bloqueado</span>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -104,25 +114,32 @@
                         <!--END EDIT MODAL-->
                         <!--DELETE MODAL-->
                         <div>
-                            <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                            <div class="modal fade" id="formModalLockUser" role="dialog" style="display: none;">
                                 <div class="modal-dialog" style="margin-top: 260.5px;">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                            <h4 class="modal-title" data-ng-show="indiceRegistro.activo">
+                                                ¿Bloquear la cuenta de este usuario?
+                                            </h4>
+                                            <h4 class="modal-title" data-ng-show="!indiceRegistro.activo">
+                                                ¿Habilitar la cuenta este usuario?
+                                            </h4>
                                             <div class="modal-body">
-                                                <form role="form" method="post" data-ng-submit="eliminarUsuario()" id="delete_data" class="text-right">
-                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
+                                                <p>email: {{indiceRegistro.email}} </p>
+                                                <form role="form" method="post" data-ng-submit="lockUser()" id="delete_data" class="text-right">
+                                                    <button type="submit" class="btn btn-danger"data-ng-show="indiceRegistro.activo">Bloquear cuenta</button>
+                                                    <button type="submit" class="btn btn-success" data-ng-show="!indiceRegistro.activo">Habilitar cuenta</button>
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                                 </form>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
-                            <!--END DELETE MODAL-->
                         </div>
+                        <!--END DELETE MODAL-->
                     </div>
                 </div>
             </div>

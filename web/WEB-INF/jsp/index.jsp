@@ -110,7 +110,7 @@
                                     </div>
                                     <!--MODAL NUEVO-->
                                     <div class="col-lg-12">
-                                        <div class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div style="overflow-y: auto;" class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <form name="formAddReferencias" role="form" data-ng-submit="createOrEditReferencia()" method="post">
                                                     <div class="modal-content">
@@ -181,7 +181,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>P&aacute;ginas</label>
-                                                                <input name="inputPaginas" class="form-control" allow-only-numbers
+                                                                <input name="inputPaginas" class="form-control" type="number" min="0"
                                                                        placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
                                                                        data-ng-model="referencia.pages" required=""/>
                                                                 <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
@@ -206,8 +206,8 @@
                                                             <hr />
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Número de Informe</label>
-                                                                <input class="form-control" maxlength="8" name="inputNumInf"
-                                                                       allow-only-numbers data-ng-model="referencia.informeNum"/>
+                                                                <input class="form-control" name="inputNumInf"
+                                                                       type="number" min="0" data-ng-model="referencia.informeNum"/>
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Tipo de Informe</label>
@@ -247,7 +247,7 @@
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
                                                                                          selectedFuente.selected.idFuente === 3">
                                                                 <label>N&uacute;mero</label>
-                                                                <input class="form-control" allow-only-numbers
+                                                                <input class="form-control" type="number" min="0"
                                                                        data-ng-model="referencia.volumen"/>
                                                             </div>
 
@@ -255,7 +255,7 @@
                                                                  data-ng-show="selectedFuente.selected.idFuente === 2 ||
                                                                                          selectedFuente.selected.idFuente === 3">
                                                                 <label>Volumen o tomo</label>
-                                                                <input class="form-control" allow-only-numbers
+                                                                <input class="form-control" type="number" min="0"
                                                                        data-ng-model="referencia.numVol"/>
                                                             </div>
 
@@ -273,7 +273,7 @@
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 3 ||
                                                                                     selectedFuente.selected.idFuente === 4">
                                                                 <label>Edici&oacute;n</label>
-                                                                <input class="form-control" allow-only-numbers
+                                                                <input class="form-control" type="number" min="0"
                                                                        data-ng-model="referencia.edition"/>
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 4">

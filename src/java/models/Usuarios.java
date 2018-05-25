@@ -6,11 +6,9 @@
 package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -53,8 +51,6 @@ public class Usuarios implements Serializable, UserDetails {
     private String apellidos;
     @Column(name = "password")
     private String password;
-    @Column(name = "activo")
-    private Integer activo;
     @Column(name = "fecha_entrada")
     private String fechaEntrada;
     @Column(name = "fecha_salida")
@@ -70,6 +66,8 @@ public class Usuarios implements Serializable, UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "idUsuario")
     private List<Referencias> referenciasList;
+    @Column(name = "activo")
+    private Boolean activo;
 
     public Usuarios() {
     }
@@ -119,14 +117,6 @@ public class Usuarios implements Serializable, UserDetails {
         this.password = password;
     }
 
-    public Integer getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Integer activo) {
-        this.activo = activo;
-    }
-
     public String getFechaEntrada() {
         return fechaEntrada;
     }
@@ -157,6 +147,31 @@ public class Usuarios implements Serializable, UserDetails {
 
     public void setAlimentosList(List<Alimentos> alimentosList) {
         this.alimentosList = alimentosList;
+    }
+    
+     public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    @XmlTransient
+    public List<Referencias> getReferenciasList() {
+        return referenciasList;
+    }
+
+    public void setReferenciasList(List<Referencias> referenciasList) {
+        this.referenciasList = referenciasList;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
     @Override
@@ -204,7 +219,7 @@ public class Usuarios implements Serializable, UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.activo;
     }
 
     @Override
@@ -214,24 +229,6 @@ public class Usuarios implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return activo;
     }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    @XmlTransient
-    public List<Referencias> getReferenciasList() {
-        return referenciasList;
-    }
-
-    public void setReferenciasList(List<Referencias> referenciasList) {
-        this.referenciasList = referenciasList;
-    }
-
 }

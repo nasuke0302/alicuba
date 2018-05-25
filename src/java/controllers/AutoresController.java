@@ -5,11 +5,18 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import models.Autores;
+import models.Mensaje;
+import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
+import repositorios.MensajeRepo;
 
 /**
  *
@@ -27,18 +35,27 @@ import repositorios.AutoresRepo;
  */
 @Controller
 public class AutoresController {
-    
+
     @Autowired
     AutoresRepo autoresRepo;
-    
-    @Secured(value= "Colaborador, Editor")
+
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/autores/gestionar")
     public ModelAndView showGestionarAutores() {
         return new ModelAndView("gestionarAutores");
     }
-    
-    @Secured(value= "Colaborador, Editor")
-    @RequestMapping(value = "/autores/get")
+
+    @Secured(value = "Colaborador, Editor")
+    @RequestMapping(value = "/autores/getAutores")
     public @ResponseBody
     Map<String, ? extends Object> getAutores() {
         Map<String, Object> map = new HashMap<>();
@@ -50,31 +67,51 @@ public class AutoresController {
         }
         return map;
     }
-    
-    @Secured(value= "Colaborador")
+
+    @Secured(value = "Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/autores/add")
-    public ModelAndView addAutor(@RequestBody Autores a, ModelMap map) {
+    @RequestMapping(value = "/autores/addAutor")
+    public ModelAndView addAutor(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         autoresRepo.saveAndFlush(a);
         map.put("mensaje", "Autor insertado correctamente");
+
+        Mensaje mensaje = new Mensaje();
+        Date fecha = new Date();
+        mensaje.setFecha(dateFormat.format(fecha));
+        mensaje.setLeido(Boolean.FALSE);
+        mensaje.setMensaje(principal.getNombre() + " ha insertado un autor: " + a.getNombre());
+        mensaje.setTitulo("Autor insertado");
+        mensaje.setSender(principal.getNombre());
+        mensaje.setReceiver("todos");
+        mensajeRepo.saveAndFlush(mensaje);
+        messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-    @Secured(value= "Colaborador, Editor")
+
+    @Secured(value = "Colaborador, Editor")
     @ResponseBody
-    @RequestMapping(value = "/autores/edit")
-    public ModelAndView editAutores(@RequestBody Autores a, ModelMap map) {
+    @RequestMapping(value = "/autores/editAutor")
+    public ModelAndView editAutores(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         Autores a1 = autoresRepo.findOne(a.getIdAutor());
-        a1.setNombre(a.getNombre());
-        a1.setSegundoNombre(a.getSegundoNombre());
-        a1.setApellidos(a.getApellidos());
         autoresRepo.saveAndFlush(a1);
         map.put("mensaje", "Autor editado correctamente");
+
+        if ("Editor".equals(principal.getIdRol().toString())) {
+            Mensaje mensaje = new Mensaje();
+            Date fecha = new Date();
+            mensaje.setFecha(dateFormat.format(fecha));
+            mensaje.setLeido(Boolean.FALSE);
+            mensaje.setMensaje(principal.getNombre() + " ha editado el autor: " + a1.getNombre());
+            mensaje.setReceiver("colaboradores");
+            mensaje.setTitulo("Autor editado");
+            mensajeRepo.saveAndFlush(mensaje);
+            messagingTemplate.convertAndSend("/topic/notifications", mensaje);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
-    @Secured(value= "Colaborador")
-    @RequestMapping(value = "/autores/delete/{id}", method = RequestMethod.DELETE)
+
+    @Secured(value = "Colaborador")
+    @RequestMapping(value = "/autores/deleteAutor/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAutores(@PathVariable Integer id, ModelMap map) {
         autoresRepo.delete(id);
         map.put("mensaje", "Autor eliminado correctamente");

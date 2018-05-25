@@ -5,8 +5,7 @@
  */
 package repositorios;
 
-import java.util.List;
-import models.Mensaje;
+import models.Formulas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author Tesis
  */
 @Repository
-public interface MensajeRepo extends JpaRepository<Mensaje, Integer>{
+public interface FormulasRepo extends JpaRepository<Formulas, Integer>{
     
-    public List<Mensaje> findAllByReceiverOrderByFechaDesc(String s);
 }

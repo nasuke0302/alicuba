@@ -5,6 +5,7 @@
  */
 package configuration;
 
+import controllers.CustomAuthenticationFailureHandler;
 import controllers.CustomAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -46,15 +47,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/addUsuarios", "/helpPage/**").permitAll()
+                .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
-                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", "/categorias/**")
+                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", 
+                        "/categorias/**", "/estimacion/**")
                 .hasAnyAuthority("Editor", "Colaborador")
                 .antMatchers("/editarPerfil/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").successHandler(authenticationSuccessHandler())
+                .loginPage("/login")
+                .successHandler(authenticationSuccessHandler())
                 .permitAll()
                 .and()
                 .logout()
@@ -67,9 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web
-                .ignoring()
-                .antMatchers("/static/**");
+        web.ignoring().antMatchers("/static/**");
     }
 
     @Bean(name = "authenticationManager")
@@ -91,9 +92,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
-    
+
     @Bean
-    public CustomAuthenticationSuccessHandler authenticationSuccessHandler(){
+    public CustomAuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public CustomAuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 }
