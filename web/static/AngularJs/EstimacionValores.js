@@ -56,10 +56,6 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     });
 
     $scope.parseExp = function () {
-//        $scope.variables.x.nombresVariable = "x";
-//        $scope.variables.y.nombresVariable = "y";
-//        $scope.nuevaFormula.variablesFormulasList.push($scope.variables.x);
-//        $scope.nuevaFormula.variablesFormulasList.push($scope.variables.y);
         $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
             $window.alert(res.data.mensaje);
             $http.get("../estimacion/getFormulas").then(function (res) {
@@ -78,9 +74,13 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
         });
     };
 
+    $scope.letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","U","V","W","X","Y","Z"];
+    $scope.arregloVars = [];
+    var count = 0;
     $scope.addVariable = function () {
-        $scope.divHtmlVar = $scope.divHtmlVar + 'hola';
+        var ele = {
+            model: $scope.letras[count++]
+        };
+        $scope.arregloVars.push(ele);
     };
-
-    $scope.divHtmlVar = "<p>Variables</p>";
 });

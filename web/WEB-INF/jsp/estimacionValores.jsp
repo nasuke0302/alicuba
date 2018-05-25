@@ -93,9 +93,9 @@
                                             <label class="col-md-2">Nombre de f&oacute;rmula</label>
                                             <input class="col-md-3" type="text" data-ng-model="nuevaFormula.nombreFormula"/>
                                         </div>
-
-                                        <div class="col-md-2">Nutriente:</div>
-                                        <div class="input-group col-md-10">F&oacute;rmula:</div>
+                                        <br />
+                                        <div class="col-md-2"><label>Nutriente:</label></div>
+                                        <div class="input-group col-md-10"><label>F&oacute;rmula:</label></div>
                                         <div class="col-md-2">
                                             <ui-select data-ng-model="nuevaFormula.idNutriente" 
                                                        theme="bootstrap">
@@ -112,56 +112,32 @@
                                             <input id="inputFormula" class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
                                                    data-ng-model="nuevaFormula.formula" required=""/>
                                         </div>
+                                        <br />
                                         <div class="col-md-offset-2">
                                             <button class="btn btn-success" data-ng-click="addVariable()">
                                                 <span class="glyphicon glyphicon-plus"></span>Agregar Variable
                                             </button>
                                         </div>
-                                        <div data-ng-bind-html="divHtmlVar"></div>
-                                        <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
-                                        <div class="col-md-2" data-ng-show="nuevaFormula.formula.toString().includes('x')"></div>
-                                        <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('x')">
-                                            <div class="col-md-1 text-right">
-                                                X:
-                                            </div>
-                                            <div class="col-md-3">
-                                                <ui-select data-ng-model="variables.x" 
-                                                           theme="bootstrap">
-                                                    <ui-select-match placeholder="Elija un nutriente...">
-                                                        {{$select.selected.abreviatura}}
-                                                    </ui-select-match>
-                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
-                                                        {{a.abreviatura}}
-                                                        <small>{{a.nombre}}</small>
-                                                    </ui-select-choices>
-                                                </ui-select> 
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2" data-ng-show="nuevaFormula.formula.toString().includes('y')"></div>
-                                        <div class="row" data-ng-show="nuevaFormula.formula.toString().includes('y')">
-                                            <div class="col-md-1 text-right">
-                                                Y:
-                                            </div>
-                                            <div class="col-md-3">
-                                                <ui-select data-ng-model="variables.y" 
-                                                           theme="bootstrap">
-                                                    <ui-select-match placeholder="Elija un nutriente...">
-                                                        {{$select.selected.abreviatura}}
-                                                    </ui-select-match>
-                                                    <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
-                                                        {{a.abreviatura}}
-                                                        <small>{{a.nombre}}</small>
-                                                    </ui-select-choices>
-                                                </ui-select> 
-                                            </div>
+                                        <br />
+                                        <div class="col-md-offset-2" id="variablesInsertadasDiv">
+                                            Variables insertadas: 
                                         </div>
                                         <br />
+                                        <!--begin aqui-->
+                                        <div class="col-md-offset-2">
+                                            <div ng-repeat="var in arregloVars">
+                                                <input type="text" ng-model="var .model" placeholder="inserte nombre de variable">
+                                                <select data-ng-options="nut.nombre for nut in allNutrientes" data-ng-model="var .nut.model"></select>
+                                            </div>
+                                        </div>
+                                        <!--end aqui-->
                                         <div class="text-right row col-md-12">
                                             <input class="btn btn-success" type="submit" value="Evaluar y guardar"
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine
-                                                                       || nuevaFormula.idNutriente.length === 0"/>
+                                                               || nuevaFormula.idNutriente.length === 0"/>
                                         </div>
                                     </form>
+                                    {{arregloVars}}
                                     <!--END ADD FORMULAS-->
                                 </div>
                             </div>
