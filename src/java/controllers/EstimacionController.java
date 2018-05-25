@@ -57,7 +57,7 @@ public class EstimacionController {
             map.put("data", formulasRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
-            map.put("fail", Boolean.FALSE);
+            map.put("success", Boolean.FALSE);
         }
         return map;
     }

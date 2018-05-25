@@ -56,7 +56,6 @@ public class Nutrientes implements Serializable {
     private String nombre;
     @JoinColumn(name = "id_tipos_datos_alimentos", referencedColumnName = "id_tipos_datos_alimentos")
     @ManyToOne(optional = false)
-//    @JsonIgnore
     private TiposDatosAlimentos idTiposDatosAlimentos;
     @JoinColumn(name = "id_unidad_medida", referencedColumnName = "id_unidad_medida")
     @ManyToOne(optional = false)

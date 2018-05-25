@@ -51,14 +51,14 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
         $scope.allNutrientes = res.data.data;
     });
     //Obtener lista de todas las formulas
-    $http.get("../estimacion/getFormulas").then(function (res) {
+    $http.get("getFormulas").then(function (res) {
         $scope.allFormulas = res.data.data;
     });
 
     $scope.parseExp = function () {
         $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
             $window.alert(res.data.mensaje);
-            $http.get("../estimacion/getFormulas").then(function (res) {
+            $http.get("getFormulas").then(function (res) {
                 $scope.allFormulas = res.data.data;
             });
             $scope.nuevaFormula = {
@@ -74,7 +74,8 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
         });
     };
 
-    $scope.letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","U","V","W","X","Y","Z"];
+    $scope.letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
+        "P","Q","R","S","U","V","W","X","Y","Z"];
     $scope.arregloVars = [];
     var count = 0;
     $scope.addVariable = function () {
