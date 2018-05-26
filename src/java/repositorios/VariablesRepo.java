@@ -5,7 +5,7 @@
  */
 package repositorios;
 
-import models.Categoria;
+import models.Variables;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +14,6 @@ import org.springframework.stereotype.Repository;
  * @author albert
  */
 @Repository
-public interface CategoriasRepo extends JpaRepository<Categoria, Integer>{
+public interface VariablesRepo extends JpaRepository<Variables, Integer>{
     
 }

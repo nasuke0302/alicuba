@@ -7,6 +7,7 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,19 +15,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author albert
  */
 @Entity
-@Table(name = "variables_formulas")
+@Table(name = "variables")
 @XmlRootElement
-public class VariablesFormulas implements Serializable {
+@NamedQueries({
+    @NamedQuery(name = "Variables.findAll", query = "SELECT v FROM Variables v")
+    , @NamedQuery(name = "Variables.findByIdVariable", query = "SELECT v FROM Variables v WHERE v.idVariable = :idVariable")
+    , @NamedQuery(name = "Variables.findByNombreVariable", query = "SELECT v FROM Variables v WHERE v.nombreVariable = :nombreVariable")})
+public class Variables implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -34,21 +43,20 @@ public class VariablesFormulas implements Serializable {
     @Basic(optional = false)
     @Column(name = "id_variable")
     private Integer idVariable;
-    @JoinColumn(name = "id_formula", referencedColumnName = "id_formula")
+    @Size(max = 2147483647)
+    @Column(name = "nombre_variable")
+    private String nombreVariable;
     @JsonIgnore
-    @ManyToOne
-    private Formulas idFormula;
+    @ManyToMany(mappedBy = "variablesList")
+    private List<Formulas> formulasList;
     @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente")
     @ManyToOne
     private Nutrientes idNutriente;
-    @Size(max = 2147483647)
-    @Column(name = "nombres_variable")
-    private String nombresVariable;
 
-    public VariablesFormulas() {
+    public Variables() {
     }
 
-    public VariablesFormulas(Integer idVariable) {
+    public Variables(Integer idVariable) {
         this.idVariable = idVariable;
     }
 
@@ -60,12 +68,21 @@ public class VariablesFormulas implements Serializable {
         this.idVariable = idVariable;
     }
 
-    public Formulas getIdFormula() {
-        return idFormula;
+    public String getNombreVariable() {
+        return nombreVariable;
     }
 
-    public void setIdFormula(Formulas idFormula) {
-        this.idFormula = idFormula;
+    public void setNombreVariable(String nombreVariable) {
+        this.nombreVariable = nombreVariable;
+    }
+
+    @XmlTransient
+    public List<Formulas> getFormulasList() {
+        return formulasList;
+    }
+
+    public void setFormulasList(List<Formulas> formulasList) {
+        this.formulasList = formulasList;
     }
 
     public Nutrientes getIdNutriente() {
@@ -86,10 +103,10 @@ public class VariablesFormulas implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VariablesFormulas)) {
+        if (!(object instanceof Variables)) {
             return false;
         }
-        VariablesFormulas other = (VariablesFormulas) object;
+        Variables other = (Variables) object;
         if ((this.idVariable == null && other.idVariable != null) || (this.idVariable != null && !this.idVariable.equals(other.idVariable))) {
             return false;
         }
@@ -98,15 +115,7 @@ public class VariablesFormulas implements Serializable {
 
     @Override
     public String toString() {
-        return "models.VariablesFormulas[ idVariable=" + idVariable + " ]";
+        return "models.Variables[ idVariable=" + idVariable + " ]";
     }
-
-    public String getNombresVariable() {
-        return nombresVariable;
-    }
-
-    public void setNombresVariable(String nombresVariables) {
-        this.nombresVariable = nombresVariables;
-    }
-
+    
 }

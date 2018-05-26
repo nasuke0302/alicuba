@@ -35,15 +35,11 @@ appEstimacion.controller("headerController", headerController);
 appEstimacion.controller("EstimacionController", function ($scope, $http, $window) {
 
     $scope.nuevaFormula = {
+        idFormula: "",
         nombreFormula: "",
         formula: "",
         idNutriente: "",
-        variablesFormulasList: []
-    };
-    $scope.listaVariables = [];
-    $scope.variables = {
-        nombre: "",
-        nutriente: ""
+        variablesList: []
     };
 
     //Obtener lista de todos los nutrientes
@@ -53,34 +49,36 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     //Obtener lista de todas las formulas
     $http.get("getFormulas").then(function (res) {
         $scope.allFormulas = res.data.data;
+        console.log($scope.allFormulas);
     });
 
     $scope.parseExp = function () {
-        $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
-            $window.alert(res.data.mensaje);
-            $http.get("getFormulas").then(function (res) {
-                $scope.allFormulas = res.data.data;
+        $http.post("addVariables", $scope.arregloVars, {}).then(function (res) {
+            $scope.nuevaFormula.variablesList = res.data.data;
+            $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
+                $window.alert(res.data.mensaje);
+                $http.get("getFormulas").then(function (res) {
+                    $scope.allFormulas = res.data.data;
+                });
+                $scope.nuevaFormula = {
+                    nombreFormula: "",
+                    formula: "",
+                    idNutriente: "",
+                    variablesFormulasList: []
+                };
+                $scope.arregloVars = [];
             });
-            $scope.nuevaFormula = {
-                nombreFormula: "",
-                formula: "",
-                idNutriente: "",
-                variablesFormulasList: []
-            };
-            $scope.variables = {
-                nombre: "",
-                nutriente: ""
-            };
         });
+
     };
 
-    $scope.letras = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O",
-        "P","Q","R","S","U","V","W","X","Y","Z"];
+    $scope.letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+        "p", "q", "r", "s", "u", "v", "w", "x", "y", "z"];
     $scope.arregloVars = [];
     var count = 0;
     $scope.addVariable = function () {
         var ele = {
-            model: $scope.letras[count++]
+            nombreVariable: $scope.letras[count++]
         };
         $scope.arregloVars.push(ele);
     };

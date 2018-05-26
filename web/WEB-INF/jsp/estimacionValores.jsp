@@ -73,8 +73,8 @@
                                                 <td>{{f.idNutriente.abreviatura}}, {{f.idNutriente.nombre}}</td>
                                                 <td>{{f.formula}}</td>
                                                 <td>
-                                                    <span data-ng-repeat="v in f.variablesFormulasList">
-                                                        <strong> {{v.nombresVariable}}: </strong>
+                                                    <span data-ng-repeat="v in f.variablesList">
+                                                        <strong> {{v.nombreVariable}}: </strong>
                                                         {{v.idNutriente.abreviatura}} - {{v.idNutriente.nombre}}
                                                         <br>
                                                     </span>
@@ -88,10 +88,26 @@
                                         <h4>Insertar nueva fórmula</h4>
                                     </div>
                                     <!--BEGIN ADD FORMULAS-->
+                                    <!--begin aqui-->
+                                    <div class="col-md-offset-2">
+                                        <button class="btn btn-success" data-ng-click="addVariable()">
+                                            <span class="glyphicon glyphicon-plus"></span>Agregar Variable
+                                        </button>
+                                    </div>
+                                    <br />
+                                    <div class="col-md-offset-2">
+                                        <div ng-repeat="var in arregloVars">
+                                            <label>{{var .nombreVariable}} =</label>
+                                            <select data-ng-options="nut.nombre for nut in allNutrientes" data-ng-model="var .idNutriente"></select>
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <!--end aqui-->
                                     <form method="post" data-ng-submit="parseExp()" name="formAddExp">
                                         <div class="row">
-                                            <label class="col-md-2">Nombre de f&oacute;rmula</label>
-                                            <input class="col-md-3" type="text" data-ng-model="nuevaFormula.nombreFormula"/>
+                                            <label class="col-md-2">Nombre de la f&oacute;rmula: </label>
+                                            <input class="col-md-3" required="" data-ng-model="nuevaFormula.nombreFormula"/>
                                         </div>
                                         <br />
                                         <div class="col-md-2"><label>Nutriente:</label></div>
@@ -109,28 +125,11 @@
                                             </ui-select> 
                                         </div>
                                         <div class="input-group col-md-10">
-                                            <input id="inputFormula" class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
+                                            <input id="inputFormula" class="form-control" type="text" 
+                                                   placeholder="Introduzca una f&oacute;rmula aqui"
                                                    data-ng-model="nuevaFormula.formula" required=""/>
                                         </div>
                                         <br />
-                                        <div class="col-md-offset-2">
-                                            <button class="btn btn-success" data-ng-click="addVariable()">
-                                                <span class="glyphicon glyphicon-plus"></span>Agregar Variable
-                                            </button>
-                                        </div>
-                                        <br />
-                                        <div class="col-md-offset-2" id="variablesInsertadasDiv">
-                                            Variables insertadas: 
-                                        </div>
-                                        <br />
-                                        <!--begin aqui-->
-                                        <div class="col-md-offset-2">
-                                            <div ng-repeat="var in arregloVars">
-                                                <input type="text" ng-model="var .model" placeholder="inserte nombre de variable">
-                                                <select data-ng-options="nut.nombre for nut in allNutrientes" data-ng-model="var .nut.model"></select>
-                                            </div>
-                                        </div>
-                                        <!--end aqui-->
                                         <div class="text-right row col-md-12">
                                             <input class="btn btn-success" type="submit" value="Evaluar y guardar"
                                                    data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine
