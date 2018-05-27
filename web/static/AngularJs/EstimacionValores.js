@@ -41,6 +41,10 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
         idNutriente: "",
         variablesList: []
     };
+    $scope.letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+        "p", "q", "r", "s", "u", "v", "w", "x", "y", "z"];
+    $scope.arregloVars = [];
+    var count = 0;
 
     //Obtener lista de todos los nutrientes
     $http.get("../estudio/getNutrientes").then(function (res) {
@@ -49,9 +53,8 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     //Obtener lista de todas las formulas
     $http.get("getFormulas").then(function (res) {
         $scope.allFormulas = res.data.data;
-        console.log($scope.allFormulas);
     });
-
+    //Enviar una formula nueva al servidor para evaluar y guardar
     $scope.parseExp = function () {
         $http.post("addVariables", $scope.arregloVars, {}).then(function (res) {
             $scope.nuevaFormula.variablesList = res.data.data;
@@ -61,25 +64,70 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
                     $scope.allFormulas = res.data.data;
                 });
                 $scope.nuevaFormula = {
+                    idFormula: "",
                     nombreFormula: "",
                     formula: "",
                     idNutriente: "",
                     variablesFormulasList: []
                 };
                 $scope.arregloVars = [];
+                $('#formModalCreateOrEditFormula').modal('toggle');
             });
         });
 
     };
-
-    $scope.letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
-        "p", "q", "r", "s", "u", "v", "w", "x", "y", "z"];
-    $scope.arregloVars = [];
-    var count = 0;
+    //Añadir una nueva variable
     $scope.addVariable = function () {
         var ele = {
             nombreVariable: $scope.letras[count++]
         };
         $scope.arregloVars.push(ele);
+    };
+    //Poner en blanco los campos del modal
+    $scope.abrirNuevaFormulaModal = function () {
+        $scope.nuevaFormula = {
+            idFormula: "",
+            nombreFormula: "",
+            formula: "",
+            idNutriente: "",
+            variablesList: []
+        };
+        $scope.arregloVars = [];
+        count = 0;
+    };
+    //Enviar formula al modal eliminar
+    $scope.abrirEliminarModal = function (indice) {
+        var a = $scope.allFormulas[indice];
+        $scope.nuevaFormula = {
+            idFormula: a.idFormula,
+            nombreFormula: a.nombreFormula,
+            formula: a.formula,
+            idNutriente: a.idNutriente,
+            variablesList: a.variablesList
+        };
+    };
+    //Enviar la formula a eliminar al servidor
+    $scope.eliminarFormula = function () {
+        $("#formModalEliminarFormula").modal("toggle");
+        $http.delete("deleteFormulas/" + $scope.nuevaFormula.idFormula).then(function (r) {
+            $window.alert(r.data.mensaje);
+            //Obtener Lista de Categorias
+            $http.get("getFormulas").then(function (res) {
+                $scope.allFormulas = res.data.data;
+            });
+        });
+    };
+    //Enviar formula al modal editar
+    $scope.abrirEditarModal = function (indice) {
+        var a = $scope.allFormulas[indice];
+        $scope.nuevaFormula = {
+            idFormula: a.idFormula,
+            nombreFormula: a.nombreFormula,
+            formula: a.formula,
+            idNutriente: a.idNutriente,
+            variablesList: a.variablesList
+        };
+        $scope.arregloVars = $scope.allFormulas[indice].variablesList;
+        count = a.variablesList.length;
     };
 });

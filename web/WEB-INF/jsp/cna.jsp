@@ -637,19 +637,19 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Calidad</span>
-                                                    <select class="form-control" data-ng-options="calidad.idCalidad as calidad.calidad for calidad in allCalidades" 
+                                                    <select class="form-control" data-ng-options="c.idCalidad as c.calidad for c in allCalidades" 
                                                             data-ng-model="metadatoActual.calidad.idCalidad" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">&Eacute;poca</span>
-                                                    <select class="form-control" data-ng-options="epoca.idEpoca as epoca.nombre for epoca in allEpocas" 
+                                                    <select class="form-control" data-ng-options="e.idEpoca as e.nombre for e in allEpocas" 
                                                             data-ng-model="metadatoActual.idEpoca.idEpoca" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Fertilizado</span>
-                                                    <select class="form-control" data-ng-options="fer.idFertilizado as fer.fertilizado for fer in allFertilizado" 
+                                                    <select class="form-control" data-ng-options="f.idFertilizado as f.fertilizado for f in allFertilizado" 
                                                             data-ng-model="metadatoActual.fertilizado.idFertilizado" required="">
                                                     </select>
                                                 </div>
@@ -667,7 +667,7 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Nivel de Fertilizaci&oacute;n</span>
-                                                    <select class="form-control" data-ng-options="nivelFert.idNivelFert as nivelFert.nivel for nivelFert in allNivelFert" 
+                                                    <select class="form-control" data-ng-options="nF.idNivelFert as nF.nivel for nF in allNivelFert" 
                                                             data-ng-model="metadatoActual.idNivelFert.idNivelFert" required="">
                                                     </select>
                                                 </div>
@@ -686,13 +686,13 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Provincia</span>
-                                                    <select class="form-control" data-ng-options="prov.idProvincia as prov.provinciaNombre for prov in allProvincias" 
+                                                    <select class="form-control" data-ng-options="p.idProvincia as p.provinciaNombre for p in allProvincias" 
                                                             data-ng-model="metadatoActual.idProvincia.idProvincia" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Rango de Edades</span>
-                                                    <select class="form-control" data-ng-options="ranEd.idRangoEdades as ranEd.rango for ranEd in allRangoEdades" 
+                                                    <select class="form-control" data-ng-options="rE.idRangoEdades as rE.rango for rE in allRangoEdades" 
                                                             data-ng-model="metadatoActual.idRangoEdades.idRangoEdades" required="">
                                                     </select>
                                                 </div>

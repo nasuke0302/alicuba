@@ -43,8 +43,8 @@
                                 <div class="panel-heading  ">
                                     <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevaCategoriaModal()"
                                             data-toggle="modal" data-target="#formModalCreateOrEdit"> Nueva Categoria</button>
-                                    <!--END ABRIR MODAL AÑADIR-->
                                 </div>
+                                <!--END ABRIR MODAL AÑADIR-->
                                 <!--TABLA CATEGORIAS-->
                                 <div class="panel-body">
                                     <div class="table-responsive">
@@ -128,7 +128,6 @@
                                             </form>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
