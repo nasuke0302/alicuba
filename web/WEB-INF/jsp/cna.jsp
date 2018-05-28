@@ -104,11 +104,11 @@
                                                     <div class="panel-heading">
                                                         <em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
                                                         <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
-                                                        <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
-                                                        <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
-                                                        <abbr title="Riego">{{e.riego}}</abbr>-
-                                                        <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
-                                                        <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
+                                                        <abbr title="{{e.idProvincia.idRegion.region}}">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
+                                                        <abbr title="{{e.idEpoca.nombre}}">{{e.idEpoca.etiqueta}}</abbr>-
+                                                        <abbr title="{{e.riego}}">{{e.riego}}</abbr>-
+                                                        <abbr title="{{e.fertilizado.fertilizado}}">{{e.fertilizado.etiqueta}}</abbr>-
+                                                        <abbr title="{{e.idRangoEdades.rango}}">{{e.idRangoEdades.etiqueta}}</abbr>
                                                         <button class="btn btn-primary btn-xs" title="Editar alimento" 
                                                                 data-toggle="modal" data-target="#formModalEditAlimento"
                                                                 data-ng-click="abrirModalEditarMetadatos($index)">
@@ -158,7 +158,8 @@
                 </div>
                 <!--MODAL EDITAR REFERENCIA-->
                 <div class="col-lg-12">
-                    <div style="overflow-y: auto" class="modal fade" id="modalNuevaReferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div style="overflow-y: auto" class="modal fade" id="modalNuevaReferencia" tabindex="-1" 
+                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <form name="formAddReferencias" role="form" data-ng-submit="saveReferencia()" method="post">
                                 <div class="modal-content">
@@ -597,7 +598,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Riego</span>
                                                     <select class="form-control" data-ng-model="metadatoActual.riego" 
-                                                            data-ng-options="tipo for tipo in tiposRiego">
+                                                            data-ng-options="tipo.etiqueta as tipo.valor for tipo in tiposRiego track by tipo.tipo2">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">

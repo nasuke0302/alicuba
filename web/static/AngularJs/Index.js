@@ -34,6 +34,7 @@ function headerController($http, $scope) {
 appIndex.controller("headerController", headerController);
 appIndex.controller("IndexController", function ($scope, $http, $window) {
 
+    $scope.validarNombres = "/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/";
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {

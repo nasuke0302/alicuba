@@ -102,10 +102,19 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         idNutriente: "",
         idMetadatosAlimentosG: ""
     };
-    $scope.tiposRiego = {
-        tipo1: "Sí",
-        tipo2: "No",
-        tipo3: "Sin definir"
+   $scope.tiposRiego = {
+        tipo1: {
+            valor: "Sí",
+            etiqueta: "Rie"
+        },
+        tipo2: {
+            valor: "No",
+            etiqueta: "NoRie"
+        },
+        tipo3: {
+            valor: "Sin definir riego",
+            etiqueta: "SDRie"
+        }
     };
 
     $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {

@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Formulas.findByFormula", query = "SELECT f FROM Formulas f WHERE f.formula = :formula")})
 public class Formulas implements Serializable {
 
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ManyToOne
+    private Usuarios idUsuario;
+
     @JoinTable(name = "variables_por_formulas", joinColumns = {
         @JoinColumn(name = "id_formula", referencedColumnName = "id_formula")}, inverseJoinColumns = {
         @JoinColumn(name = "id_variable", referencedColumnName = "id_variable")})
@@ -134,6 +138,14 @@ public class Formulas implements Serializable {
 
     public void setVariablesList(List<Variables> variablesList) {
         this.variablesList = variablesList;
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
     
 }

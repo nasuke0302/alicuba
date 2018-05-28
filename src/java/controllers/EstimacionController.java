@@ -9,10 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Formulas;
+import models.Usuarios;
 import models.Variables;
 import org.nfunk.jep.JEP;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,7 +71,7 @@ public class EstimacionController {
 
     @RequestMapping(value = "/estimacion/parseExp")
     public @ResponseBody
-    Map<String, ? extends Object> parseExp(@RequestBody Formulas formula) {
+    Map<String, ? extends Object> parseExp(@RequestBody Formulas formula, @AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         parser.setImplicitMul(true);
         parser.setAllowUndeclared(true);
@@ -81,6 +83,7 @@ public class EstimacionController {
             map.put("success", Boolean.FALSE);
             return map;
         } else {
+            formula.setIdUsuario(principal);
             formulasRepo.saveAndFlush(f1);
             map.put("mensaje", "Expresion correcta");
             map.put("success", Boolean.TRUE);

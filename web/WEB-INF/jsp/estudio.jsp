@@ -121,7 +121,7 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon">Riego</span>
                                                             <select class="form-control" data-ng-model="estudio.riego" 
-                                                                    data-ng-options="tipo for tipo in tiposRiego track by tipo.tipo2">
+                                                                    data-ng-options="tipo.etiqueta as tipo.valor for tipo in tiposRiego track by tipo.tipo2">
                                                             </select>
                                                         </div>
                                                         <div class="input-group">

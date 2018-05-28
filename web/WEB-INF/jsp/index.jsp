@@ -308,7 +308,6 @@
                                     </div> 
                                     <!--END MODAL NUEVO-->
                                     <!--DELETE MODAL-->
-                                    <div>
                                         <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
                                             <div class="modal-dialog" style="margin-top: 260.5px;">
                                                 <div class="modal-content">
@@ -322,12 +321,10 @@
                                                             </form>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
-                                        <!--END DELETE MODAL-->
-                                    </div>
+                                    <!--END DELETE MODAL-->
                                     <!--CREATE AUTOR-->
                                     <div class="col-lg-12">
                                         <div class="modal fade" id="modalAddOrEditAutor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -341,7 +338,7 @@
                                                         <form role="form" data-ng-submit="addAutor()" method="post" name="formAddAutor">
                                                             <div class="form-group">
                                                                 <label>Nombre</label>
-                                                                <input class="form-control" name="inputAutorNombre" data-ng-pattern="/^[a-zA-Z]*$/"
+                                                                <input class="form-control" name="inputAutorNombre" data-ng-pattern="validarNombres"
                                                                        required="" data-ng-model="autor.nombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
@@ -350,7 +347,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Segundo Nombre</label>
-                                                                <input class="form-control" type="text" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" type="text" data-ng-pattern="validarNombres"
                                                                        data-ng-model="autor.segundoNombre" name="inputAutorSegundoNombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorSegundoNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -358,7 +355,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Apellidos</label>
-                                                                <input class="form-control" type="text" name="inputAutorApellidos" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" type="text" name="inputAutorApellidos" data-ng-pattern="validarNombres"
                                                                        required="" data-ng-model="autor.apellidos"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorApellidos.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>

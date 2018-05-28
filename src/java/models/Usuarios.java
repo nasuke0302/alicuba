@@ -37,6 +37,10 @@ import org.springframework.security.core.userdetails.UserDetails;
     @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")})
 public class Usuarios implements Serializable, UserDetails {
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "idUsuario")
+    private List<Formulas> formulasList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -230,5 +234,14 @@ public class Usuarios implements Serializable, UserDetails {
     @Override
     public boolean isEnabled() {
         return activo;
+    }
+
+    @XmlTransient
+    public List<Formulas> getFormulasList() {
+        return formulasList;
+    }
+
+    public void setFormulasList(List<Formulas> formulasList) {
+        this.formulasList = formulasList;
     }
 }

@@ -58,6 +58,7 @@
                                                 <th>Nutriente resultado</th>
                                                 <th>F&oacute;rmula</th>
                                                 <th>Variables</th>
+                                                <th>Colaborador</th>
                                             <tr>
                                         </thead>
                                         <tbody>
@@ -86,6 +87,9 @@
                                                         {{v.idNutriente.abreviatura}} - <small>{{v.idNutriente.nombre}}</small>
                                                         <br>
                                                     </span>
+                                                </td>
+                                                <td>{{f.idUsuario.nombre}} {{f.idUsuario.segundoNombre}} {{f.idUsuario.apellidos}}<br/>
+                                                    <small>{{f.idUsuario.email}}</small>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -169,7 +173,6 @@
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
                                                     <div class="modal-body">
-                                                        {{nuevaFormula.idFormula}}
                                                         <form role="form" method="post" data-ng-submit="eliminarFormula()" id="delete_data" class="text-right">
                                                             <button type="submit" class="btn btn-danger">Eliminar</button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
