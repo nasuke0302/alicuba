@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,17 +44,10 @@ public class EditarPerfilController {
 
     @RequestMapping(value = "/editarPerfil/getUsuarioAutenticado")
     public @ResponseBody
-    Map<String, ? extends Object> getUsuarioAutenticado() {
-        String username = "";
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
+    Map<String, ? extends Object> getUsuarioAutenticado(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", repo.findByNombreIgnoreCase(username));
+            map.put("data", repo.findByEmail(principal.getEmail()));
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
@@ -78,20 +72,16 @@ public class EditarPerfilController {
     }
 
     @RequestMapping(value = "/editarPerfil/cambiarPassword")
-    public ModelAndView cambiarPassword(@RequestBody String password, ModelMap map) {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = "";
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-            Usuarios u1 = (Usuarios) repo.findByNombreIgnoreCase(username);
+    public ModelAndView cambiarPassword(@RequestBody String password, ModelMap map,
+            @AuthenticationPrincipal Usuarios principal) {
+        try {
+            Usuarios u1 = (Usuarios) repo.findByNombreIgnoreCase(principal.getUsername());
             u1.setPassword(passwordEncoder.encode(password));
             repo.saveAndFlush(u1);
             map.put("mensaje", "Su contrase&ntilde;a ha sido cambiada correctamente");
-        } else {
-            username = principal.toString();
+        } catch (Exception e) {
             map.put("Error", "Error al cambiar su contraseña");
         }
-
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

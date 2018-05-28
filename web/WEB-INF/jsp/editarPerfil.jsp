@@ -96,6 +96,7 @@
                                                             && !FormCambiarPassword.confirmNewPass.$validValidator">
                                         <small style="color:red; display: block; text-align: center;">Las contraseñas no coinciden</small>
                                     </div>
+                                    <br />
                                     <div class="text-right">
                                         <input class="btn btn-success" type="submit" value="Actualizar contrase&ntilde;a"
                                                data-ng-disabled="FormCambiarPassword.$invalid"/>

@@ -165,7 +165,7 @@ public class AlimentosController {
                         "/queue/enviar", mensaje);
             }
         } catch (Exception e) {
-            map.put("mensaje", "Error al actualizar la referencia");
+            map.put("mensaje", "Error al actualizar el alimento");
             map.put("error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
