@@ -35,10 +35,11 @@ public class Nutrientes implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "idNutriente")
-    private List<Formulas> formulasList;
+    private List<Variables> variablesList;
+
     @JsonIgnore
     @OneToMany(mappedBy = "idNutriente")
-    private List<VariablesFormulas> variablesFormulasList;
+    private List<Formulas> formulasList;
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nutrientes")
@@ -56,7 +57,6 @@ public class Nutrientes implements Serializable {
     private String nombre;
     @JoinColumn(name = "id_tipos_datos_alimentos", referencedColumnName = "id_tipos_datos_alimentos")
     @ManyToOne(optional = false)
-//    @JsonIgnore
     private TiposDatosAlimentos idTiposDatosAlimentos;
     @JoinColumn(name = "id_unidad_medida", referencedColumnName = "id_unidad_medida")
     @ManyToOne(optional = false)
@@ -153,12 +153,11 @@ public class Nutrientes implements Serializable {
     }
 
     @XmlTransient
-    public List<VariablesFormulas> getVariablesFormulasList() {
-        return variablesFormulasList;
+    public List<Variables> getVariablesList() {
+        return variablesList;
     }
 
-    public void setVariablesFormulasList(List<VariablesFormulas> variablesFormulasList) {
-        this.variablesFormulasList = variablesFormulasList;
+    public void setVariablesList(List<Variables> variablesList) {
+        this.variablesList = variablesList;
     }
-
 }

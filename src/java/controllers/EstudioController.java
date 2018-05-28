@@ -301,7 +301,7 @@ public class EstudioController {
     
     @Secured(value = "Editor, Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
+    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
             @PathVariable Double valor, ModelMap map) {
         try {

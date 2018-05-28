@@ -116,14 +116,14 @@
                                               name="formAddAlimento" method="post">
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombreCient"
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombreCient"
                                                        required="" data-ng-model="indiceRegistro.nombreCient"/>
                                                 <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
                                                 </div>
                                                 <label>Nombre</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombre"
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombre"
                                                        required="" data-ng-model="indiceRegistro.nombre"/>
                                                 <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>

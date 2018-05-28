@@ -29,7 +29,7 @@
                     <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages" style="width: 300px">
-                    <li data-ng-repeat="notif in allNotificaciones | filter:{leido:'false'} | limitTo: 3">
+                    <li data-ng-repeat="notif in allNotificaciones| filter:{leido:'false'} | limitTo: 3">
                         <a href="#">
                             <div>
                                 <strong>{{notif.titulo}}</strong>
@@ -58,14 +58,13 @@
                     <i class="icon-user "> 
                         <seg:authentication property="principal.nombre"></seg:authentication>${user}
                         (<seg:authentication property="principal.idRol"></seg:authentication>${user})
-                    </i>&nbsp; <i class="icon-chevron-down "></i>
+                        </i>&nbsp; <i class="icon-chevron-down "></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
                         <li><a href="${pageContext.request.contextPath}/editarPerfil/show"><i class="icon-user"></i> Editar mi perfil </a></li>
-                    <!--<li class="divider"></li>-->
-                    <li><a href="${pageContext.request.contextPath}/logout"><i class="icon-signout"></i> Cerrar Sesi&oacute;n</a></li>
-                    <li class="divider"></li>
                     <li><a href="${pageContext.request.contextPath}/helpPage"><i class="icon-question"></i> Acerca de...</a></li>
+                    <li class="divider"></li>
+                    <li><a href="${pageContext.request.contextPath}/logout"><i class="icon-signout"></i> Cerrar Sesi&oacute;n</a></li>
                 </ul>
             </li>
             <!--END ADMIN SETTINGS SECTIONS--> 

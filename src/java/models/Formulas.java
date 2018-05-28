@@ -5,15 +5,19 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -37,6 +41,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Formulas.findByFormula", query = "SELECT f FROM Formulas f WHERE f.formula = :formula")})
 public class Formulas implements Serializable {
 
+    @JoinTable(name = "variables_por_formulas", joinColumns = {
+        @JoinColumn(name = "id_formula", referencedColumnName = "id_formula")}, inverseJoinColumns = {
+        @JoinColumn(name = "id_variable", referencedColumnName = "id_variable")})
+    @ManyToMany
+    private List<Variables> variablesList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,8 +62,6 @@ public class Formulas implements Serializable {
     @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente")
     @ManyToOne
     private Nutrientes idNutriente;
-    @OneToMany(mappedBy = "idFormula")
-    private List<VariablesFormulas> variablesFormulasList;
 
     public Formulas() {
     }
@@ -94,15 +102,6 @@ public class Formulas implements Serializable {
         this.idNutriente = idNutriente;
     }
 
-    @XmlTransient
-    public List<VariablesFormulas> getVariablesFormulasList() {
-        return variablesFormulasList;
-    }
-
-    public void setVariablesFormulasList(List<VariablesFormulas> variablesFormulasList) {
-        this.variablesFormulasList = variablesFormulasList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -125,7 +124,16 @@ public class Formulas implements Serializable {
 
     @Override
     public String toString() {
-        return "models.Formulas[ idFormula=" + idFormula + " ]";
+        return "idformula:" + idFormula + ", nombreFormula: " + nombreFormula + ", formula: " + formula + ", idNutriente: " + idNutriente;
+    }
+
+    @XmlTransient
+    public List<Variables> getVariablesList() {
+        return variablesList;
+    }
+
+    public void setVariablesList(List<Variables> variablesList) {
+        this.variablesList = variablesList;
     }
     
 }

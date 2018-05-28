@@ -5,15 +5,15 @@
  */
 package repositorios;
 
-import models.Formulas;
+import models.Variables;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author Tesis
+ * @author albert
  */
 @Repository
-public interface FormulasRepo extends JpaRepository<Formulas, Integer>{
-
+public interface VariablesRepo extends JpaRepository<Variables, Integer>{
+    
 }

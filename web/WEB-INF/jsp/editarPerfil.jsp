@@ -63,6 +63,7 @@
                                         ¡Este campo es requerido!
                                     </small>
                                 </div>
+                                <br />
                                 <div class="text-right">
                                     <input class="btn btn-success" type="submit" value="Guardar Cambios"
                                            data-ng-disabled="formEditarPerfil.$invalid"/>

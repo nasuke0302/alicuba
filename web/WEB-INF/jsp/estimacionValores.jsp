@@ -42,9 +42,12 @@
                         <div class="col-lg-12">
                             <br />
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <p>Estimar</p>
+                                <!--ABRIR MODAL AÑADIR-->
+                                <div class="panel-heading  ">
+                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevaFormulaModal()"
+                                            data-toggle="modal" data-target="#formModalCreateOrEditFormula"> Nueva F&oacute;rmula</button>
                                 </div>
+                                <!--END ABRIR MODAL AÑADIR-->
                                 <div class="panel-body">
                                     <!--BEGIN TABLE FORMULAS-->
                                     <table class="table table-condensed table-hover">
@@ -60,22 +63,27 @@
                                         <tbody>
                                             <tr data-ng-repeat="f in allFormulas track by $index">
                                                 <td>
-                                                    <button class="btn btn-primary btn-xs">
+                                                    <input type="hidden" value="{{f.idFormula}}"/>
+                                                    <button class="btn btn-primary btn-xs"
+                                                            data-toggle="modal" data-target="#formModalCreateOrEditFormula" 
+                                                            data-ng-click="abrirEditarModal($index)">
                                                         <i class="glyphicon glyphicon-pencil"></i>
                                                     </button>
                                                     <sec:authorize access="hasAuthority('Colaborador')">
-                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar">
+                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" 
+                                                                data-target="#formModalEliminarFormula"
+                                                                data-ng-click="abrirEliminarModal($index)">
                                                             <i class="glyphicon glyphicon-trash"></i>
                                                         </button>
                                                     </sec:authorize>
                                                 </td>
                                                 <td>{{f.nombreFormula}}</td>
-                                                <td>{{f.idNutriente.abreviatura}}, {{f.idNutriente.nombre}}</td>
+                                                <td>{{f.idNutriente.abreviatura}}, <small>{{f.idNutriente.nombre}}</small></td>
                                                 <td>{{f.formula}}</td>
                                                 <td>
-                                                    <span data-ng-repeat="v in f.variablesFormulasList">
-                                                        <strong> {{v.nombresVariable}}: </strong>
-                                                        {{v.idNutriente.abreviatura}} - {{v.idNutriente.nombre}}
+                                                    <span data-ng-repeat="v in f.variablesList">
+                                                        <strong> {{v.nombreVariable}}: </strong>
+                                                        {{v.idNutriente.abreviatura}} - <small>{{v.idNutriente.nombre}}</small>
                                                         <br>
                                                     </span>
                                                 </td>
@@ -83,62 +91,95 @@
                                         </tbody>
                                     </table>
                                     <!--END TABLE FORMULAS-->
-                                    <hr />
-                                    <div class="text-center alert alert-success">
-                                        <h4>Insertar nueva fórmula</h4>
-                                    </div>
-                                    <!--BEGIN ADD FORMULAS-->
-                                    <form method="post" data-ng-submit="parseExp()" name="formAddExp">
-                                        <div class="row">
-                                            <label class="col-md-2">Nombre de f&oacute;rmula</label>
-                                            <input class="col-md-3" type="text" data-ng-model="nuevaFormula.nombreFormula"/>
-                                        </div>
-                                        <br />
-                                        <div class="col-md-2"><label>Nutriente:</label></div>
-                                        <div class="input-group col-md-10"><label>F&oacute;rmula:</label></div>
-                                        <div class="col-md-2">
-                                            <ui-select data-ng-model="nuevaFormula.idNutriente" 
-                                                       theme="bootstrap">
-                                                <ui-select-match placeholder="Elija un nutriente...">
-                                                    {{$select.selected.abreviatura}}
-                                                </ui-select-match>
-                                                <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
-                                                    {{a.abreviatura}}
-                                                    <small>{{a.nombre}}</small>
-                                                </ui-select-choices>
-                                            </ui-select> 
-                                        </div>
-                                        <div class="input-group col-md-10">
-                                            <input id="inputFormula" class="form-control" type="text" placeholder="Introduzca una f&oacute;rmula aqui"
-                                                   data-ng-model="nuevaFormula.formula" required=""/>
-                                        </div>
-                                        <br />
-                                        <div class="col-md-offset-2">
-                                            <button class="btn btn-success" data-ng-click="addVariable()">
-                                                <span class="glyphicon glyphicon-plus"></span>Agregar Variable
-                                            </button>
-                                        </div>
-                                        <br />
-                                        <div class="col-md-offset-2" id="variablesInsertadasDiv">
-                                            Variables insertadas: 
-                                        </div>
-                                        <br />
-                                        <!--begin aqui-->
-                                        <div class="col-md-offset-2">
-                                            <div ng-repeat="var in arregloVars">
-                                                <input type="text" ng-model="var .model" placeholder="inserte nombre de variable">
-                                                <select data-ng-options="nut.nombre for nut in allNutrientes" data-ng-model="var .nut.model"></select>
+                                    <!--CREATE OR EDIT MODAL-->
+                                    <div class="modal fade" id="formModalCreateOrEditFormula" tabindex="-1" 
+                                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="H2">Nueva f&oacute;rmula</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <button class="btn btn-success" data-ng-click="addVariable()">
+                                                        <span class="glyphicon glyphicon-plus"></span>Agregar Variable
+                                                    </button>
+                                                    <br />
+                                                    <br />
+                                                    <div ng-repeat="vari in arregloVars">
+                                                        <label>{{vari.nombreVariable}} =</label>
+                                                        <ui-select data-ng-model="vari.idNutriente" 
+                                                                   theme="bootstrap">
+                                                            <ui-select-match placeholder="Elija un nutriente...">
+                                                                {{$select.selected.abreviatura}}
+                                                            </ui-select-match>
+                                                            <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                                {{a.abreviatura}}
+                                                                <small>{{a.nombre}}</small>
+                                                            </ui-select-choices>
+                                                        </ui-select> 
+                                                        <br />
+                                                    </div>
+                                                    <form role="form" data-ng-submit="parseExp()" 
+                                                          name="formAddFormula" method="post">
+                                                        <div class="form-group">
+                                                            <label>Nombre de la f&oacute;rmula: </label>
+                                                            <input class="form-control" required="" data-ng-model="nuevaFormula.nombreFormula"/>
+                                                            <br />
+                                                            <label>Nutriente:</label>
+                                                            <ui-select data-ng-model="nuevaFormula.idNutriente" 
+                                                                       theme="bootstrap">
+                                                                <ui-select-match placeholder="Elija un nutriente...">
+                                                                    {{$select.selected.abreviatura}}
+                                                                </ui-select-match>
+                                                                <ui-select-choices repeat="a in allNutrientes| filter: $select.search">
+                                                                    {{a.abreviatura}}
+                                                                    <small>{{a.nombre}}</small>
+                                                                </ui-select-choices>
+                                                            </ui-select> 
+                                                            <div data-ng-show="nuevaFormula.idNutriente === ''">
+                                                                <span style="color:red; display: block; text-align: center;">
+                                                                    Seleccione un nutriente</span>
+                                                            </div>
+                                                            <br />
+                                                            <label>F&oacute;rmula:</label>
+                                                            <input id="inputFormula" class="form-control" type="text"
+                                                                   placeholder="Introduzca una f&oacute;rmula aqui"
+                                                                   data-ng-model="nuevaFormula.formula" required=""/>
+                                                            <br />
+                                                            <div class="text-right">
+                                                                <input type="hidden" data-ng-model="nuevaFormula.idFormula"/>
+                                                                <input class="btn btn-success" type="submit" value="Evaluar y guardar"
+                                                                       data-ng-disabled="formAddFormula.$invalid || formAddFormula.$pristine
+                                                                                           || nuevaFormula.idNutriente === ''"/>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!--end aqui-->
-                                        <div class="text-right row col-md-12">
-                                            <input class="btn btn-success" type="submit" value="Evaluar y guardar"
-                                                   data-ng-disabled="formAddExp.$invalid || formAddExp.$pristine
-                                                               || nuevaFormula.idNutriente.length === 0"/>
+                                    </div>
+                                    <!--END EDIT MODAL-->
+                                    <!--DELETE MODAL-->
+                                    <div class="modal fade" id="formModalEliminarFormula" role="dialog" style="display: none;">
+                                        <div class="modal-dialog" style="margin-top: 260.5px;">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                                    <div class="modal-body">
+                                                        {{nuevaFormula.idFormula}}
+                                                        <form role="form" method="post" data-ng-submit="eliminarFormula()" id="delete_data" class="text-right">
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </form>
-                                    {{arregloVars}}
-                                    <!--END ADD FORMULAS-->
+                                    </div>
+                                    <!--END DELETE MODAL-->
                                 </div>
                             </div>
                         </div>

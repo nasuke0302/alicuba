@@ -82,9 +82,6 @@
                                     <h5>Estudios Registrados</h5>
                                     <div class="toolbar">
                                         <ul class="nav">  
-                                            <li><a data-ng-click="estudiosPorReferencia(referencia.idReferencia)" class="btn btn-primary">
-                                                    <span class="glyphicon glyphicon-eye-open"></span> Ver estudios de la referencia</a>
-                                            </li>
                                             <li><a data-ng-click="nuevoEstudio()" class="btn btn-primary">
                                                     <span class="glyphicon glyphicon-plus"></span> Nuevo estudio</a>
                                             </li>
@@ -97,57 +94,60 @@
                                     </div>
                                 </header>
                                 <div id="div-1" class="accordion-body collapse in body">
-                                    <table class="table table-striped">
+                                    <table class="table">
                                         <tr>
                                             <td><strong>Estudio</strong></td>
-                                            <td><strong>Nutrientes</strong></td>
                                         </tr>
                                         <tr data-ng-repeat="e in estudioPorReferencia" data-ng-init="indexAlimentos = $index">
-                                            <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
-                                                <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
-                                                <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
-                                                <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
-                                                <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
-                                                <abbr title="Riego">{{e.riego}}</abbr>-
-                                                <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
-                                                <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
-                                                <button class="btn btn-primary btn-xs" title="Editar alimento" 
-                                                        data-toggle="modal" data-target="#formModalEditAlimento"
-                                                        data-ng-click="abrirModalEditarMetadatos($index)">
-                                                    <i class="glyphicon glyphicon-pencil"></i></button>
-                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
-                                                        title="Eliminar alimento"
-                                                        data-ng-click="abrirEliminarAlimentoModal($index)">
-                                                    <i class="glyphicon glyphicon-trash"></i></button>
-                                            </td>
                                             <td>
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn btn-success" value="A&ntilde;adir nutriente"
-                                                                    data-toggle="modal" data-target="#formModalCreateNutriente"
-                                                                    data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
-                                                                Nuevo nutriente
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
-                                                        <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
-                                                        <td>
-                                                            <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
-                                                            {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
-                                                        <td> {{nut.valor}}</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-xs" title="Editar estudio"
-                                                                    data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
-                                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    title="Eliminar estudio"
-                                                                    data-ng-click="abrirEliminarModal($parent.$index, $index)">
-                                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                                        </td> 
-                                                    </tr>
-                                                </table>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
+                                                        <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
+                                                        <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
+                                                        <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
+                                                        <abbr title="Riego">{{e.riego}}</abbr>-
+                                                        <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
+                                                        <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
+                                                        <button class="btn btn-primary btn-xs" title="Editar alimento" 
+                                                                data-toggle="modal" data-target="#formModalEditAlimento"
+                                                                data-ng-click="abrirModalEditarMetadatos($index)">
+                                                            <i class="glyphicon glyphicon-pencil"></i></button>
+                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
+                                                                title="Eliminar alimento"
+                                                                data-ng-click="abrirEliminarAlimentoModal($index)">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table">
+                                                            <tr>
+                                                                <td>
+                                                                    <button class="btn btn-success" value="A&ntilde;adir nutriente"
+                                                                            data-toggle="modal" data-target="#formModalCreateNutriente"
+                                                                            data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
+                                                                        Nuevo nutriente
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
+                                                                <td>
+                                                                    <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                                    {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
+                                                                <td> {{nut.valor}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-primary btn-xs" title="Editar estudio"
+                                                                            data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
+                                                                        <i class="glyphicon glyphicon-pencil"></i></button>
+                                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                            title="Eliminar estudio"
+                                                                            data-ng-click="abrirEliminarModal($parent.$index, $index)">
+                                                                        <i class="glyphicon glyphicon-trash"></i></button>
+                                                                </td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
@@ -637,19 +637,19 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Calidad</span>
-                                                    <select class="form-control" data-ng-options="calidad.idCalidad as calidad.calidad for calidad in allCalidades" 
+                                                    <select class="form-control" data-ng-options="c.idCalidad as c.calidad for c in allCalidades" 
                                                             data-ng-model="metadatoActual.calidad.idCalidad" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">&Eacute;poca</span>
-                                                    <select class="form-control" data-ng-options="epoca.idEpoca as epoca.nombre for epoca in allEpocas" 
+                                                    <select class="form-control" data-ng-options="e.idEpoca as e.nombre for e in allEpocas" 
                                                             data-ng-model="metadatoActual.idEpoca.idEpoca" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Fertilizado</span>
-                                                    <select class="form-control" data-ng-options="fer.idFertilizado as fer.fertilizado for fer in allFertilizado" 
+                                                    <select class="form-control" data-ng-options="f.idFertilizado as f.fertilizado for f in allFertilizado" 
                                                             data-ng-model="metadatoActual.fertilizado.idFertilizado" required="">
                                                     </select>
                                                 </div>
@@ -667,7 +667,7 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Nivel de Fertilizaci&oacute;n</span>
-                                                    <select class="form-control" data-ng-options="nivelFert.idNivelFert as nivelFert.nivel for nivelFert in allNivelFert" 
+                                                    <select class="form-control" data-ng-options="nF.idNivelFert as nF.nivel for nF in allNivelFert" 
                                                             data-ng-model="metadatoActual.idNivelFert.idNivelFert" required="">
                                                     </select>
                                                 </div>
@@ -686,13 +686,13 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Provincia</span>
-                                                    <select class="form-control" data-ng-options="prov.idProvincia as prov.provinciaNombre for prov in allProvincias" 
+                                                    <select class="form-control" data-ng-options="p.idProvincia as p.provinciaNombre for p in allProvincias" 
                                                             data-ng-model="metadatoActual.idProvincia.idProvincia" required="">
                                                     </select>
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Rango de Edades</span>
-                                                    <select class="form-control" data-ng-options="ranEd.idRangoEdades as ranEd.rango for ranEd in allRangoEdades" 
+                                                    <select class="form-control" data-ng-options="rE.idRangoEdades as rE.rango for rE in allRangoEdades" 
                                                             data-ng-model="metadatoActual.idRangoEdades.idRangoEdades" required="">
                                                     </select>
                                                 </div>
