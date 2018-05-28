@@ -84,7 +84,7 @@ public class gestionarUsuariosController {
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
         mensaje.setMensaje(u.getNombre() + " es ahora " + u.getIdRol().getTipoRol() + " de AliCuba");
-        mensaje.setTitulo("Usuario Editado");
+        mensaje.setTitulo("Usuario editado");
         mensaje.setSender(u.getNombre());
         mensaje.setReceiver("todos");
         mensajeRepo.saveAndFlush(mensaje);

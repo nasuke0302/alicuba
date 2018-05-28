@@ -5,14 +5,21 @@
  */
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import models.Mensaje;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
+import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +33,7 @@ import repositorios.AlimentosRepo;
 import repositorios.CalidadRepo;
 import repositorios.EpocasRepo;
 import repositorios.FertilizadoRepo;
+import repositorios.MensajeRepo;
 import repositorios.MesesRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.NivelFertRepo;
@@ -85,6 +93,14 @@ public class EstudioController {
 
     @Autowired
     TablaCnaGeneralRepo tablaCnaGeneralRepo;
+
+    @Autowired
+    SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    MensajeRepo mensajeRepo;
+
+    String username = "";
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @RequestMapping(value = "/estudio/gestionar")
     public ModelAndView showEstudio() {
@@ -268,13 +284,26 @@ public class EstudioController {
 
     @ResponseBody
     @RequestMapping(value = "/estudio/addEstudio")
-    public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map) {
+    public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map,
+            @AuthenticationPrincipal Usuarios principal) {
         try {
             metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
             map.put("data", mag);
+
+            Mensaje mensaje = new Mensaje();
+            Date fecha = new Date();
+            mensaje.setFecha(dateFormat.format(fecha));
+            mensaje.setLeido(Boolean.FALSE);
+            mensaje.setMensaje(principal.getNombre() + " ha insertado un estudio para el alimento: "
+                    + mag.getIdAlimento().getNombre());
+            mensaje.setTitulo("Estudio insertado");
+            mensaje.setSender(principal.getNombre());
+            mensaje.setReceiver("todos");
+            mensajeRepo.saveAndFlush(mensaje);
+            messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         } catch (Exception e) {
-            map.put("mensaje", "Error al insertar Estudio");
+            map.put("mensaje", "Error al insertar estudio");
             map.put("Error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -298,7 +327,7 @@ public class EstudioController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
+
     @Secured(value = "Editor, Colaborador")
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")
@@ -329,26 +358,38 @@ public class EstudioController {
             map.put("mensaje", "Error al eliminar el estudio");
             map.put("error", e);
         }
-
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/estudio/editMetadatosAlimentosG")
-    public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map) {
+    public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map,
+            @AuthenticationPrincipal Usuarios principal) {
         try {
             MetadatosAlimentosG alimentosG1 = metadatosAlimentosRepo.findOne(alimentosG.getIdMetadatosAlimentosG());
             alimentosG1 = alimentosG;
             metadatosAlimentosRepo.saveAndFlush(alimentosG1);
             map.put("data", alimentosG1);
             map.put("mensaje", "Estudio editado correctamente");
+
+            Mensaje mensaje = new Mensaje();
+            Date fecha = new Date();
+            mensaje.setFecha(dateFormat.format(fecha));
+            mensaje.setLeido(Boolean.FALSE);
+            mensaje.setMensaje(principal.getNombre() + " ha editado un estudio para el alimento: "
+                    + alimentosG.getIdAlimento().getNombre());
+            mensaje.setTitulo("Estudio editado");
+            mensaje.setSender(principal.getNombre());
+            mensaje.setReceiver("todos");
+            mensajeRepo.saveAndFlush(mensaje);
+            messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         } catch (Exception e) {
             map.put("mensaje", "Error al editar estudio");
             map.put("Error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
+
     @Secured(value = "Colaborador")
     @ResponseBody
     @RequestMapping(value = "/estudio/deleteAlimentoMetadatos/{idMetadatos}", method = RequestMethod.DELETE)
@@ -360,7 +401,6 @@ public class EstudioController {
             map.put("mensaje", "Error al eliminar el alimento");
             map.put("error", e);
         }
-
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

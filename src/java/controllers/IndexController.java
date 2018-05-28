@@ -109,8 +109,10 @@ public class IndexController {
     public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         r.setIdUsuario(principal);
         referenciasRepo.saveAndFlush(r);
+        
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
+       
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
