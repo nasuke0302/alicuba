@@ -48,7 +48,7 @@
                                         <table  datatable="ng" id="tablaAutores" class="table table-striped table-hover table-condensed">
                                             <thead>
                                                 <tr>
-                                                    <!--<th>Acciones</th>-->
+                                                    <th>Acciones</th>
                                                     <th>T&iacute;tulo</th>
                                                     <th>Notificaci&oacute;n</th>
                                                     <th>Fecha</th>
@@ -56,12 +56,12 @@
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="a in allNotificaciones track by $index">
-<!--                                                    <td>
+                                                    <td>
                                                         <input type="hidden" value="{{a.idMensaje}}"/>
                                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                                 data-ng-click="abrirEliminarModal($index)">
                                                             <i class="glyphicon glyphicon-trash"></i></button>
-                                                    </td>-->
+                                                    </td>
                                                     <td>{{a.titulo}}</td>
                                                     <td>{{a.mensaje}}</td>
                                                     <td>{{a.fecha}}</td>
@@ -77,26 +77,23 @@
                         </div>
                     </div>
                     <!--DELETE MODAL-->
-                    <div>
-                        <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                            <div class="modal-dialog" style="margin-top: 260.5px;">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
-                                        <div class="modal-body">
-                                            <form role="form" method="post" data-ng-submit="eliminarNotificacion()" id="delete_data" class="text-right">
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                            </form>
-                                        </div>
+                    <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                        <div class="modal-dialog" style="margin-top: 260.5px;">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                    <div class="modal-body">
+                                        <form role="form" method="post" data-ng-submit="eliminarNotificacion()" id="delete_data" class="text-right">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--END DELETE MODAL-->
                     </div>
-                    <!--END DLETE MODAL-->
+                    <!--END DELETE MODAL-->
                 </div>
             </div>
         </div>

@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
                 .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", 
-                        "/categorias/**", "/estimacion/**","/ejemplo/**")
+                        "/categorias/**", "/estimacion/**","/notificaciones/**")
                 .hasAnyAuthority("Editor", "Colaborador")
                 .antMatchers("/editarPerfil/**").authenticated()
                 .anyRequest().authenticated()

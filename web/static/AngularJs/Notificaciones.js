@@ -1,15 +1,17 @@
 var appNotificaciones = angular.module("appNotificaciones", ['datatables', 'datatables.bootstrap']);
 function headerController($http, $scope) {
+    $scope.noLeido = 0;
+    $scope.allNotificaciones = {};
     //Obtener Lista de notificaciones
     $http.get("../header/getMessages").then(function (data) {
         $scope.allNotificaciones = data.data.data;
+        for (var i = 0; i < $scope.allNotificaciones.length; i++) {
+            if (!$scope.allNotificaciones[i].leido) {
+                $scope.noLeido++;
+            }
+        }
     });
 
-    $scope.notifNoLeidas = function (item) {
-        if (item.leido === "false") {
-            return item;
-        }
-    };
     $scope.newNotification = {};
     var socket = new SockJS("../websocket/configuration");
     var stompClient = Stomp.over(socket);
@@ -17,6 +19,7 @@ function headerController($http, $scope) {
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/user/queue/enviar", function (res) {
             $scope.newNotification = JSON.parse(res.body);
+            $scope.noLeido++;
             notify = new Notification($scope.newNotification.titulo, {
                 body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
@@ -25,6 +28,7 @@ function headerController($http, $scope) {
         stompClient.subscribe("/topic/notifications", function (res) {
             $scope.allNotificaciones.unshift(JSON.parse(res.body));
             $scope.newNotification = JSON.parse(res.body);
+            $scope.noLeido++;
             notify = new Notification($scope.newNotification.titulo, {
                 body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
@@ -49,10 +53,10 @@ appNotificaciones.controller("NotificacionesController", function ($scope, $http
     // Eliminar Notificaciones
     $scope.eliminarNotificacion = function () {
         $("#formModalEliminar").modal("toggle");
-        $http.delete("delete/" + $scope.notificacion.idMensaje).then(function (r) {
+        $http.delete("deleteNotificacion/" + $scope.notificacion.idMensaje).then(function (r) {
             $window.alert(r.data.mensaje);
-            //Obtener Lista de Autores
-            $http.get("get").then(function (data) {
+            //Obtener Lista de Notificaciones
+            $http.get("getNotificaciones").then(function (data) {
                 $scope.allNotificaciones = data.data.data;
             });
         });

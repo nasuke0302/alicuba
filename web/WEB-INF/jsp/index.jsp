@@ -46,12 +46,10 @@
                                 <div class="col-lg-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <sec:authorize access="hasAuthority('Colaborador')">
-                                                <div class="btn-group">
-                                                    <button class="icon-plus btn btn-success" data-ng-click="abrirNuevoModal()"
-                                                            data-toggle="modal" data-target="#modalNuevaReferencia"> Nueva referencia</button>
-                                                </div>
-                                            </sec:authorize>
+                                            <div class="btn-group">
+                                                <button class="icon-plus btn btn-success" data-ng-click="abrirNuevoModal()"
+                                                        data-toggle="modal" data-target="#modalNuevaReferencia"> Nueva referencia</button>
+                                            </div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="table-responsive">
@@ -62,9 +60,7 @@
                                                             <th><small>Autor(es)</small></th>
                                                             <th><small>Referencia</small></th>
                                                             <th><small>Categor&iacute;a(s)</small></th>
-                                                                <sec:authorize access="hasAuthority('Editor')">
-                                                                <th><small>Colaborador</small></th>
-                                                                </sec:authorize>
+                                                            <th><small>Colaborador</small></th>
                                                             <th><small>Fecha de adici&oacute;n</small></th>
                                                             <th><small>Fecha de modificaci&oacute;n</small></th>
                                                         </tr>
@@ -75,12 +71,10 @@
                                                                 <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)">
                                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                                 </button>
-                                                                <sec:authorize access="hasAuthority('Colaborador')">
-                                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                            data-ng-click="abrirEliminarModal($index)">
-                                                                        <i class="glyphicon glyphicon-trash"></i>
-                                                                    </button>
-                                                                </sec:authorize>
+                                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                        data-ng-click="abrirEliminarModal($index)">
+                                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                                </button>
                                                             </td>
                                                             <td>
                                                                 <small data-ng-repeat="a in r.autoresList">
@@ -94,11 +88,9 @@
                                                                 <span data-ng-repeat="c in r.categoriaList">
                                                                     {{c.categoria}}</span>
                                                             </td>
-                                                            <sec:authorize access="hasAuthority('Editor')">
-                                                                <td>
-                                                                    <abbr title="{{r.idUsuario.email}}">{{r.idUsuario.nombre}}</abbr>
-                                                                </td>
-                                                            </sec:authorize>
+                                                            <td>
+                                                                <abbr title="{{r.idUsuario.email}}">{{r.idUsuario.nombre}}</abbr>
+                                                            </td>
                                                             <td><small> {{r.fechaAd| date: 'dd-MM-yyyy hh:mm a'}}</small></td>
                                                             <td><small> {{r.fechaMod| date: 'dd-MM-yyyy hh:mm a'}}</small></td>
                                                         </tr>
@@ -142,9 +134,11 @@
                                                                         {{a.nombre}} {{a.apellidos}}
                                                                     </ui-select-choices>
                                                                 </ui-select> 
-                                                                <button class="btn btn-success" data-toggle="modal" 
-                                                                        data-ng-click="abrirModalAddAutor()" data-target="#modalAddOrEditAutor">
-                                                                    <span class="glyphicon glyphicon-plus"></span>Nuevo Autor</button>
+                                                                <sec:authorize access="hasAuthority('Editor')">
+                                                                    <button class="btn btn-success" data-toggle="modal" 
+                                                                            data-ng-click="abrirModalAddAutor()" data-target="#modalAddOrEditAutor">
+                                                                        <span class="glyphicon glyphicon-plus"></span>Nuevo Autor</button>
+                                                                    </sec:authorize>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>T&iacute;tulo</label>
@@ -199,9 +193,11 @@
                                                                         {{a.categoria}}
                                                                     </ui-select-choices>
                                                                 </ui-select> 
-                                                                <button class="btn btn-success" data-toggle="modal" 
-                                                                        data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
-                                                                    <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
+                                                                <sec:authorize access="hasAuthority('Editor')">
+                                                                    <button class="btn btn-success" data-toggle="modal" 
+                                                                            data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
+                                                                        <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
+                                                                    </sec:authorize>
                                                             </div>
                                                             <hr />
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
@@ -308,22 +304,22 @@
                                     </div> 
                                     <!--END MODAL NUEVO-->
                                     <!--DELETE MODAL-->
-                                        <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                                            <div class="modal-dialog" style="margin-top: 260.5px;">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
-                                                        <div class="modal-body">
-                                                            <form role="form" method="delete" data-ng-submit="eliminarReferencia()" id="delete_data" class="text-right">
-                                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                            </form>
-                                                        </div>
+                                    <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                                        <div class="modal-dialog" style="margin-top: 260.5px;">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                                    <div class="modal-body">
+                                                        <form role="form" method="delete" data-ng-submit="eliminarReferencia()" id="delete_data" class="text-right">
+                                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
                                     <!--END DELETE MODAL-->
                                     <!--CREATE AUTOR-->
                                     <div class="col-lg-12">

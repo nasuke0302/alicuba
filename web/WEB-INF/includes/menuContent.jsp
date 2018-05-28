@@ -21,8 +21,10 @@
                 <ul class="in" id="captacion-nav">
                     <li><a href="${pageContext.request.contextPath}/index"><i class="icon-angle-right"></i> Referencias Bibliogr&aacute;ficas</a></li>
                     <li><a href="${pageContext.request.contextPath}/alimentos/gestionar"><i class="icon-angle-right"></i> Alimentos </a></li>
+                    <sec:authorize access="hasAuthority('Editor')">
                     <li><a href="${pageContext.request.contextPath}/autores/gestionar"><i class="icon-angle-right"></i> Autores </a></li>
                     <li><a href="${pageContext.request.contextPath}/categorias/gestionar"><i class="icon-angle-right"></i> Categor&iacute;as</a></li>
+                    </sec:authorize>
                 </ul>
             </li>
             <li class="panel ">

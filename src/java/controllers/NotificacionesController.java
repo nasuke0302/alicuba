@@ -15,6 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,7 +57,7 @@ public class NotificacionesController {
     }
     
     @Secured(value= "Colaborador, Editor")
-    @RequestMapping(value = "/notificaciones/deleteNotificacion/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/notificaciones/deleteNotificacion/{id}")
     public ModelAndView deleteNotificaciones(@PathVariable Integer id, ModelMap map) {
         mensajeRepo.delete(id);
         map.put("mensaje", "Notificación eliminada correctamente");

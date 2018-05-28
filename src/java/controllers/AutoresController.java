@@ -48,7 +48,7 @@ public class AutoresController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Colaborador, Editor")
+    @Secured(value = "Editor")
     @RequestMapping(value = "/autores/gestionar")
     public ModelAndView showGestionarAutores() {
         return new ModelAndView("gestionarAutores");
@@ -68,7 +68,7 @@ public class AutoresController {
         return map;
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Editor")
     @ResponseBody
     @RequestMapping(value = "/autores/addAutor")
     public ModelAndView addAutor(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -88,7 +88,7 @@ public class AutoresController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador, Editor")
+    @Secured(value = "Editor")
     @ResponseBody
     @RequestMapping(value = "/autores/editAutor")
     public ModelAndView editAutores(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -110,7 +110,7 @@ public class AutoresController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Editor")
     @RequestMapping(value = "/autores/deleteAutor/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAutores(@PathVariable Integer id, ModelMap map) {
         autoresRepo.delete(id);

@@ -1,22 +1,25 @@
 var appCna = angular.module("AppCna", ['ui.select']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
-    $http.get("../header/getMessages").then(function (data) {
+    $scope.noLeido = 0;
+    $scope.allNotificaciones = {};
+    $http.get("./header/getMessages").then(function (data) {
         $scope.allNotificaciones = data.data.data;
+        for (var i = 0; i < $scope.allNotificaciones.length; i++) {
+            if (!$scope.allNotificaciones[i].leido) {
+                $scope.noLeido++;
+            }
+        }
     });
 
-    $scope.notifNoLeidas = function (item) {
-        if (item.leido === "false") {
-            return item;
-        }
-    };
     $scope.newNotification = {};
-    var socket = new SockJS("../websocket/configuration");
+    var socket = new SockJS("./websocket/configuration");
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {
         stompClient.subscribe("/user/queue/enviar", function (res) {
             $scope.newNotification = JSON.parse(res.body);
+            $scope.noLeido++;
             notify = new Notification($scope.newNotification.titulo, {
                 body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});
@@ -25,6 +28,7 @@ function headerController($http, $scope) {
         stompClient.subscribe("/topic/notifications", function (res) {
             $scope.allNotificaciones.unshift(JSON.parse(res.body));
             $scope.newNotification = JSON.parse(res.body);
+            $scope.noLeido++;
             notify = new Notification($scope.newNotification.titulo, {
                 body: $scope.newNotification.mensaje,
                 icon: "/alicuba/static/IconWebSocket.png"});

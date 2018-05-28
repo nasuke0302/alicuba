@@ -48,7 +48,7 @@ public class CategoriasController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Colaborador, Editor")
+    @Secured(value = "Editor")
     @RequestMapping(value = "/categorias/gestionar")
     public ModelAndView showGestionarCategorias() {
         return new ModelAndView("gestionarCategorias");
@@ -69,7 +69,7 @@ public class CategoriasController {
         return map;
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Editor")
     @ResponseBody
     @RequestMapping(value = "/categorias/addCategoria")
     public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -90,7 +90,7 @@ public class CategoriasController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador, Editor")
+    @Secured(value = "Editor")
     @ResponseBody
     @RequestMapping(value = "/categorias/editCategoria")
     public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -111,7 +111,7 @@ public class CategoriasController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Editor")
     @RequestMapping(value = "/categorias/deleteCategoria/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteCategorias(@PathVariable Integer id, ModelMap map) {
         categoriaRepo.delete(id);

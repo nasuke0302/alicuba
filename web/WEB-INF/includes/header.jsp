@@ -25,7 +25,7 @@
             <!--BEGIN NOTIFICATIONS SECTION-->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <span class="label label-danger">{{allNotificaciones.length}}</span>
+                    <span class="label label-danger">{{noLeido}}</span>
                     <i class="icon-envelope-alt"></i>&nbsp; <i class="icon-chevron-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-messages" style="width: 300px">

@@ -1,7 +1,7 @@
 var appHelp = angular.module("appHelpPage", []);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
-    $http.get("./header/getMessages").then(function (data) {
+    $http.get("../header/getMessages").then(function (data) {
         $scope.allNotificaciones = data.data.data;
     });
 
@@ -11,7 +11,7 @@ function headerController($http, $scope) {
         }
     };
     $scope.newNotification = {};
-    var socket = new SockJS("./websocket/configuration");
+    var socket = new SockJS("../websocket/configuration");
     var stompClient = Stomp.over(socket);
     var notify;
     stompClient.connect({}, function (frame) {
