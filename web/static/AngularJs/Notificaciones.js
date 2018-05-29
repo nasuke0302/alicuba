@@ -46,10 +46,13 @@ appNotificaciones.controller("NotificacionesController", function ($scope, $http
         fecha: "",
         titulo: ""
     };
+    $scope.allNotificaciones = {};
     //Obtener Lista de notificaciones
     $http.get("getNotificaciones").then(function (data) {
         $scope.allNotificaciones = data.data.data;
+        $http.post("setNotificacionesLeidas", $scope.allNotificaciones);
     });
+    
     // Eliminar Notificaciones
     $scope.eliminarNotificacion = function () {
         $("#formModalEliminar").modal("toggle");
