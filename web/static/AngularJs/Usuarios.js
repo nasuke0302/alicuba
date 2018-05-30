@@ -44,6 +44,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         nombre: "",
         apellidos: "",
         activo: "",
+        password: "",
         idRol: ""
     };
     //Obtener Lista de usuarios
@@ -58,23 +59,13 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
     $scope.addOrEditUsuario = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         $scope.indiceRegistro.idRol = $scope.selectedRol;
-        if ($scope.indiceRegistro.idUsuario === "") {
-            $http.post("addUsuario", $scope.indiceRegistro, {}).then(function (r) {
-                $window.alert(r.data.mensaje);
-                //Obtener Lista de usuarios
-                $http.get("getUsuarios").then(function (data) {
-                    $scope.allUsuarios = data.data.data;
-                });
+        $http.post("editUsuario", $scope.indiceRegistro, {}).then(function (r) {
+            $window.alert(r.data.mensaje);
+            //Obtener Lista de usuarios
+            $http.get("getUsuarios").then(function (data) {
+                $scope.allUsuarios = data.data.data;
             });
-        } else {
-            $http.post("editUsuario", $scope.indiceRegistro, {}).then(function (r) {
-                $window.alert(r.data.mensaje);
-                //Obtener Lista de usuarios
-                $http.get("getUsuarios").then(function (data) {
-                    $scope.allUsuarios = data.data.data;
-                });
-            });
-        }
+        });
     };
     // Eliminar Usuario
     $scope.lockUser = function () {
@@ -95,6 +86,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             nombre: a.nombre,
             apellidos: a.apellidos,
             activo: a.activo,
+            password: a.password,
             idRol: a.idRol
         };
         $scope.selectedRol = $scope.indiceRegistro.idRol.idRoles;

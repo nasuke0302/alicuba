@@ -74,9 +74,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="panel-footer panel-default">
-                                    <a>Autores</a>
-                                </div>
+                                <div class="panel-footer panel-default">Autores</div>
                             </div>
                         </div>
                     </div>

@@ -10,9 +10,11 @@
 <!DOCTYPE html>
 <html data-ng-app="appUsuarios">
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!--GLOBAL STYLES-->
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
         <!-- PAGE LEVEL STYLES -->
+        
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/datatables.bootstrap.min.css">
 
@@ -25,7 +27,6 @@
         <!--END PAGE LEVEL STYLES-->
     </head>
     <body class="padTop53" data-ng-controller="UsuariosController">
-
         <!--MAIN WRAP-->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -39,46 +40,53 @@
             <div id="content">
                 <div class="inner" style="min-height:800px;">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <h1 class="text-center">Administraci&oacute;n de usuarios</h1>
-                            <br/>
+                        <div class="col-md-12">
+                            <br />
                             <!--TABLA USUARIOS-->
-                            <table datatable="ng" id="tablaUsuarios" class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Acciones</th>
-                                        <th>Email</th>
-                                        <th>Nombre y Apellidos</th>
-                                        <th>Rol</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr data-ng-repeat="usuarios in allUsuarios track by $index">
-                                        <td>
-                                            <input type="hidden" value="{{usuarios.idUsuario}}"/>
-                                            <button class="btn btn-primary" data-toggle="modal" data-target="#formModalCreateOrEdit" 
-                                                    data-ng-click="abrirEditarModal($index)">
-                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#formModalLockUser"
-                                                    data-ng-click="abrirEliminarModal($index)"
-                                                    data-ng-show="usuarios.activo">
-                                                <i class="glyphicon glyphicon-lock"></i></button>
-                                            <button class="btn btn-success" data-toggle="modal" data-target="#formModalLockUser"
-                                                    data-ng-click="abrirEliminarModal($index)"
-                                                    data-ng-show="!usuarios.activo">
-                                                <i class="glyphicon glyphicon-ok"></i></button>
-                                        </td>
-                                        <td>{{usuarios.email}}</td>
-                                        <td>{{usuarios.nombre}} {{usuarios.apellidos}}</td>
-                                        <td>{{usuarios.idRol.tipoRol}}</td>
-                                        <td class="text-center">
-                                            <span class="label label-success" data-ng-show="usuarios.activo">Habilitado</span>
-                                            <span class="label label-danger" data-ng-show="!usuarios.activo">Bloqueado</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Administraci&oacute;n de usuarios</div>
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table datatable="ng" id="tablaUsuarios" class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Acciones</th>
+                                                    <th>Email</th>
+                                                    <th>Nombre y Apellidos</th>
+                                                    <th>Rol</th>
+                                                    <th>Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="usuarios in allUsuarios track by $index">
+                                                    <td>
+                                                        <input type="hidden" value="{{usuarios.idUsuario}}"/>
+                                                        <button class="btn btn-primary" data-toggle="modal" data-target="#formModalCreateOrEdit" 
+                                                                data-ng-click="abrirEditarModal($index)">
+                                                            <i class="glyphicon glyphicon-pencil"></i></button>
+                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#formModalLockUser"
+                                                                data-ng-click="abrirEliminarModal($index)"
+                                                                data-ng-show="usuarios.activo">
+                                                            <i class="glyphicon glyphicon-lock"></i></button>
+                                                        <button class="btn btn-success" data-toggle="modal" data-target="#formModalLockUser"
+                                                                data-ng-click="abrirEliminarModal($index)"
+                                                                data-ng-show="!usuarios.activo">
+                                                            <i class="glyphicon glyphicon-ok"></i></button>
+                                                    </td>
+                                                    <td>{{usuarios.email}}</td>
+                                                    <td>{{usuarios.nombre}} {{usuarios.apellidos}}</td>
+                                                    <td>{{usuarios.idRol.tipoRol}}</td>
+                                                    <td class="text-center">
+                                                        <span class="label label-success" data-ng-show="usuarios.activo">Habilitado</span>
+                                                        <span class="label label-danger" data-ng-show="!usuarios.activo">Bloqueado</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="panel-default panel-footer">Usuarios</div>
+                            </div>
                         </div>
                         <!--CREATE OR EDIT MODAL-->
                         <div class="col-lg-12">

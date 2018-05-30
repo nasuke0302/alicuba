@@ -17,7 +17,7 @@
         <!--LOGO SECTION--> 
         <header class="navbar-header">
             <a href="${pageContext.request.contextPath}/helpPage" class="navbar-brand">
-                <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 100px; height: 36px;"/>
+                <img src="${pageContext.request.contextPath}/static/AlicubaLogoNav.png"/>
             </a>
         </header>
         <!--END LOGO SECTION--> 

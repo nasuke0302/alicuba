@@ -71,19 +71,15 @@ public class gestionarUsuariosController {
     @ResponseBody
     @RequestMapping(value = "/usuarios/editUsuario")
     public ModelAndView editUsuario(@RequestBody Usuarios r, ModelMap map) {
+        repo.saveAndFlush(r);
         Usuarios u = repo.findOne(r.getIdUsuario());
-        u.setEmail(r.getEmail());
-        u.setNombre(r.getNombre());
-        u.setApellidos(r.getApellidos());
-        u.setIdRol(r.getIdRol());
-        repo.saveAndFlush(u);
         map.put("mensaje", "Usuario editado correctamente");
 
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
-        mensaje.setMensaje(u.getNombre() + " es ahora " + u.getIdRol().getTipoRol() + " de AliCuba");
+        mensaje.setMensaje(u.getNombre() + " " + u.getApellidos() + " es ahora " + u.getIdRol().getTipoRol() + " de AliCuba");
         mensaje.setTitulo("Usuario editado");
         mensaje.setSender(u.getNombre());
         mensaje.setReceiver("todos");

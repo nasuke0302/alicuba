@@ -22,6 +22,7 @@
         <link rel="stylesheet" href="<c:url value="/static/plugins/Font-Awesome/css/font-awesome.css"/>">
         <!--END GLOBAL STYLES --> 
         <link rel="icon" href="${pageContext.request.contextPath}/static/favicon.png" type="image/png">
+        
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/HelpPage.js"></script>
     </head>
@@ -37,8 +38,8 @@
             <!--PAGE CONTENT -->
             <div id="content">
                 <div class="inner" style="min-height:800px;">
-                    <div class="col-md-12">
-                        <div class="row">
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="text-center">
                                 <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 110px;"/>
                                 <h1 style="color: #009933">Página de ayuda y contacto</h1>

@@ -70,9 +70,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="panel-footer panel-default">
-                                    <a>Notificaciones</a>
-                                </div>
+                                <div class="panel-footer panel-default">Notificaciones</div>
                             </div>
                         </div>
                     </div>

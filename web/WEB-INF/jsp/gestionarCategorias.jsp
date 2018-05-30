@@ -72,9 +72,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="panel-footer panel-default">
-                                    <a>Categor&iacute;as</a>
-                                </div>
+                                <div class="panel-footer panel-default">Categor&iacute;as</div>
                             </div>
                         </div>
                     </div>

@@ -28,13 +28,13 @@
                 </ul>
             </li>
             <li class="panel ">
-                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#component-nav">
+                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#estimacion-nav">
                     <i class="icon-tasks"> </i> Estimaci&oacute;n de Valores 
                     <span class="pull-right">
                         <i class="icon-angle-left"></i>
                     </span>
                 </a>       
-                <ul class="in" id="captacion-nav">
+                <ul class="in" id="estimacion-nav">
                     <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
                 </ul>
             </li>
