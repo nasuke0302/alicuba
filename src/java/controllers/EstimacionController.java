@@ -89,7 +89,7 @@ public class EstimacionController {
         Map<String, Object> map = new HashMap<>();
         parser.setImplicitMul(true);
         parser.setAllowUndeclared(true);
-        
+
         Formulas f1 = formula;
         parser.parseExpression(f1.getFormula());
         if (parser.hasError()) {
@@ -98,7 +98,7 @@ public class EstimacionController {
             return map;
         } else {
             //Si el id de la formula que llega esta vacio es que es una nueva
-            if (formulasRepo.findOne(formula.getIdFormula()) == null) {
+            if (formula.getIdFormula() == null) {
                 //Guardo la formula que llego
                 formula.setIdUsuario(principal);
                 formulasRepo.saveAndFlush(f1);
