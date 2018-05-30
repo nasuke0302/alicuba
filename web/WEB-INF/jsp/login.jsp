@@ -85,7 +85,6 @@
                         </div>
 
                         <input type="password" name="password" id="password"  
-                               data-ng-pattern="^(?=\P{Ll}*\p{Ll})(?=\P{Lu}*\p{Lu})(?=\P{N}*\p{N})(?=[\p{L}\p{N}]*[^\p{L}\p{N}])[\s\S]{8,}$"
                                data-ng-model="usuario.password"
                                placeholder="Contrase&ntilde;a" class="form-control" required=""/>
                         <div data-ng-show="registerForm.password.$touched && registerForm.password.$invalid">

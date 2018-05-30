@@ -38,7 +38,6 @@ function headerController($http, $scope) {
 appIndex.controller("headerController", headerController);
 appIndex.controller("IndexController", function ($scope, $http, $window) {
 
-    $scope.validarNombres = "/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/";
     $scope.currentyear = new Date().getFullYear();
     $scope.years = [];
     for (var i = 1940; i < 2019; i++) {
@@ -89,6 +88,8 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     //Obtener Listado de Referencias
     $http.get("index/getReferencias").then(function (data) {
         $scope.allReferencias = data.data.data;
+        $scope.principal = data.data.principal;
+        console.log($scope.allReferencias);
     });
     //Obtener Lista de Autores
     $http.get("autores/getAutores").then(function (data) {
@@ -140,7 +141,7 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         $scope.referencia = {
             idReferencia: "",
             idFuente: "",
-            url: "http://",
+            url: "",
             nota: "",
             title: "",
             informeNum: "",
@@ -228,30 +229,4 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         });
     };
 
-    /*
-     *  Function to allow decimal numbers to be entered in the text box
-     *   - allows integers, backspace and delete
-     *   - does not allow alphabets
-     *   - allows only one decimal point
-     *   - allows only two digits after decimal point
-     */
-    function isNumberKey(evt, element) {
-        var charCode = (evt.which) ? evt.which : window.event.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode === 46 || charCode === 8))
-            return false;
-        else {
-            var len = $(element).val().length;
-            var index = $(element).val().indexOf('.');
-            if (index > 0 && charCode === 46) {
-                return false;
-            }
-            if (index > 0) {
-                var CharAfterdot = (len + 1) - index;
-                if (CharAfterdot > 3) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 });

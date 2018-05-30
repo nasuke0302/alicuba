@@ -65,6 +65,7 @@ public class IndexController {
         return new ModelAndView("index");
     }
 
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = {"/index/createOrEditReferencia"})
     public String showCreateOrEditReferencia() {
         return "createOrEditReferencia";
@@ -76,12 +77,13 @@ public class IndexController {
     Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            if ("Colaborador".equals(principal.getIdRol().toString())) {
-                map.put("data", referenciasRepo.findAllByIdUsuario(principal));
-            } else {
-                map.put("data", referenciasRepo.findAll());
-            }
+//            if ("Colaborador".equals(principal.getIdRol().toString())) {
+//                map.put("data", referenciasRepo.findAllByIdUsuario(principal));
+//            } else {
+            map.put("data", referenciasRepo.findAll());
+//            }
             map.put("success", Boolean.TRUE);
+            map.put("principal", principal.getEmail());
         } catch (MessagingException e) {
             map.put("success", Boolean.FALSE);
             map.put("error", e);
@@ -103,16 +105,16 @@ public class IndexController {
         return map;
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/index/addReferencia")
     public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
         r.setIdUsuario(principal);
         referenciasRepo.saveAndFlush(r);
-        
+
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
-       
+
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
@@ -150,14 +152,14 @@ public class IndexController {
                 messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
                         "/queue/enviar", mensaje);
             }
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/deleteReferencia/{idReferencia}", method = RequestMethod.POST)
     public ModelAndView deleteReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         try {

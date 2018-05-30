@@ -68,13 +68,15 @@
                                                     <tbody>
                                                         <tr data-ng-repeat="r in allReferencias track by $index">
                                                             <td>
-                                                                <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)">
-                                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                                </button>
-                                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                        data-ng-click="abrirEliminarModal($index)">
-                                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                                </button>
+                                                                <span <sec:authorize access="hasAuthority('Colaborador')"> data-ng-show="r.idUsuario.email === principal" </sec:authorize>>
+                                                                    <button class="btn btn-primary btn-xs" data-ng-click="abrirEditar($index)">
+                                                                        <i class="glyphicon glyphicon-pencil"></i>
+                                                                    </button>
+                                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                            data-ng-click="abrirEliminarModal($index)">
+                                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                                    </button>
+                                                                </span>
                                                             </td>
                                                             <td>
                                                                 <small data-ng-repeat="a in r.autoresList">
@@ -134,11 +136,9 @@
                                                                         {{a.nombre}} {{a.apellidos}}
                                                                     </ui-select-choices>
                                                                 </ui-select> 
-                                                                <sec:authorize access="hasAuthority('Editor')">
-                                                                    <button class="btn btn-success" data-toggle="modal" 
-                                                                            data-ng-click="abrirModalAddAutor()" data-target="#modalAddOrEditAutor">
-                                                                        <span class="glyphicon glyphicon-plus"></span>Nuevo Autor</button>
-                                                                    </sec:authorize>
+                                                                <button class="btn btn-success" data-toggle="modal" 
+                                                                        data-ng-click="abrirModalAddAutor()" data-target="#modalAddOrEditAutor">
+                                                                    <span class="glyphicon glyphicon-plus"></span>Nuevo Autor</button>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>T&iacute;tulo</label>
@@ -180,6 +180,7 @@
                                                                        data-ng-model="referencia.pages" required=""/>
                                                                 <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                                    <span style="color:red; display: block; text-align: left;">N&uacute;mero o rango de n&uacute;meros inv&aacute;lido</span>
                                                                 </div>
                                                             </div> 
                                                             <div class="form-group">
@@ -193,11 +194,9 @@
                                                                         {{a.categoria}}
                                                                     </ui-select-choices>
                                                                 </ui-select> 
-                                                                <sec:authorize access="hasAuthority('Editor')">
-                                                                    <button class="btn btn-success" data-toggle="modal" 
-                                                                            data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
-                                                                        <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
-                                                                    </sec:authorize>
+                                                                <button class="btn btn-success" data-toggle="modal" 
+                                                                        data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
+                                                                    <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
                                                             </div>
                                                             <hr />
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
@@ -207,7 +206,7 @@
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Tipo de Informe</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.informeTipo" name="inputTipoInf"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputTipoInf.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -215,7 +214,7 @@
                                                             </div>
                                                             <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>Instituci&oacute;n</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.informeInstitution" name="inputinstiInf"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputinstiInf.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -224,7 +223,7 @@
 
                                                             <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                                                 <label>T&iacute;tulo de la serie</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.informeSerie" name="inputInformeSerie"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputInformeSerie.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -232,7 +231,7 @@
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 2">
                                                                 <label>Publicaci&oacute;n</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.arcPublication" name="inputArcPublication"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputArcPublication.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -260,7 +259,7 @@
                                                                                          selectedFuente.selected.idFuente === 4 ||
                                                                                          selectedFuente.selected.idFuente === 5">
                                                                 <label>Editorial</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control"
                                                                        data-ng-model="referencia.editorial" name="inputEditorial"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputEditorial.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -274,7 +273,7 @@
                                                             </div>
                                                             <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 4">
                                                                 <label>T&iacute;tulo del Libro</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.secclTitle" name="inputSecclTitle"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputSecclTitle.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -282,7 +281,7 @@
                                                             </div>
                                                             <div class="form-group"data-ng-show="selectedFuente.selected.idFuente === 5">
                                                                 <label>Universidad</label>
-                                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="referencia.tesisUniversidad" name="inputTesisUniversidad"/>
                                                                 <div class="text-center" data-ng-show="formAddReferencias.inputTesisUniversidad.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -294,7 +293,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid">Aceptar</button>
+                                                            <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid || selectedYear.selected === ''">Aceptar</button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                                         </div>                            
                                                     </div>
@@ -334,7 +333,7 @@
                                                         <form role="form" data-ng-submit="addAutor()" method="post" name="formAddAutor">
                                                             <div class="form-group">
                                                                 <label>Nombre</label>
-                                                                <input class="form-control" name="inputAutorNombre" data-ng-pattern="validarNombres"
+                                                                <input class="form-control" name="inputAutorNombre" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        required="" data-ng-model="autor.nombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
@@ -343,7 +342,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Segundo Nombre</label>
-                                                                <input class="form-control" type="text" data-ng-pattern="validarNombres"
+                                                                <input class="form-control" type="text" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        data-ng-model="autor.segundoNombre" name="inputAutorSegundoNombre"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorSegundoNombre.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -351,7 +350,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label>Apellidos</label>
-                                                                <input class="form-control" type="text" name="inputAutorApellidos" data-ng-pattern="validarNombres"
+                                                                <input class="form-control" type="text" name="inputAutorApellidos" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                                        required="" data-ng-model="autor.apellidos"/>
                                                                 <div class="text-center" data-ng-show="formAddAutor.inputAutorApellidos.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>

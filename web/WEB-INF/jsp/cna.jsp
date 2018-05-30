@@ -230,11 +230,12 @@
                                         </div>
                                         <div class="form-group">
                                             <label>P&aacute;ginas</label>
-                                            <input name="inputPaginas" class="form-control" allow-only-numbers
+                                            <input name="inputPaginas" class="form-control" data-ng-pattern="/^[0-9]{1,4}(-[0-9]{1,4})?$/"
                                                    placeholder="N&uacute;mero de p&aacute;gina o rango de p&aacute;ginas"
                                                    data-ng-model="referenciaEdit.pages" required=""/>
                                             <div data-ng-show="formAddReferencias.inputPaginas.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                <span style="color:red; display: block; text-align: left;">N&uacute;mero o rango de n&uacute;meros inv&aacute;lido</span>
                                             </div>
                                         </div> 
                                         <div class="form-group">

@@ -301,10 +301,7 @@
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
                                                 <input class="form-control" style="text-transform: capitalize" name="inputNombreCientAlimento"
-                                                       data-ng-model="alimento.nombreCient" required=""/>
-                                                <div data-ng-show="formAddAlimento.inputNombreCientAlimento.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                </div>
+                                                       data-ng-model="alimento.nombreCient"/>
                                             </div>
                                             <div class="form-group">
                                                 <label>Nombre Com&uacute;n</label>
@@ -316,35 +313,23 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Variedad</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputVariedadAlimento"
-                                                       data-ng-model="alimento.variedad" required="" />
-                                                <div data-ng-show="formAddAlimento.inputVariedadAlimento.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                </div>
+                                                <input class="form-control" name="inputVariedadAlimento"
+                                                       data-ng-model="alimento.variedad" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Parte</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputParteAlimento"
-                                                       data-ng-model="alimento.parte" required="" />
-                                                <div data-ng-show="formAddAlimento.inputParteAlimento.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                </div>
+                                                <input class="form-control" name="inputParteAlimento"
+                                                       data-ng-model="alimento.parte" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Proceso</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputProcesoAlimento"
-                                                       data-ng-model="alimento.proceso" required="" />
-                                                <div data-ng-show="formAddAlimento.inputprocesoAlimento.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                </div>
+                                                <input class="form-control" name="inputProcesoAlimento"
+                                                       data-ng-model="alimento.proceso" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Mezla</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputMezclaAlimento"
-                                                       data-ng-model="alimento.mezcla" required="" />
-                                                <div data-ng-show="formAddAlimento.inputMezclaAlimento.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                </div>
+                                                <input class="form-control" name="inputMezclaAlimento"
+                                                       data-ng-model="alimento.mezcla" />
                                             </div>
                                             <label>Tipo en Cuba</label>
                                             <br>
