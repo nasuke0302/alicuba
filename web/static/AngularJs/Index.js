@@ -228,5 +228,4 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
             $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
-
 });

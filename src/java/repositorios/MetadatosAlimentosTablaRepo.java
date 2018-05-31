@@ -5,15 +5,13 @@
  */
 package repositorios;
 
-import models.Categoria;
+import models.MetadatosAlimentosTabla;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
- * @author albert
+ * @author Feisy
  */
-@Repository
-public interface CategoriasRepo extends JpaRepository<Categoria, Integer>{
+public interface MetadatosAlimentosTablaRepo extends JpaRepository<MetadatosAlimentosTabla, Integer>{
     
 }

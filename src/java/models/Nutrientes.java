@@ -33,6 +33,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Nutrientes.findAll", query = "SELECT n FROM Nutrientes n")})
 public class Nutrientes implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "nutrientes")
+    private List<TablaCnaFinal> tablaCnaFinalList;
+
     @JsonIgnore
     @OneToMany(mappedBy = "idNutriente")
     private List<Variables> variablesList;
@@ -159,5 +162,14 @@ public class Nutrientes implements Serializable {
 
     public void setVariablesList(List<Variables> variablesList) {
         this.variablesList = variablesList;
+    }
+
+    @XmlTransient
+    public List<TablaCnaFinal> getTablaCnaFinalList() {
+        return tablaCnaFinalList;
+    }
+
+    public void setTablaCnaFinalList(List<TablaCnaFinal> tablaCnaFinalList) {
+        this.tablaCnaFinalList = tablaCnaFinalList;
     }
 }

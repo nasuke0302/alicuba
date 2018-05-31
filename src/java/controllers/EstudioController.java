@@ -9,10 +9,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import models.Mensaje;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
+import models.Provincia;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
 import models.Usuarios;
@@ -287,6 +289,8 @@ public class EstudioController {
     public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map,
             @AuthenticationPrincipal Usuarios principal) {
         try {
+            mag.setIdRegion(mag.getIdProvincia().getIdRegion());
+            
             metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
             map.put("data", mag);
@@ -327,7 +331,7 @@ public class EstudioController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-
+    
     @Secured(value = "Editor, Colaborador")
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")

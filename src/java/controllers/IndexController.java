@@ -77,11 +77,7 @@ public class IndexController {
     Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-//            if ("Colaborador".equals(principal.getIdRol().toString())) {
-//                map.put("data", referenciasRepo.findAllByIdUsuario(principal));
-//            } else {
             map.put("data", referenciasRepo.findAll());
-//            }
             map.put("success", Boolean.TRUE);
             map.put("principal", principal.getEmail());
         } catch (MessagingException e) {
@@ -114,7 +110,6 @@ public class IndexController {
 
         map.put("mensaje", "Referencia registrada correctamente");
         map.put("data", r);
-
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
@@ -152,7 +147,7 @@ public class IndexController {
                 messagingTemplate.convertAndSendToUser(r1.getIdUsuario().getNombre().toLowerCase(),
                         "/queue/enviar", mensaje);
             }
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             map.put("mensaje", "Error al actualizar la referencia");
             map.put("error", e);
         }

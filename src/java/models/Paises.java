@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +30,9 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Paises.findAll", query = "SELECT p FROM Paises p")})
 public class Paises implements Serializable {
+
+    @OneToMany(mappedBy = "import1")
+    private List<MetadatosAlimentosTabla> metadatosAlimentosTablaList;
 
     @Column(name = "pais")
     private String pais;
@@ -115,6 +119,15 @@ public class Paises implements Serializable {
 
     public void setAlpha2(String alpha2) {
         this.alpha2 = alpha2;
+    }
+
+    @XmlTransient
+    public List<MetadatosAlimentosTabla> getMetadatosAlimentosTablaList() {
+        return metadatosAlimentosTablaList;
+    }
+
+    public void setMetadatosAlimentosTablaList(List<MetadatosAlimentosTabla> metadatosAlimentosTablaList) {
+        this.metadatosAlimentosTablaList = metadatosAlimentosTablaList;
     }
     
 }
