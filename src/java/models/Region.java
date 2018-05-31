@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +30,14 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Region.findAll", query = "SELECT r FROM Region r")})
 public class Region implements Serializable {
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRegion")
+    private List<MetadatosAlimentosG> metadatosAlimentosGList;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idRegion")
+    private List<MetadatosAlimentosTabla> metadatosAlimentosTablaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -106,6 +115,24 @@ public class Region implements Serializable {
     @Override
     public String toString() {
         return "model.Region[ idRegion=" + idRegion + " ]";
+    }
+
+    @XmlTransient
+    public List<MetadatosAlimentosTabla> getMetadatosAlimentosTablaList() {
+        return metadatosAlimentosTablaList;
+    }
+
+    public void setMetadatosAlimentosTablaList(List<MetadatosAlimentosTabla> metadatosAlimentosTablaList) {
+        this.metadatosAlimentosTablaList = metadatosAlimentosTablaList;
+    }
+
+    @XmlTransient
+    public List<MetadatosAlimentosG> getMetadatosAlimentosGList() {
+        return metadatosAlimentosGList;
+    }
+
+    public void setMetadatosAlimentosGList(List<MetadatosAlimentosG> metadatosAlimentosGList) {
+        this.metadatosAlimentosGList = metadatosAlimentosGList;
     }
     
 }

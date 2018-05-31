@@ -105,15 +105,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     $scope.tiposRiego = {
         tipo1: "Sí",
         tipo2: "No",
-        tipo3: "Sin definir riego"
+        tipo3: "Sin definir"
     };
 
-
-    $scope.estudiosPorReferencia = function (idReferencia) {
-        $http.get("getEstudioPorReferencia/" + idReferencia).then(function (data) {
-            $scope.estudioPorReferencia = data.data.data;
-        });
-    };
+    $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
+        $scope.estudioPorReferencia = data.data.data;
+    });
     //Obtener Listado de Nutrientes
     $http.get("../estudio/getNutrientes").then(function (data) {
         $scope.allNutrientes = data.data.data;
@@ -258,7 +255,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
             idNutriente: $scope.tablaCnaGeneral.idNutriente,
             idMetadatosAlimentosG: $scope.tablaCnaGeneral.idMetadatosAlimentosG
         };
-        $http.post("../estudio/addTablaCnaGeneral/" + $scope.tablaCnaGeneral.valor,$scope.tablaCnaGeneralPK, {}).then(function (data) {
+        $http.post("../estudio/addTablaCnaGeneral/" + $scope.tablaCnaGeneral.valor, $scope.tablaCnaGeneralPK, {}).then(function (data) {
             $window.alert(data.data.mensaje);
             $scope.tablaCnaGeneral.valor = "";
             $scope.selectedNutriente.selected = "";

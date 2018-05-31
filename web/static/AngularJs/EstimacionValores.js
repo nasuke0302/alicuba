@@ -127,7 +127,7 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
             idNutriente: a.idNutriente,
             variablesList: a.variablesList
         };
-        $scope.arregloVars = $scope.allFormulas[indice].variablesList;
+        $scope.arregloVars = a.variablesList;
         count = a.variablesList.length;
     };
 });

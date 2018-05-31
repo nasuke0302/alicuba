@@ -35,15 +35,7 @@
                 <ul class="in" id="captacion-nav">
                     <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
                 </ul>
-            </li>
-            <li class="panel">
-                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#DDL-nav">
-                    <i class=" icon-sitemap"></i> Manejo de Tablas
-                    <span class="pull-right">
-                        <i class="icon-angle-left"></i>
-                    </span>
-                </a>                    
-            </li>
+            </li>            
         </sec:authorize>
         <sec:authorize access="hasAuthority('Administrador')">
             <li class="panel">
@@ -58,5 +50,18 @@
                 </ul>
             </li>
         </sec:authorize>
+        <sec:authorize access="hasAuthority('Editor')">
+            <li class="panel">
+                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#DDL-nav">
+                    <i class=" icon-sitemap"></i> Manejo de Tablas
+                    <span class="pull-right">
+                        <i class="icon-angle-left"></i>
+                    </span>
+                </a> 
+                <ul class="in" id="admin-nav">
+                    <li><a href="${pageContext.request.contextPath}/tablasgeneradas/gestionar"><i class="icon-angle-right"></i> Listado de tablas generadas </a></li>
+                </ul>
+            </li>
+        </sec:authorize>    
     </ul>
 </div>

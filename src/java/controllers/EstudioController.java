@@ -6,9 +6,11 @@
 package controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
+import models.Provincia;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -270,6 +272,12 @@ public class EstudioController {
     @RequestMapping(value = "/estudio/addEstudio")
     public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map) {
         try {
+            //Definir la región que pertenece antes de agregarlo a la base de datos
+            //Provincia IdProv = mag.getIdProvincia();
+            //List<Provincia> provincia = provinciaRepo.getRegion(IdProv.getIdProvincia());
+            
+            mag.setIdRegion(mag.getIdProvincia().getIdRegion());
+            
             metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
             map.put("data", mag);
@@ -301,7 +309,7 @@ public class EstudioController {
     
     @Secured(value = "Editor, Colaborador")
     @ResponseBody
-    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor}")
+    @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
             @PathVariable Double valor, ModelMap map) {
         try {
@@ -337,6 +345,12 @@ public class EstudioController {
     @RequestMapping(value = "/estudio/editMetadatosAlimentosG")
     public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map) {
         try {
+            //Definir la región que pertenece antes de actualizar en la base de datos
+            //Provincia IdProv = alimentosG.getIdProvincia();
+            //List<Provincia> provincia = provinciaRepo.getRegion(IdProv.getIdProvincia());
+            
+            alimentosG.setIdRegion(alimentosG.getIdProvincia().getIdRegion());
+            
             MetadatosAlimentosG alimentosG1 = metadatosAlimentosRepo.findOne(alimentosG.getIdMetadatosAlimentosG());
             alimentosG1 = alimentosG;
             metadatosAlimentosRepo.saveAndFlush(alimentosG1);

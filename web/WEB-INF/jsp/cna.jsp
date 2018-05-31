@@ -82,9 +82,6 @@
                                     <h5>Estudios Registrados</h5>
                                     <div class="toolbar">
                                         <ul class="nav">  
-                                            <li><a data-ng-click="estudiosPorReferencia(referencia.idReferencia)" class="btn btn-primary">
-                                                    <span class="glyphicon glyphicon-eye-open"></span> Ver estudios de la referencia</a>
-                                            </li>
                                             <li><a data-ng-click="nuevoEstudio()" class="btn btn-primary">
                                                     <span class="glyphicon glyphicon-plus"></span> Nuevo estudio</a>
                                             </li>
@@ -97,57 +94,60 @@
                                     </div>
                                 </header>
                                 <div id="div-1" class="accordion-body collapse in body">
-                                    <table class="table table-striped">
+                                    <table class="table">
                                         <tr>
                                             <td><strong>Estudio</strong></td>
-                                            <td><strong>Nutrientes</strong></td>
                                         </tr>
                                         <tr data-ng-repeat="e in estudioPorReferencia" data-ng-init="indexAlimentos = $index">
-                                            <td><em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
-                                                <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
-                                                <abbr title="Tratamiento">{{e.tratamiento}}</abbr>,
-                                                <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
-                                                <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
-                                                <abbr title="Riego">{{e.riego}}</abbr>-
-                                                <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
-                                                <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
-                                                <button class="btn btn-primary btn-xs" title="Editar alimento" 
-                                                        data-toggle="modal" data-target="#formModalEditAlimento"
-                                                        data-ng-click="abrirModalEditarMetadatos($index)">
-                                                    <i class="glyphicon glyphicon-pencil"></i></button>
-                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
-                                                        title="Eliminar alimento"
-                                                        data-ng-click="abrirEliminarAlimentoModal($index)">
-                                                    <i class="glyphicon glyphicon-trash"></i></button>
-                                            </td>
                                             <td>
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn btn-success" value="A&ntilde;adir nutriente"
-                                                                    data-toggle="modal" data-target="#formModalCreateNutriente"
-                                                                    data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
-                                                                Nuevo nutriente
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
-                                                        <td>{{nut.nutrientes.idTiposDatosAlimentos.nombreTipoDato}}</td>
-                                                        <td>
-                                                            <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
-                                                            {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
-                                                        <td> {{nut.valor}}</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-xs" title="Editar estudio"
-                                                                    data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
-                                                                <i class="glyphicon glyphicon-pencil"></i></button>
-                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    title="Eliminar estudio"
-                                                                    data-ng-click="abrirEliminarModal($parent.$index, $index)">
-                                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                                        </td> 
-                                                    </tr>
-                                                </table>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <em>{{e.idAlimento.nombreCient}}</em>, {{e.idAlimento.nombre}},
+                                                        <abbr title="Variedad">{{e.idAlimento.variedad}}</abbr>, 
+                                                        <abbr title="Regi&oacute;n">{{e.idProvincia.idRegion.etiqueta}}</abbr>-
+                                                        <abbr title="&Eacute;poca">{{e.idEpoca.etiqueta}}</abbr>-
+                                                        <abbr title="Riego">{{e.riego}}</abbr>-
+                                                        <abbr title="Fertilizado">{{e.fertilizado.etiqueta}}</abbr>-
+                                                        <abbr title="Rango de Edad">{{e.idRangoEdades.etiqueta}}</abbr>
+                                                        <button class="btn btn-primary btn-xs" title="Editar alimento" 
+                                                                data-toggle="modal" data-target="#formModalEditAlimento"
+                                                                data-ng-click="abrirModalEditarMetadatos($index)">
+                                                            <i class="glyphicon glyphicon-pencil"></i></button>
+                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminarAlimento"
+                                                                title="Eliminar alimento"
+                                                                data-ng-click="abrirEliminarAlimentoModal($index)">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table class="table">
+                                                            <tr>
+                                                                <td>
+                                                                    <button class="btn btn-success" value="A&ntilde;adir nutriente"
+                                                                            data-toggle="modal" data-target="#formModalCreateNutriente"
+                                                                            data-ng-click="abrirNuevoNutrienteModal(indexAlimentos)">
+                                                                        Nuevo nutriente
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
+                                                                <td>
+                                                                    <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                                    {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
+                                                                <td> {{nut.valor}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-primary btn-xs" title="Editar estudio"
+                                                                            data-toggle="modal" data-target="#formModalEditNutriente" data-ng-click="abrirEditarNutrienteModal($parent.$index, $index)">
+                                                                        <i class="glyphicon glyphicon-pencil"></i></button>
+                                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                            title="Eliminar estudio"
+                                                                            data-ng-click="abrirEliminarModal($parent.$index, $index)">
+                                                                        <i class="glyphicon glyphicon-trash"></i></button>
+                                                                </td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>

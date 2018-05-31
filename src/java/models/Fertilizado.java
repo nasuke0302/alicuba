@@ -19,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +30,9 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Fertilizado.findAll", query = "SELECT f FROM Fertilizado f")})
 public class Fertilizado implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "fertilizado")
+    private List<MetadatosAlimentosTabla> metadatosAlimentosTablaList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -106,6 +110,15 @@ public class Fertilizado implements Serializable {
     @Override
     public String toString() {
         return "model.Fertilizado[ idFertilizado=" + idFertilizado + " ]";
+    }
+
+    @XmlTransient
+    public List<MetadatosAlimentosTabla> getMetadatosAlimentosTablaList() {
+        return metadatosAlimentosTablaList;
+    }
+
+    public void setMetadatosAlimentosTablaList(List<MetadatosAlimentosTabla> metadatosAlimentosTablaList) {
+        this.metadatosAlimentosTablaList = metadatosAlimentosTablaList;
     }
     
 }

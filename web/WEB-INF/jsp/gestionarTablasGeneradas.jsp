@@ -24,7 +24,7 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/Alimentos.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
-    <body class="padTop53" data-ng-controller="AlimentosController">
+    <body class="padTop53" data-ng-controller="GenerarTablaController">
         <!--MAIN WRAP-->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -43,9 +43,9 @@
                             <div class="panel panel-default">
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
-                                    <sec:authorize access="hasAuthority('Colaborador')">
+                                    <sec:authorize access="hasAuthority('Editor')">
                                         <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
-                                                data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
+                                                data-toggle="modal" data-target="#formModalCreateOrEdit"> Generar nueva tabla</button>
                                     </sec:authorize>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
@@ -56,47 +56,21 @@
                                             <thead>
                                                 <tr>
                                                     <th>Acciones</th>
-                                                    <th>Nombre Cient&iacute;fico</th>
-                                                    <th>Nombre</th>
-                                                    <th>Variedad</th>
-                                                    <th>Parte</th>
-                                                    <th>Proceso</th>
-                                                    <th>Mezcla</th>
-                                                        <sec:authorize access="hasAuthority('Editor')">
-                                                        <th>Colaborador</th>
-                                                        </sec:authorize>
+                                                    <th>Nombre de la Tabla</th>
+                                                    <th>Fecha</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-ng-repeat="alimento in allAlimentos track by $index">
-                                                    <td>
-                                                        <input type="hidden" value="{{alimento.idAlimento}}"/>
-                                                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalCreateOrEdit" 
-                                                                data-ng-click="abrirEditarModal($index)">
-                                                            <i class="glyphicon glyphicon-pencil"></i></button>
-
-                                                        <sec:authorize access="hasAuthority('Colaborador')">
-                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    data-ng-click="abrirEliminarModal($index)">
-                                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                                            </sec:authorize>
-                                                    </td>
+                                                <tr data-ng-repeat="alimento in allAlimentos track by $index">                                                    
                                                     <td>{{alimento.nombreCient}}</td>
                                                     <td>{{alimento.nombre}}</td>
-                                                    <td>{{alimento.variedad}}</td>
-                                                    <td>{{alimento.parte}}</td>
-                                                    <td>{{alimento.proceso}}</td>
-                                                    <td>{{alimento.mezcla}}</td>
-                                                    <sec:authorize access="hasAuthority('Editor')">
-                                                        <td>{{alimento.idUsuario.nombre}}</td>
-                                                    </sec:authorize>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-default">
-                                    <a>Alimentos</a>
+                                    <a>Listado de tablas generadas</a>
                                 </div>
                             </div>
                         </div>

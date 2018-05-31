@@ -159,7 +159,7 @@
                                                                 <label>Nota</label>
                                                                 <textarea class="form-control" name="inputNota" 
                                                                           placeholder="Breve descripci&oacute;n sobre la referencia"
-                                                                          data-ng-model="referencia.nota" required=""></textarea>
+                                                                          data-ng-model="referencia.nota"></textarea>
                                                                 <div data-ng-show="formAddReferencias.inputNota.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                                 </div>

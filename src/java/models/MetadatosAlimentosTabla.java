@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -20,51 +21,60 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author albert
+ * @author Feisy
  */
 @Entity
-@Table(name = "metadatos_alimentos_g")
+@Table(name = "metadatos_alimentos_tabla")
+@XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MetadatosAlimentosG.findAll", query = "SELECT m FROM MetadatosAlimentosG m")})
-public class MetadatosAlimentosG implements Serializable {
-
-    @JoinColumn(name = "id_region", referencedColumnName = "id_region")
-    @ManyToOne(optional = false)
-    private Region idRegion;
-
-    @Column(name = "riego")
-    private String riego;
-
-//    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
-    private List<TablaCnaGeneral> tablaCnaGeneralList;
+    @NamedQuery(name = "MetadatosAlimentosTabla.findAll", query = "SELECT m FROM MetadatosAlimentosTabla m"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByIdMetadatosAlimentosTabla", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.idMetadatosAlimentosTabla = :idMetadatosAlimentosTabla"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByRiego", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.riego = :riego"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByN", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.n = :n"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByNpk", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.npk = :npk"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByEdad", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.edad = :edad"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByCorte", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.corte = :corte"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByTecnolog", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.tecnolog = :tecnolog"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByTratamiento", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.tratamiento = :tratamiento"),
+    @NamedQuery(name = "MetadatosAlimentosTabla.findByPresentation", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.presentation = :presentation")})
+public class MetadatosAlimentosTabla implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_metadatos_alimentos_g")
-    private Integer idMetadatosAlimentosG;
+    @Column(name = "id_metadatos_alimentos_tabla")
+    private Integer idMetadatosAlimentosTabla;
+    @Size(max = 2147483647)
+    @Column(name = "riego")
+    private String riego;
     @Column(name = "n")
     private Integer n;
+    @Size(max = 2147483647)
     @Column(name = "npk")
     private String npk;
     @Column(name = "edad")
     private Integer edad;
+    @Size(max = 2147483647)
     @Column(name = "corte")
     private String corte;
+    @Size(max = 2147483647)
     @Column(name = "tecnolog")
     private String tecnolog;
+    @Size(max = 2147483647)
     @Column(name = "tratamiento")
     private String tratamiento;
+    @Size(max = 2147483647)
     @Column(name = "presentation")
     private String presentation;
-    @Column(name = "otras_caract")
-    private String otrasCaract;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosTabla")
+    private List<TablaCnaFinal> tablaCnaFinalList;
     @JoinColumn(name = "id_alimento", referencedColumnName = "id_alimento")
     @ManyToOne(optional = false)
     private Alimentos idAlimento;
@@ -77,43 +87,47 @@ public class MetadatosAlimentosG implements Serializable {
     @JoinColumn(name = "fertilizado", referencedColumnName = "id_fertilizado")
     @ManyToOne(optional = false)
     private Fertilizado fertilizado;
-    @JoinColumn(name = "mes_ini", referencedColumnName = "id_mes")
-    @ManyToOne(optional = false)
-    private Meses mesIni;
-    @JoinColumn(name = "mes_fin", referencedColumnName = "id_mes")
-    @ManyToOne(optional = false)
-    private Meses mesFin;
+    @JoinColumn(name = "id_listado_tabla_generadas", referencedColumnName = "id_listado_tabla_generadas")
+    
+    @ManyToOne
+    @JsonIgnore
+    private ListadoTablaGeneradas idListadoTablaGeneradas;
+    
     @JoinColumn(name = "id_nivel_fert", referencedColumnName = "id_nivel_fert")
     @ManyToOne(optional = false)
     private NivelFert idNivelFert;
     @JoinColumn(name = "import", referencedColumnName = "id_paises")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Paises import1;
-    @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia")
-    @ManyToOne(optional = false)
-    private Provincia idProvincia;
     @JoinColumn(name = "id_rango_edades", referencedColumnName = "id_rango_edades")
     @ManyToOne(optional = false)
     private RangoEdades idRangoEdades;
-    @JoinColumn(name = "id_referencia", referencedColumnName = "id_referencia")
+    @JoinColumn(name = "id_region", referencedColumnName = "id_region")
     @ManyToOne(optional = false)
-    private Referencias idReferencia;
+    private Region idRegion;
 
-    public MetadatosAlimentosG() {
+    public MetadatosAlimentosTabla() {
     }
 
-    public MetadatosAlimentosG(Integer idMetadatosAlimentosG) {
-        this.idMetadatosAlimentosG = idMetadatosAlimentosG;
+    public MetadatosAlimentosTabla(Integer idMetadatosAlimentosTabla) {
+        this.idMetadatosAlimentosTabla = idMetadatosAlimentosTabla;
     }
 
-    public Integer getIdMetadatosAlimentosG() {
-        return idMetadatosAlimentosG;
+    public Integer getIdMetadatosAlimentosTabla() {
+        return idMetadatosAlimentosTabla;
     }
 
-    public void setIdMetadatosAlimentosG(Integer idMetadatosAlimentosG) {
-        this.idMetadatosAlimentosG = idMetadatosAlimentosG;
+    public void setIdMetadatosAlimentosTabla(Integer idMetadatosAlimentosTabla) {
+        this.idMetadatosAlimentosTabla = idMetadatosAlimentosTabla;
     }
 
+    public String getRiego() {
+        return riego;
+    }
+
+    public void setRiego(String riego) {
+        this.riego = riego;
+    }
 
     public Integer getN() {
         return n;
@@ -171,12 +185,13 @@ public class MetadatosAlimentosG implements Serializable {
         this.presentation = presentation;
     }
 
-    public String getOtrasCaract() {
-        return otrasCaract;
+    @XmlTransient
+    public List<TablaCnaFinal> getTablaCnaFinalList() {
+        return tablaCnaFinalList;
     }
 
-    public void setOtrasCaract(String otrasCaract) {
-        this.otrasCaract = otrasCaract;
+    public void setTablaCnaFinalList(List<TablaCnaFinal> tablaCnaFinalList) {
+        this.tablaCnaFinalList = tablaCnaFinalList;
     }
 
     public Alimentos getIdAlimento() {
@@ -211,20 +226,12 @@ public class MetadatosAlimentosG implements Serializable {
         this.fertilizado = fertilizado;
     }
 
-    public Meses getMesIni() {
-        return mesIni;
+    public ListadoTablaGeneradas getIdListadoTablaGeneradas() {
+        return idListadoTablaGeneradas;
     }
 
-    public void setMesIni(Meses mesIni) {
-        this.mesIni = mesIni;
-    }
-
-    public Meses getMesFin() {
-        return mesFin;
-    }
-
-    public void setMesFin(Meses mesFin) {
-        this.mesFin = mesFin;
+    public void setIdListadoTablaGeneradas(ListadoTablaGeneradas idListadoTablaGeneradas) {
+        this.idListadoTablaGeneradas = idListadoTablaGeneradas;
     }
 
     public NivelFert getIdNivelFert() {
@@ -243,70 +250,12 @@ public class MetadatosAlimentosG implements Serializable {
         this.import1 = import1;
     }
 
-    public Provincia getIdProvincia() {
-        return idProvincia;
-    }
-
-    public void setIdProvincia(Provincia idProvincia) {
-        this.idProvincia = idProvincia;
-    }
-
     public RangoEdades getIdRangoEdades() {
         return idRangoEdades;
     }
 
     public void setIdRangoEdades(RangoEdades idRangoEdades) {
         this.idRangoEdades = idRangoEdades;
-    }
-
-    public Referencias getIdReferencia() {
-        return idReferencia;
-    }
-
-    public void setIdReferencia(Referencias idReferencia) {
-        this.idReferencia = idReferencia;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idMetadatosAlimentosG != null ? idMetadatosAlimentosG.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MetadatosAlimentosG)) {
-            return false;
-        }
-        MetadatosAlimentosG other = (MetadatosAlimentosG) object;
-        if ((this.idMetadatosAlimentosG == null && other.idMetadatosAlimentosG != null) || (this.idMetadatosAlimentosG != null && !this.idMetadatosAlimentosG.equals(other.idMetadatosAlimentosG))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "model.MetadatosAlimentosG[ idMetadatosAlimentosG=" + idMetadatosAlimentosG + " ]";
-    }
-
-    @XmlTransient
-    public List<TablaCnaGeneral> getTablaCnaGeneralList() {
-        return tablaCnaGeneralList;
-    }
-
-    public void setTablaCnaGeneralList(List<TablaCnaGeneral> tablaCnaGeneralList) {
-        this.tablaCnaGeneralList = tablaCnaGeneralList;
-    }
-
-    public String getRiego() {
-        return riego;
-    }
-
-    public void setRiego(String riego) {
-        this.riego = riego;
     }
 
     public Region getIdRegion() {
@@ -317,4 +266,28 @@ public class MetadatosAlimentosG implements Serializable {
         this.idRegion = idRegion;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idMetadatosAlimentosTabla != null ? idMetadatosAlimentosTabla.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof MetadatosAlimentosTabla)) {
+            return false;
+        }
+        MetadatosAlimentosTabla other = (MetadatosAlimentosTabla) object;
+        if ((this.idMetadatosAlimentosTabla == null && other.idMetadatosAlimentosTabla != null) || (this.idMetadatosAlimentosTabla != null && !this.idMetadatosAlimentosTabla.equals(other.idMetadatosAlimentosTabla))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "models.MetadatosAlimentosTabla[ idMetadatosAlimentosTabla=" + idMetadatosAlimentosTabla + " ]";
+    }
 }
