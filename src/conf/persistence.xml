@@ -5,6 +5,7 @@
     <class>models.AutoresPorReferencia</class>
     <class>models.Categoria</class>
     <class>models.Mensaje</class>
+    <class>models.Tablatemp</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/Alicuba"/>

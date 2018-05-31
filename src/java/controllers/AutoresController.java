@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
 import repositorios.MensajeRepo;
+import repositorios.TablatempRepo;
 
 /**
  *
@@ -44,6 +45,9 @@ public class AutoresController {
 
     @Autowired
     MensajeRepo mensajeRepo;
+
+    @Autowired
+    TablatempRepo tablaTempRepo;
 
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -64,6 +68,7 @@ public class AutoresController {
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }
