@@ -16,6 +16,7 @@ import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
 import repositorios.MensajeRepo;
 import repositorios.TablatempRepo;
+import services.Trazable;
 
 /**
  *
@@ -52,14 +54,14 @@ public class AutoresController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "listar", listar = true, nombre = "listarAutores", timeLine = "", claseEntidad = "Autores")
     @RequestMapping(value = "/autores/gestionar")
     public ModelAndView showGestionarAutores() {
         return new ModelAndView("gestionarAutores");
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/autores/getAutores")
+    @PreAuthorize(value = "hasAnyAuthority('Colaborador, Editor')")
     public @ResponseBody
     Map<String, ? extends Object> getAutores() {
         Map<String, Object> map = new HashMap<>();
@@ -73,7 +75,7 @@ public class AutoresController {
         return map;
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarAutores", timeLine = "", claseEntidad = "Autores")
     @ResponseBody
     @RequestMapping(value = "/autores/addAutor")
     public ModelAndView addAutor(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -93,7 +95,7 @@ public class AutoresController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificarAutores", timeLine = "", claseEntidad = "Autores")
     @ResponseBody
     @RequestMapping(value = "/autores/editAutor")
     public ModelAndView editAutores(@RequestBody Autores a, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -115,7 +117,7 @@ public class AutoresController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "listarAutores", timeLine = "", claseEntidad = "Autores")
     @RequestMapping(value = "/autores/deleteAutor/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAutores(@PathVariable Integer id, ModelMap map) {
         autoresRepo.delete(id);

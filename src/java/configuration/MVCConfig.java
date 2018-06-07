@@ -5,18 +5,19 @@
  */
 package configuration;
 
+import aspecto.TrazaAspecto;
 import java.util.List;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -24,8 +25,14 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableSpringDataWebSupport
 @EnableWebMvc
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "controllers")
 public class MVCConfig extends WebMvcConfigurerAdapter {
+
+    @Bean
+    public TrazaAspecto trazaAspecto() {
+        return new TrazaAspecto();
+    }
 
     @Bean
     public InternalResourceViewResolver viewResolver() {

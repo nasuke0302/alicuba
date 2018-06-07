@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class MetadatosAlimentosG implements Serializable {
 
     @JoinColumn(name = "id_region", referencedColumnName = "id_region")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Region idRegion;
 
     @Column(name = "riego")

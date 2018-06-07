@@ -31,6 +31,7 @@ import repositorios.MensajeRepo;
 import repositorios.TipoCubaRepo;
 import repositorios.TipoFaoRepo;
 import repositorios.TipoNrcRepo;
+import services.Trazable;
 
 /**
  *
@@ -55,13 +56,12 @@ public class AlimentosController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Colaborador, Editor")
+    @Trazable(accion = "listar", listar = true, nombre = "listarAlimentos", timeLine = "", claseEntidad = "Alimentos")
     @RequestMapping(value = "/alimentos/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarAlimentos");
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAlimentos")
     public @ResponseBody
     Map<String, ? extends Object> getAlimentos(@AuthenticationPrincipal Usuarios principal) {
@@ -80,7 +80,6 @@ public class AlimentosController {
         return map;
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoCuba")
     public @ResponseBody
     Map<String, ? extends Object> getAllTipoCuba() {
@@ -94,7 +93,6 @@ public class AlimentosController {
         return map;
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoFao")
     public @ResponseBody
     Map<String, ? extends Object> getAllTipoFao() {
@@ -108,7 +106,6 @@ public class AlimentosController {
         return map;
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/alimentos/getAllTipoNrc")
     public @ResponseBody
     Map<String, ? extends Object> getallTipoNrc() {
@@ -122,7 +119,7 @@ public class AlimentosController {
         return map;
     }
 
-    @Secured(value = "Colaborador")
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarAlimentos", timeLine = "", claseEntidad = "Alimentos")
     @ResponseBody
     @RequestMapping(value = "/alimentos/addAlimento")
     public ModelAndView addAlimento(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -143,7 +140,7 @@ public class AlimentosController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador, Editor")
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificarAlimentos", timeLine = "", claseEntidad = "Alimentos")
     @ResponseBody
     @RequestMapping(value = "/alimentos/editAlimento")
     public ModelAndView editAlimentos(@RequestBody Alimentos r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -171,7 +168,7 @@ public class AlimentosController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarAlimentos", timeLine = "", claseEntidad = "Alimentos")
     @RequestMapping(value = "/alimentos/deleteAlimento/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteAlimento(@PathVariable Integer id, ModelMap map) {
         alimentosRepo.delete(id);

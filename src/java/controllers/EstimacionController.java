@@ -34,6 +34,7 @@ import repositorios.MensajeRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.ReferenciasRepo;
 import repositorios.VariablesRepo;
+import services.Trazable;
 
 /**
  *
@@ -56,6 +57,7 @@ public class EstimacionController {
 
     @Autowired
     SimpMessagingTemplate messagingTemplate;
+    
     @Autowired
     MensajeRepo mensajeRepo;
 
@@ -64,6 +66,7 @@ public class EstimacionController {
 
     JEP parser = new JEP();
 
+    @Trazable(accion = "listar", listar = true, nombre = "listarFórmulas", timeLine = "", claseEntidad = "Formulas")
     @RequestMapping(value = "/estimacion/gestionar")
     public ModelAndView showEstimacion() {
         return new ModelAndView("estimacionValores");
@@ -83,6 +86,7 @@ public class EstimacionController {
         return map;
     }
 
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarFórmulas", timeLine = "", claseEntidad = "Formulas")
     @RequestMapping(value = "/estimacion/parseExp")
     public @ResponseBody
     Map<String, ? extends Object> parseExp(@RequestBody Formulas formula, @AuthenticationPrincipal Usuarios principal) {
@@ -137,7 +141,7 @@ public class EstimacionController {
         }
         return map;
     }
-
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarVariables", timeLine = "", claseEntidad = "Variables")
     @RequestMapping(value = "/estimacion/addVariables")
     public @ResponseBody
     Map<String, ? extends Object> addVariables(@RequestBody List<Variables> variablesList) {
@@ -145,8 +149,8 @@ public class EstimacionController {
         map.put("data", variablesRepo.save(variablesList));
         return map;
     }
-
-    @Secured(value = "Colaborador")
+    
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarFórmulas", timeLine = "", claseEntidad = "Formulas")
     @RequestMapping(value = "/estimacion/deleteFormulas/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteFormula(@PathVariable Integer id, ModelMap map) {
         Formulas formulaEliminar = formulasRepo.findOne(id);

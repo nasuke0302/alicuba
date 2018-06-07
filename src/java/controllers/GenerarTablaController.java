@@ -31,6 +31,7 @@ import models.Region;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.MetadatosAlimentosTablaRepo;
 import repositorios.RegionRepo;
+import services.Trazable;
 
 /**
  *
@@ -56,13 +57,12 @@ public class GenerarTablaController {
     
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     
-    @Secured(value = "Editor")
+    @Trazable(accion = "listar", listar = true, nombre = "listarTablasGeneradas", timeLine = "", claseEntidad = "TablasGeneradas")
     @RequestMapping(value = "/tablasgeneradas/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarTablasGeneradas");
     }
     
-    @Secured(value = "Editor")
     @RequestMapping(value = "/categorias/getTablasGeneradas")
     public @ResponseBody
     Map<String, ? extends Object> getTablasGeneradas( ) {
@@ -76,10 +76,9 @@ public class GenerarTablaController {
             map.put("success", Boolean.FALSE);
         }
         return map;
-    }/**/
+    }
     
     
-    @Secured(value = "Editor")
     @RequestMapping(value = "/categorias/generarTabla")
     @ResponseBody
     public ModelAndView generarTabla(@RequestBody ListadoTablaGeneradas lis, ModelMap map){

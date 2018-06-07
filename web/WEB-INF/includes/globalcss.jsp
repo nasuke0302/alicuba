@@ -12,7 +12,7 @@
 
 <!--END TITLE-->
 <!--GLOBAL STYLES-->
-<link rel="stylesheet" href="<c:url value="/static/css/bootstrap.min.css"/>">
+<link rel="stylesheet" href="<c:url value="/static/plugins/bootstrap/css/bootstrap.css"/>">
 <link rel="stylesheet" href="<c:url value="/static/css/main.css"/>">
 <link rel="stylesheet" href="<c:url value="/static/css/theme.css"/>">
 <link rel="stylesheet" href="<c:url value="/static/css/MoneAdmin.css"/>">

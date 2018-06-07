@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import repositorios.MensajeRepo;
 import repositorios.UsuariosRepo;
+import services.Trazable;
 
 /**
  *
@@ -50,6 +51,7 @@ public class LoginController {
         return "login";
     }
 
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertar Usuarios", timeLine = "", claseEntidad = "Usuarios")
     @RequestMapping(value = "/addUsuarios", method = RequestMethod.POST)
     public String addUsuarios(@ModelAttribute Usuarios u, Model m, Roles rol, BindingResult result) {
         List<Usuarios> usuarios = repo.findAll();

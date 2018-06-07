@@ -91,11 +91,10 @@
                                               name="formAddCategoria" method="post">
                                             <div class="form-group">
                                                 <label>Categor&iacute;a</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputCategorias"
+                                                <input class="form-control" name="inputCategorias"
                                                        required="" data-ng-model="categoria.categoria"/>
                                                 <div class="text-center" data-ng-show="formAddCategoria.inputCategorias.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
                                                 </div>
                                                 <br />
                                                 <div class="text-right">

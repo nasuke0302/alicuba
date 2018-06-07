@@ -48,6 +48,7 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
         parte: "",
         proceso: "",
         mezcla: "",
+        idUsuario: "",
         idTipoCuba: "",
         idTipoFao: "",
         idTipoNrc: ""
@@ -135,7 +136,8 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
             mezcla: a.mezcla,
             idTipoCuba: a.idTipoCuba,
             idTipoFao: a.idTipoFao,
-            idTipoNrc: a.idTipoNrc
+            idTipoNrc: a.idTipoNrc,
+            idUsuario: a.idUsuario
         };
         $scope.selectedTipoCuba = a.idTipoCuba.idTipoCuba;
         $scope.selectedTipoFao = a.idTipoFao.idTipoFao;

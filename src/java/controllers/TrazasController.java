@@ -7,33 +7,38 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map;
-import models.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import repositorios.RolesRepo;
+import org.springframework.web.servlet.ModelAndView;
+import repositorios.TrazaRepo;
 
 /**
  *
  * @author albert
  */
 @Controller
-public class gestionarRolesController {
+public class TrazasController {
 
     @Autowired
-    RolesRepo repo;
+    TrazaRepo trazaRepo;
 
-    @RequestMapping(value = "/roles/getRoles")
+    @RequestMapping(value = "/trazas/gestionar")
+    public ModelAndView showGestionarTrazas() {
+        return new ModelAndView("gestionarTrazas");
+    }
+    
+    @RequestMapping(value = "/trazas/getTrazas")
     public @ResponseBody
-    Map<String, ? extends Object> getRoles(Roles r) {
+    Map<String, ? extends Object> getTrazas() {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("data", repo.findAll());
+            map.put("data", trazaRepo.findAll());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
+            map.put("error", e);
         }
         return map;
     }

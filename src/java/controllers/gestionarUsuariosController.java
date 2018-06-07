@@ -15,7 +15,6 @@ import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.MensajeRepo;
 import repositorios.UsuariosRepo;
+import services.Trazable;
 
 /**
  *
@@ -45,13 +45,12 @@ public class gestionarUsuariosController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Administrador")
+    @Trazable(accion = "listar", listar = true, nombre = "listarUsuarios", timeLine = "", claseEntidad = "Usuarios")
     @RequestMapping(value = "/usuarios/gestionar")
     public ModelAndView showGestionarUsuarios() {
         return new ModelAndView("gestionarUsuarios");
     }
 
-    @Secured(value = "Administrador")
     @RequestMapping(value = "/usuarios/getUsuarios")
     public @ResponseBody
     Map<String, ? extends Object> getUsuarios(@AuthenticationPrincipal Usuarios principal) {
@@ -67,7 +66,7 @@ public class gestionarUsuariosController {
         return map;
     }
 
-    @Secured(value = "Administrador")
+    @Trazable(accion = "modificar", listar = true, nombre = "modificarUsuarios", timeLine = "", claseEntidad = "Usuarios")
     @ResponseBody
     @RequestMapping(value = "/usuarios/editUsuario")
     public ModelAndView editUsuario(@RequestBody Usuarios r, ModelMap map) {
@@ -88,7 +87,7 @@ public class gestionarUsuariosController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Administrador")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarUsuarios", timeLine = "", claseEntidad = "Usuarios")
     @ResponseBody
     @RequestMapping(value = "/usuarios/deleteUsuario/{idUsuario}")
     public ModelAndView deleteUsuario(@PathVariable Integer idUsuario, ModelMap map) {
@@ -97,7 +96,7 @@ public class gestionarUsuariosController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Administrador")
+    @Trazable(accion = "modificar", modificar = true, nombre = "bloquearUsuarios", timeLine = "", claseEntidad = "Usuarios")
     @ResponseBody
     @RequestMapping(value = "/usuarios/lockUser/{idUsuario}")
     public ModelAndView lockUser(@PathVariable Integer idUsuario, ModelMap map) {

@@ -93,24 +93,24 @@
                                               name="formAddAutor" method="post">
                                             <div class="form-group">
                                                 <label>Nombre</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputNombre"
+                                                <input class="form-control" name="inputNombre"
                                                        required="" data-ng-model="autor.nombre"/>
                                                 <div class="text-center" data-ng-show="formAddAutor.inputNombre.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                    <!--<span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>-->
                                                 </div>
                                                 <label>Segundo Nombre</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputSegundoNombre"
+                                                <input class="form-control" name="inputSegundoNombre"
                                                        data-ng-model="autor.segundoNombre"/>
                                                 <div class="text-center" data-ng-show="formAddAutor.inputSegundoNombre.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
                                                 </div>
                                                 <label>Apellidos</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputApellidos"
+                                                <input class="form-control" name="inputApellidos"
                                                        required="" data-ng-model="autor.apellidos"/>
                                                 <div class="text-center" data-ng-show="formAddAutor.inputApellidos.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                    <!--<span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>-->
                                                 </div>
                                             </div>
                                             <div class="text-right">
@@ -155,7 +155,6 @@
         <!-- FOOTER -->
         <jsp:include page="/WEB-INF/includes/footer.jsp"/>
         <!--END FOOTER -->
-
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->

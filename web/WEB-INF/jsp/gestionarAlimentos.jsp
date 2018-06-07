@@ -114,31 +114,27 @@
                                               name="formAddAlimento" method="post">
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombreCient"
-                                                       required="" data-ng-model="indiceRegistro.nombreCient"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
+                                                <input class="form-control"
+                                                       data-ng-model="indiceRegistro.nombreCient"/>
                                                 <label>Nombre</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombre"
+                                                <input class="form-control"  name="inputNombre"
                                                        required="" data-ng-model="indiceRegistro.nombre"/>
                                                 <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                     <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
                                                 </div>
                                                 <label>Variedad</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputVariedad"
+                                                <input class="form-control" 
                                                        data-ng-model="indiceRegistro.variedad"/>
                                                 <label>Parte</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputParte"
+                                                <input class="form-control" 
                                                        data-ng-model="indiceRegistro.parte"/>
                                                 <label>Proceso</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputProceso"
+                                                <input class="form-control"
                                                        data-ng-model="indiceRegistro.proceso"/>
 
                                                 <label>Mezcla</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputMezcla"
+                                                <input class="form-control" 
                                                        data-ng-model="indiceRegistro.mezcla"/>
                                                 <label>Tipo en Cuba</label>
                                                 <br>
@@ -161,6 +157,7 @@
                                             </div>
                                             <div class="text-right">
                                                 <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
+                                                <input type="hidden" data-ng-model="indiceRegistro.idUsuario"/>
                                                 <button type="submit" class="btn btn-success" data-ng-disabled="formAddAlimento.$invalid">Guardar</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                             </div>

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.CategoriaRepo;
 import repositorios.MensajeRepo;
+import services.Trazable;
 
 /**
  *
@@ -48,13 +49,12 @@ public class CategoriasController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "listar", listar = true, nombre = "listarCategorías", timeLine = "", claseEntidad = "Categorías")
     @RequestMapping(value = "/categorias/gestionar")
     public ModelAndView showGestionarCategorias() {
         return new ModelAndView("gestionarCategorias");
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/categorias/getCategorias")
     public @ResponseBody
     Map<String, ? extends Object> getCategorias(@AuthenticationPrincipal Usuarios usuario) {
@@ -69,7 +69,7 @@ public class CategoriasController {
         return map;
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarCategorías", timeLine = "", claseEntidad = "Categorías")
     @ResponseBody
     @RequestMapping(value = "/categorias/addCategoria")
     public ModelAndView addCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -90,7 +90,7 @@ public class CategoriasController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificarCategorías", timeLine = "", claseEntidad = "Categorías")
     @ResponseBody
     @RequestMapping(value = "/categorias/editCategoria")
     public ModelAndView editCategorias(@RequestBody Categoria cat, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -111,7 +111,7 @@ public class CategoriasController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Editor")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "modificarCategorías", timeLine = "", claseEntidad = "Categorías")
     @RequestMapping(value = "/categorias/deleteCategoria/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteCategorias(@PathVariable Integer id, ModelMap map) {
         categoriaRepo.delete(id);

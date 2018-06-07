@@ -29,7 +29,7 @@ import services.ServicioInicioSesion;
  */
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -48,9 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
-                .antMatchers("/roles/**", "/usuarios/**").hasAuthority("Administrador")
-                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autor/**", 
-                        "/categorias/**", "/estimacion/**","/notificaciones/**")
+                .antMatchers("/roles/**", "/usuarios/**", "/trazas/**").hasAuthority("Administrador")
+                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autores/**", 
+                        "/categorias/**", "/eficaciones/**\")\n" +
+"                .hasAnyAuthority(\"Editor\", \"Colaborador\")\n" +
+"                .antMatchers(\"/editarPerfil/**\").authenticastimacion/**","/notificaciones/**")
                 .hasAnyAuthority("Editor", "Colaborador")
                 .antMatchers("/editarPerfil/**").authenticated()
                 .anyRequest().authenticated()

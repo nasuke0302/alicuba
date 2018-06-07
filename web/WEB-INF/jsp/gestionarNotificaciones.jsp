@@ -58,9 +58,9 @@
                                                 <tr data-ng-repeat="a in allNotificaciones track by $index">
                                                     <td>
                                                         <input type="hidden" value="{{a.idMensaje}}"/>
-                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                        <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                                 data-ng-click="abrirEliminarModal($index)">
-                                                            <i class="glyphicon glyphicon-trash"></i></button>
+                                                            <i class="glyphicon glyphicon-check"></i></button>
                                                     </td>
                                                     <td>{{a.titulo}}</td>
                                                     <td>{{a.mensaje}}</td>

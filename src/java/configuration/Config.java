@@ -28,9 +28,11 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 @EnableTransactionManagement
 public class Config {
 
+    
+
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "albert123");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "123");
         dataSource.setDriverClassName("org.postgresql.Driver");
         return dataSource;
     }
@@ -63,9 +65,9 @@ public class Config {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
-    
+
     @Bean
-    public LocaleResolver localeResolver(){
+    public LocaleResolver localeResolver() {
         return new CookieLocaleResolver();
     }
 }

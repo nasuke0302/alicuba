@@ -19,6 +19,7 @@ import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -46,6 +47,7 @@ import repositorios.RangoEdadesRepo;
 import repositorios.TablaCnaGeneralRepo;
 import repositorios.TiposDatosAlimentosRepo;
 import repositorios.UnidadesMedidaRepo;
+import services.Trazable;
 
 /**
  *
@@ -284,35 +286,37 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertar Metadatos", timeLine = "", claseEntidad = "MetadatosAlimentosG")
     @ResponseBody
     @RequestMapping(value = "/estudio/addEstudio")
     public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map,
             @AuthenticationPrincipal Usuarios principal) {
         try {
-            mag.setIdRegion(mag.getIdProvincia().getIdRegion());
+            //mag.setIdRegion(mag.getIdProvincia().getIdRegion());
             
-            metadatosAlimentosRepo.saveAndFlush(mag);
+            MetadatosAlimentosG magSaved = metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
-            map.put("data", mag);
+            map.put("data", magSaved);
 
             Mensaje mensaje = new Mensaje();
             Date fecha = new Date();
             mensaje.setFecha(dateFormat.format(fecha));
             mensaje.setLeido(Boolean.FALSE);
             mensaje.setMensaje(principal.getNombre() + " ha insertado un estudio para el alimento: "
-                    + mag.getIdAlimento().getNombre());
+                    + magSaved.getIdAlimento().getNombre());
             mensaje.setTitulo("Estudio insertado");
             mensaje.setSender(principal.getNombre());
             mensaje.setReceiver("todos");
             mensajeRepo.saveAndFlush(mensaje);
             messagingTemplate.convertAndSend("/topic/notifications", mensaje);
-        } catch (Exception e) {
+        } catch (MessagingException e) {
             map.put("mensaje", "Error al insertar estudio");
             map.put("Error", e);
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertar Tabla Cna General", timeLine = "", claseEntidad = "TablaCnaGeneral")
     @ResponseBody
     @RequestMapping(value = "/estudio/addTablaCnaGeneral/{valor:.+}")
     public ModelAndView addTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
@@ -332,7 +336,7 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
     
-    @Secured(value = "Editor, Colaborador")
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificar Tabla Cna General", timeLine = "", claseEntidad = "TablaCnaGeneral")
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")
     public ModelAndView editTablaCnaGeneral(@RequestBody TablaCnaGeneralPK cnaGeneralPK,
@@ -350,7 +354,7 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminar Tabla Cna General", timeLine = "", claseEntidad = "TablaCnaGeneral")
     @ResponseBody
     @RequestMapping(value = "/estudio/deleteEstudio", method = RequestMethod.POST)
     public ModelAndView deleteEstudio(@RequestBody TablaCnaGeneralPK cnaGeneralPK) {
@@ -365,6 +369,7 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificar Metadatos", timeLine = "", claseEntidad = "MetadatosAlimentosG")
     @ResponseBody
     @RequestMapping(value = "/estudio/editMetadatosAlimentosG")
     public ModelAndView editMetadatosAlimentosG(@RequestBody MetadatosAlimentosG alimentosG, ModelMap map,
@@ -394,7 +399,7 @@ public class EstudioController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminar Metadatos", timeLine = "", claseEntidad = "MetadatosAlimentosG")
     @ResponseBody
     @RequestMapping(value = "/estudio/deleteAlimentoMetadatos/{idMetadatos}", method = RequestMethod.DELETE)
     public ModelAndView deleteAlimentoMetadatos(@PathVariable Integer idMetadatos, ModelMap map) {

@@ -34,6 +34,7 @@ import repositorios.CategoriaRepo;
 import repositorios.FuenteInfRepo;
 import repositorios.MensajeRepo;
 import repositorios.ReferenciasRepo;
+import services.Trazable;
 
 @Controller
 public class IndexController {
@@ -60,18 +61,17 @@ public class IndexController {
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
+    @Trazable(accion = "listar", listar = true, nombre = "listarReferencias", timeLine = "", claseEntidad = "Referencias")
     @RequestMapping(value = {"/", "/index"})
     public ModelAndView showIndex() {
         return new ModelAndView("index");
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = {"/index/createOrEditReferencia"})
     public String showCreateOrEditReferencia() {
         return "createOrEditReferencia";
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getReferencias")
     public @ResponseBody
     Map<String, ? extends Object> getReferencias(@AuthenticationPrincipal Usuarios principal) {
@@ -87,7 +87,6 @@ public class IndexController {
         return map;
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/getFuentes")
     public @ResponseBody
     Map<String, ? extends Object> getFuentes() {
@@ -101,7 +100,6 @@ public class IndexController {
         return map;
     }
 
-    @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/index/addReferencia")
     public ModelAndView addReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -123,7 +121,6 @@ public class IndexController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador, Editor")
     @ResponseBody
     @RequestMapping(value = "/index/editReferencia")
     public ModelAndView editReferencia(@RequestBody Referencias r, ModelMap map, @AuthenticationPrincipal Usuarios principal) {
@@ -154,7 +151,6 @@ public class IndexController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Secured(value = "Colaborador, Editor")
     @RequestMapping(value = "/index/deleteReferencia/{idReferencia}", method = RequestMethod.POST)
     public ModelAndView deleteReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         try {

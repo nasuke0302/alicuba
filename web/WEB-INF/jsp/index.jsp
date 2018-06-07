@@ -381,7 +381,7 @@
                                                         <form role="form" data-ng-submit="addCategoria()" method="post" name="formAddCategoria">
                                                             <div class="form-group">
                                                                 <label>Categor&iacute;a</label>
-                                                                <input class="form-control" type="text" name="inputCategoriaCategoria" data-ng-pattern="/^[a-zA-z]*$/"
+                                                                <input class="form-control" type="text" name="inputCategoriaCategoria"
                                                                        required="" data-ng-model="categoria.categoria"/>
                                                                 <div data-ng-show="formAddCategoria.inputCategoriaCategoria.$invalid">
                                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>

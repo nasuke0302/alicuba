@@ -21,10 +21,10 @@
                 <ul class="in" id="captacion-nav">
                     <li><a href="${pageContext.request.contextPath}/index"><i class="icon-angle-right"></i> Referencias Bibliogr&aacute;ficas</a></li>
                     <li><a href="${pageContext.request.contextPath}/alimentos/gestionar"><i class="icon-angle-right"></i> Alimentos </a></li>
-                    <sec:authorize access="hasAuthority('Editor')">
-                    <li><a href="${pageContext.request.contextPath}/autores/gestionar"><i class="icon-angle-right"></i> Autores </a></li>
-                    <li><a href="${pageContext.request.contextPath}/categorias/gestionar"><i class="icon-angle-right"></i> Categor&iacute;as</a></li>
-                    </sec:authorize>
+                        <sec:authorize access="hasAuthority('Editor')">
+                        <li><a href="${pageContext.request.contextPath}/autores/gestionar"><i class="icon-angle-right"></i> Autores </a></li>
+                        <li><a href="${pageContext.request.contextPath}/categorias/gestionar"><i class="icon-angle-right"></i> Categor&iacute;as</a></li>
+                        </sec:authorize>
                 </ul>
             </li>
             <li class="panel ">
@@ -38,14 +38,20 @@
                     <li><a href="${pageContext.request.contextPath}/estimacion/gestionar"><i class="icon-angle-right"></i> Estimar</a></li>
                 </ul>
             </li>
-            <li class="panel">
-                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#DDL-nav">
-                    <i class=" icon-sitemap"></i> Manejo de Tablas
-                    <span class="pull-right">
-                        <i class="icon-angle-left"></i>
-                    </span>
-                </a>                    
-            </li>
+            <sec:authorize access="hasAuthority('Editor')">
+                <li class="panel">
+                    <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#manejo-nav">
+                        <i class=" icon-sitemap"></i> Manejo de Tablas
+                        <span class="pull-right">
+                            <i class="icon-angle-left"></i>
+                        </span>
+                    </a>
+
+                    <ul class="in" id="manejo-nav">
+                        <li><a href="${pageContext.request.contextPath}/tablasgeneradas/gestionar"><i class="icon-angle-right"></i> Listado de tablas generadas </a></li>
+                    </ul>
+                </li>
+            </sec:authorize>
         </sec:authorize>
         <sec:authorize access="hasAuthority('Administrador')">
             <li class="panel">
@@ -57,21 +63,9 @@
                 </a>
                 <ul class="in" id="admin-nav">
                     <li><a href="${pageContext.request.contextPath}/usuarios/gestionar"><i class="icon-angle-right"></i> Usuarios </a></li>
+                    <li><a href="${pageContext.request.contextPath}/trazas/gestionar"><i class="icon-angle-right"></i> Trazas </a></li>
                 </ul>
             </li>
         </sec:authorize>
-        <sec:authorize access="hasAuthority('Editor')">
-            <li class="panel">
-                <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#DDL-nav">
-                    <i class=" icon-sitemap"></i> Manejo de Tablas
-                    <span class="pull-right">
-                        <i class="icon-angle-left"></i>
-                    </span>
-                </a> 
-                <ul class="in" id="admin-nav">
-                    <li><a href="${pageContext.request.contextPath}/tablasgeneradas/gestionar"><i class="icon-angle-right"></i> Listado de tablas generadas </a></li>
-                </ul>
-            </li>
-        </sec:authorize>    
     </ul>
 </div>
