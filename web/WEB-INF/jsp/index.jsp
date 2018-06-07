@@ -80,7 +80,7 @@
                                                             </td>
                                                             <td>
                                                                 <small data-ng-repeat="a in r.autoresList">
-                                                                    {{a.apellidos| limitTo : 1}}. {{a.nombre}};</small>
+                                                                    {{a.apellidos}}. {{a.nombre}};</small>
 
                                                             </td>
                                                             <td>

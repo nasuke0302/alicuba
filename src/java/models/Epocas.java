@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Epocas.findAll", query = "SELECT e FROM Epocas e")})
 public class Epocas implements Serializable {
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idEpoca")
     private List<MetadatosAlimentosTabla> metadatosAlimentosTablaList;
 

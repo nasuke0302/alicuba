@@ -29,7 +29,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import repositorios.AutoresRepo;
 import repositorios.MensajeRepo;
-import repositorios.TablatempRepo;
 import services.Trazable;
 
 /**
@@ -47,9 +46,6 @@ public class AutoresController {
 
     @Autowired
     MensajeRepo mensajeRepo;
-
-    @Autowired
-    TablatempRepo tablaTempRepo;
 
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
