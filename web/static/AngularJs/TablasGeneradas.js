@@ -37,9 +37,31 @@ function headerController($http, $scope) {
 }
 appTablasGeneradas.controller("headerController", headerController);
 appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $http, $window) {
+    $scope.tablaGenerada = {
+        idListadoTablaGeneradas: "",
+        nombre: "",
+        fechaHora: "",
+        idUsuario: {}
+    };
 
+    $scope.mensaje = "";
     //Obtener Lista de Autores
     $http.get("getTablasGeneradas").then(function (data) {
         $scope.allTablasGeneradas = data.data.data;
     });
+
+    $scope.abrirNuevaTablaGeneradaModal = function () {
+        $scope.tablaGenerada = {
+            idListadoTablaGeneradas: "",
+            nombre: "",
+            fechaHora: "",
+            idUsuario: {}
+        };
+    };
+
+    $scope.createOrEditTablaG = function () {
+        $http.post("generarTabla", $scope.tablaGenerada, {}).then(function (response) {
+            $scope.mensaje = response.data.mensaje;
+        });
+    };
 });

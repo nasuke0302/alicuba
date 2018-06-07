@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -39,7 +40,7 @@ public class MetadatosAlimentosG implements Serializable {
     @Column(name = "riego")
     private String riego;
 
-//    @JsonIgnore
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
     private List<TablaCnaGeneral> tablaCnaGeneralList;
 

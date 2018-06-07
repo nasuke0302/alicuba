@@ -39,6 +39,10 @@ public class Usuarios implements Serializable, UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "idUsuario")
+    private List<ListadoTablaGeneradas> listadoTablaGeneradasList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "idUsuario")
     private List<Formulas> formulasList;
 
     private static final long serialVersionUID = 1L;
@@ -243,5 +247,14 @@ public class Usuarios implements Serializable, UserDetails {
 
     public void setFormulasList(List<Formulas> formulasList) {
         this.formulasList = formulasList;
+    }
+
+    @XmlTransient
+    public List<ListadoTablaGeneradas> getListadoTablaGeneradasList() {
+        return listadoTablaGeneradasList;
+    }
+
+    public void setListadoTablaGeneradasList(List<ListadoTablaGeneradas> listadoTablaGeneradasList) {
+        this.listadoTablaGeneradasList = listadoTablaGeneradasList;
     }
 }

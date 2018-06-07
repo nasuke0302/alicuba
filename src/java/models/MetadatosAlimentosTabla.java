@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "MetadatosAlimentosTabla.findByRiego", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.riego = :riego"),
     @NamedQuery(name = "MetadatosAlimentosTabla.findByN", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.n = :n"),
     @NamedQuery(name = "MetadatosAlimentosTabla.findByNpk", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.npk = :npk"),
-    @NamedQuery(name = "MetadatosAlimentosTabla.findByEdad", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.edad = :edad"),
     @NamedQuery(name = "MetadatosAlimentosTabla.findByCorte", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.corte = :corte"),
     @NamedQuery(name = "MetadatosAlimentosTabla.findByTecnolog", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.tecnolog = :tecnolog"),
     @NamedQuery(name = "MetadatosAlimentosTabla.findByTratamiento", query = "SELECT m FROM MetadatosAlimentosTabla m WHERE m.tratamiento = :tratamiento"),
@@ -59,8 +58,7 @@ public class MetadatosAlimentosTabla implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "npk")
     private String npk;
-    @Column(name = "edad")
-    private Integer edad;
+    
     @Size(max = 2147483647)
     @Column(name = "corte")
     private String corte;
@@ -88,9 +86,7 @@ public class MetadatosAlimentosTabla implements Serializable {
     @ManyToOne(optional = false)
     private Fertilizado fertilizado;
     @JoinColumn(name = "id_listado_tabla_generadas", referencedColumnName = "id_listado_tabla_generadas")
-    
     @ManyToOne
-    @JsonIgnore
     private ListadoTablaGeneradas idListadoTablaGeneradas;
     
     @JoinColumn(name = "id_nivel_fert", referencedColumnName = "id_nivel_fert")
@@ -143,14 +139,6 @@ public class MetadatosAlimentosTabla implements Serializable {
 
     public void setNpk(String npk) {
         this.npk = npk;
-    }
-
-    public Integer getEdad() {
-        return edad;
-    }
-
-    public void setEdad(Integer edad) {
-        this.edad = edad;
     }
 
     public String getCorte() {

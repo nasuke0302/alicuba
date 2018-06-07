@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -13,6 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,6 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ListadoTablaGeneradas.findByFechaHora", query = "SELECT l FROM ListadoTablaGeneradas l WHERE l.fechaHora = :fechaHora")})
 public class ListadoTablaGeneradas implements Serializable {
 
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @ManyToOne
+    private Usuarios idUsuario;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +54,7 @@ public class ListadoTablaGeneradas implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "fecha_hora")
     private String fechaHora;
+    @JsonIgnore
     @OneToMany(mappedBy = "idListadoTablaGeneradas")
     private List<MetadatosAlimentosTabla> metadatosAlimentosTablaList;
 
@@ -113,6 +121,14 @@ public class ListadoTablaGeneradas implements Serializable {
     @Override
     public String toString() {
         return "models.ListadoTablaGeneradas[ idListadoTablaGeneradas=" + idListadoTablaGeneradas + " ]";
+    }
+
+    public Usuarios getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(Usuarios idUsuario) {
+        this.idUsuario = idUsuario;
     }
     
 }

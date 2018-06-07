@@ -7,6 +7,7 @@ package controllers;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,9 @@ import models.Region;
 import models.TablaCnaFinal;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
+import models.Usuarios;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import repositorios.AlimentoEvaluadoRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.MetadatosAlimentosTablaRepo;
@@ -78,13 +81,13 @@ public class GenerarTablaController {
 	
 	private List<Nutrientes> ListaNutrientes;
     
-    @Secured(value = "Editor")
+    @PreAuthorize(value = "hasAuthority('Editor')")
     @RequestMapping(value = "/tablasgeneradas/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarTablasGeneradas");
     }
     
-    @Secured(value = "Editor")
+    @PreAuthorize(value = "hasAuthority('Editor')")
     @RequestMapping(value = "/tablasgeneradas/getTablasGeneradas")
     public @ResponseBody
     Map<String, ? extends Object> getTablasGeneradas( ) {
@@ -100,12 +103,18 @@ public class GenerarTablaController {
         return map;
     }/**/
     
-    
-    //@Secured(value = "Editor")
+    /**
+     *
+     * @param lis
+     * @param map
+     * @param principal
+     * @return 
+     */
     @PreAuthorize(value = "hasAuthority('Editor')")//hasAnyAuthority('Colaborador', 'Editor')
     @RequestMapping(value = "/tablasgeneradas/generarTabla")
     @ResponseBody
-    public ModelAndView generarTabla(@RequestBody ListadoTablaGeneradas lis, ModelMap map){
+    public ModelAndView generarTabla(@RequestBody ListadoTablaGeneradas lis, ModelMap map,
+            @AuthenticationPrincipal Usuarios principal){
         
         //Obtener sólo los nutrientes que esten en uso
         /*
@@ -115,6 +124,8 @@ public class GenerarTablaController {
         */
         ListaNutrientes = nutrientesRepo.findAll();
         
+        lis.setIdUsuario(principal);
+        lis.setFechaHora(dateFormat.format(new Date()));
         //Aquí se obtiene el Id de la id_listado_tabla_generadas
         ListadoTablaGeneradas TablaCreada = listadoTablaGeneradasRepo.saveAndFlush(lis);
         
@@ -163,7 +174,7 @@ public class GenerarTablaController {
                     for(int met = 0; met < chequeo_metadatos.size(); met++){
                         //Preguntar si el alimento fue evaluado
                         List<AlimentoEvaluado> alimentoEval;
-                        alimentoEval = alimentoEvaluadoRepo.MetadatosEvaluado(chequeo_metadatos.get(met));
+                        alimentoEval = alimentoEvaluadoRepo.MetadatosEvaluado(chequeo_metadatos.get(met).getIdMetadatosAlimentosG());
                         if(alimentoEval.isEmpty()){
 
                            //Agregar este metadatos en la tabla metadatos_alimentos_tabla
@@ -255,16 +266,20 @@ public class GenerarTablaController {
             boolean ya_registrado_metadatos_evaluados = false; 
             List<Float> valores = null;
             for(int nut = 0; nut < ListaNutrientes.size(); nut++){
+                System.out.println("Entro al primer FOR");
                 valores.clear();
                 for(int met = 0; met < chequeo_metadatos.size(); met++){
+                    System.out.println("Entro al segundo FOR");
                     if (ya_registrado_metadatos_evaluados == false) {
                         //Agragar Id de metadato evaluado			
                         MetEvaluado.setIdMetadatosEvaluado(chequeo_metadatos.get(met).getIdMetadatosAlimentosG());			
                         alimentoEvaluadoRepo.saveAndFlush(MetEvaluado);
+                        System.out.println("pase 1");
                     }
+                    //El error puede ser aqui
                     TablaCnaGeneralPK cnaGeneralPK = new TablaCnaGeneralPK(chequeo_metadatos.get(met).getIdMetadatosAlimentosG(), ListaNutrientes.get(nut).getIdNutriente());
                     List<TablaCnaGeneral> tabla_cna_general = cnaGeneralRepo.getTabla_cna_general(cnaGeneralPK);
-
+                    System.out.println("pase 2");
                     if(tabla_cna_general.size() > 0){
                         valores.add(tabla_cna_general.get(0).getValor());                        
                     }					

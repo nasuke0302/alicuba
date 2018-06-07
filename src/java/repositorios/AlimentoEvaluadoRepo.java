@@ -20,5 +20,5 @@ public interface AlimentoEvaluadoRepo  extends JpaRepository<AlimentoEvaluado, I
     //public List<MetadatosAlimentosG> metadatos_evaluado(Alimentos idAlimento, Region idRegion);
         
     @Query("SELECT a FROM AlimentoEvaluado a WHERE a.idMetadatosEvaluado = ?1")        
-    public List<AlimentoEvaluado> MetadatosEvaluado(MetadatosAlimentosG IdMetadatosEvaluado);
+    public List<AlimentoEvaluado> MetadatosEvaluado(Integer IdMetadatosEvaluado);
 }
