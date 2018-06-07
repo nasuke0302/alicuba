@@ -70,9 +70,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div class="panel-footer panel-default">
-                                    <a>Listado de tablas generadas</a>
-                                </div>
+                                <div class="panel-footer panel-default">Listado de tablas generadas</div>
                                 <!--CREATE OR EDIT MODAL-->
                                 <div class="col-lg-12">
                                     <div class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
