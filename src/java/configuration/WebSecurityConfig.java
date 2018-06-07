@@ -50,11 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**", "/trazas/**").hasAuthority("Administrador")
                 .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autores/**", 
-                        "/categorias/**", "/eficaciones/**\")\n" +
-"                .hasAnyAuthority(\"Editor\", \"Colaborador\")\n" +
-"                .antMatchers(\"/editarPerfil/**\").authenticastimacion/**","/notificaciones/**")
+                        "/categorias/**", "/estimacion/**","/notificaciones/**")
                 .hasAnyAuthority("Editor", "Colaborador")
                 .antMatchers("/editarPerfil/**").authenticated()
+                .antMatchers("/tablasgeneradas/**").hasAuthority("Editor")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

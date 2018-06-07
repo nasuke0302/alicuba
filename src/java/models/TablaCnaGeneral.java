@@ -33,7 +33,8 @@ public class TablaCnaGeneral implements Serializable {
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "valor")
-    private Double valor;
+    //private Double valor;
+    private Float valor;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
@@ -107,11 +108,11 @@ public class TablaCnaGeneral implements Serializable {
         return "models.TablaCnaGeneral[ tablaCnaGeneralPK=" + tablaCnaGeneralPK + " ]";
     }
 
-    public Double getValor() {
+    public Float getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(Float valor) {
         this.valor = valor;
     }
     

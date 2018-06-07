@@ -1,5 +1,7 @@
 package aspecto;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import services.Trazable;
 import models.Traza;
 import repositorios.TrazaRepo;
@@ -8,7 +10,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -19,18 +20,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @Aspect
 public class TrazaAspecto {
-    
+
     @Autowired
     HttpServletRequest request;
-    
+
     @Autowired
     TrazaRepo repositorio;
-    
+
     private String clase;
-    
+
     private String claseEntidad;
-    
+
     private String claseTimeLine;
+
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.
      */
@@ -38,7 +42,7 @@ public class TrazaAspecto {
     public void springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
-    
+
     @AfterReturning("springBeanPointcut()")
     public void doAccessCheck(JoinPoint punto) {
         try {
@@ -50,7 +54,8 @@ public class TrazaAspecto {
                 String url = request.getRequestURI();
                 String accion = buscarAccion(trazable, argumentos);
                 if (principal.isAuthenticated()) {
-                    Traza traza = new Traza(url, new Date(), accion, principal.getName(), "INFO");
+                    String tiempo = dateFormat.format(new Date());
+                    Traza traza = new Traza(url, tiempo, accion, principal.getName(), "INFO");
                     traza.setClase(clase);
                     traza.setTimeLineClase(claseTimeLine);
                     traza.setClaseEntidad(claseEntidad);
@@ -61,7 +66,7 @@ public class TrazaAspecto {
             Logger.getLogger(TrazaAspecto.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
     private String buscarAccion(Trazable trazable, Object[] argumentos) {
         String accion = trazable.accion();
         int caso = trazable.listar() ? 1 : trazable.insertar() ? 2 : trazable.modificar() ? 3 : trazable.eliminar() ? 4 : 5;
@@ -84,6 +89,6 @@ public class TrazaAspecto {
                 clase = "uk-badge uk-badge-primary";
                 return accion;
         }
-        
+
     }
 }

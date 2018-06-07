@@ -1,4 +1,4 @@
-var appTrazas = angular.module("appTrazas", ['datatables', 'datatables.bootstrap']);
+var appTablasGeneradas = angular.module("appTablasGeneradas", ['datatables', 'datatables.bootstrap']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -35,11 +35,11 @@ function headerController($http, $scope) {
         });
     });
 }
-appTrazas.controller("headerController", headerController);
-appTrazas.controller("trazasController", function ($scope, $http) {
-    $scope.allTrazas = {};
-    //Obtener Lista de Trazas
-    $http.get("getTrazas").then(function (data) {
-        $scope.allTrazas = data.data.data;
+appTablasGeneradas.controller("headerController", headerController);
+appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $http, $window) {
+
+    //Obtener Lista de Autores
+    $http.get("getTablasGeneradas").then(function (data) {
+        $scope.allTablasGeneradas = data.data.data;
     });
 });

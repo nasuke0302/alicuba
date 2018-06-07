@@ -8,10 +8,9 @@ package controllers;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import models.AlimentoEvaluado;
 import models.ListadoTablaGeneradas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -27,11 +26,19 @@ import repositorios.ListadoTablaGeneradasRepo;
 import models.Alimentos;
 import models.MetadatosAlimentosG;
 import models.MetadatosAlimentosTabla;
+import models.Nutrientes;
 import models.Region;
+import models.TablaCnaFinal;
+import models.TablaCnaGeneral;
+import models.TablaCnaGeneralPK;
+import org.springframework.security.access.prepost.PreAuthorize;
+import repositorios.AlimentoEvaluadoRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.MetadatosAlimentosTablaRepo;
+import repositorios.NutrientesRepo;
 import repositorios.RegionRepo;
-import services.Trazable;
+import repositorios.TablaCnaFinalRepo;
+import repositorios.TablaCnaGeneralRepo;
 
 /**
  *
@@ -55,15 +62,30 @@ public class GenerarTablaController {
     @Autowired
     MetadatosAlimentosTablaRepo metadatosAlimentosTablaRepo;
     
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    @Autowired
+    AlimentoEvaluadoRepo alimentoEvaluadoRepo;
     
-    @Trazable(accion = "listar", listar = true, nombre = "listarTablasGeneradas", timeLine = "", claseEntidad = "TablasGeneradas")
+    @Autowired
+    NutrientesRepo nutrientesRepo;
+    
+    @Autowired
+    TablaCnaGeneralRepo cnaGeneralRepo;
+    
+    @Autowired
+    TablaCnaFinalRepo cnaFinalRepo;
+        
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	
+	private List<Nutrientes> ListaNutrientes;
+    
+    @Secured(value = "Editor")
     @RequestMapping(value = "/tablasgeneradas/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarTablasGeneradas");
     }
     
-    @RequestMapping(value = "/categorias/getTablasGeneradas")
+    @Secured(value = "Editor")
+    @RequestMapping(value = "/tablasgeneradas/getTablasGeneradas")
     public @ResponseBody
     Map<String, ? extends Object> getTablasGeneradas( ) {
         Map<String, Object> map = new HashMap<>();
@@ -76,48 +98,52 @@ public class GenerarTablaController {
             map.put("success", Boolean.FALSE);
         }
         return map;
-    }
+    }/**/
     
     
-    @RequestMapping(value = "/categorias/generarTabla")
+    //@Secured(value = "Editor")
+    @PreAuthorize(value = "hasAuthority('Editor')")//hasAnyAuthority('Colaborador', 'Editor')
+    @RequestMapping(value = "/tablasgeneradas/generarTabla")
     @ResponseBody
     public ModelAndView generarTabla(@RequestBody ListadoTablaGeneradas lis, ModelMap map){
         
-        //listadoTablaGeneradasRepo.saveAndFlush(lis);
+        //Obtener sólo los nutrientes que esten en uso
+        /*
+        SELECT Sum(tabla_cna_general.id_nutriente) AS SumaDeid_nutriente, tabla_cna_general.id_nutriente
+        FROM tabla_cna_general
+        GROUP BY tabla_cna_general.id_nutriente;
+        */
+        ListaNutrientes = nutrientesRepo.findAll();
         
+        //Aquí se obtiene el Id de la id_listado_tabla_generadas
         ListadoTablaGeneradas TablaCreada = listadoTablaGeneradasRepo.saveAndFlush(lis);
-        //Integer IdListadoTablaGenerada = TablaCreada.getIdListadoTablaGeneradas();
         
         List<Alimentos> lista_alimentos = alimentosRepo.findAll();//seleccionar todos los alimentos                        
-        /*List list_tmp = new LinkedList(lista_alimentos);//LinkedList es para poder recorrer la lista        
-        Iterator caso = list_tmp.iterator();
-        while (caso.hasNext()) {//Evaluar por alimentos
-            Alimentos alimento_actual = (Alimentos) caso.next();            
-            String id_alimento = alimento_actual.getIdAlimento().toString();
-        }/**/
-        
+                
         List<Region> ListadoRegiones = regionRepo.findAll();
         
         for(int i = 0; i < lista_alimentos.size(); i++){
-            int id_alimento = lista_alimentos.get(i).getIdAlimento();
+            Alimentos id_alimento = lista_alimentos.get(i);
             
            for(int reg = 0; reg < ListadoRegiones.size(); reg++){
-               int id_region = ListadoRegiones.get(reg).getIdRegion();
+               Region id_region = ListadoRegiones.get(reg);
                
                List<MetadatosAlimentosG> chequeo_metadatos = metadatosAlimentosRepo.metadatosAlimentosDeLaRegion(id_alimento, id_region);
                
                if(chequeo_metadatos.size() == 1){
+                   
+                    //No hay que preguntar si el aliemnto esté evaluado pq existe un sólo alimento de este tipo
+                   
                    //Agregar este metadatos en la tabla metadatos_alimentos_tabla
-                   MetadatosAlimentosTabla metadato_actual = null;
+                   MetadatosAlimentosTabla metadato_actual = new MetadatosAlimentosTabla();
                    metadato_actual.setIdAlimento(chequeo_metadatos.get(0).getIdAlimento());
                    metadato_actual.setIdRegion(chequeo_metadatos.get(0).getIdRegion());
                    metadato_actual.setIdEpoca(chequeo_metadatos.get(0).getIdEpoca());
                    metadato_actual.setIdNivelFert(chequeo_metadatos.get(0).getIdNivelFert());
-                   metadato_actual.setIdRangoEdades(chequeo_metadatos.get(0).getIdRangoEdades());
                    metadato_actual.setRiego(chequeo_metadatos.get(0).getRiego());
                    metadato_actual.setN(chequeo_metadatos.get(0).getN());
                    metadato_actual.setNpk(chequeo_metadatos.get(0).getNpk());
-                   metadato_actual.setEdad(chequeo_metadatos.get(0).getEdad());
+                   metadato_actual.setIdRangoEdades(chequeo_metadatos.get(0).getIdRangoEdades());
                    metadato_actual.setCorte(chequeo_metadatos.get(0).getCorte());
                    metadato_actual.setTecnolog(chequeo_metadatos.get(0).getTecnolog());
                    metadato_actual.setTratamiento(chequeo_metadatos.get(0).getTratamiento());
@@ -127,15 +153,154 @@ public class GenerarTablaController {
                    metadato_actual.setFertilizado(chequeo_metadatos.get(0).getFertilizado());
                    metadato_actual.setIdListadoTablaGeneradas(TablaCreada);
                    
-                  metadatosAlimentosTablaRepo.saveAndFlush(metadato_actual);
+                  MetadatosAlimentosTabla metadatoAgregado = metadatosAlimentosTablaRepo.saveAndFlush(metadato_actual);
+                  
+                  GenerarTablaCasoActual(chequeo_metadatos, metadatoAgregado);
+                  
                }
                if(chequeo_metadatos.size() > 1){
-                   //
+                    
+                    for(int met = 0; met < chequeo_metadatos.size(); met++){
+                        //Preguntar si el alimento fue evaluado
+                        List<AlimentoEvaluado> alimentoEval;
+                        alimentoEval = alimentoEvaluadoRepo.MetadatosEvaluado(chequeo_metadatos.get(met));
+                        if(alimentoEval.isEmpty()){
+
+                           //Agregar este metadatos en la tabla metadatos_alimentos_tabla
+                           MetadatosAlimentosTabla metadato_actual = new MetadatosAlimentosTabla();
+                           metadato_actual.setIdAlimento(chequeo_metadatos.get(met).getIdAlimento());
+                           metadato_actual.setIdRegion(chequeo_metadatos.get(met).getIdRegion());
+                           metadato_actual.setIdEpoca(chequeo_metadatos.get(met).getIdEpoca());
+                           metadato_actual.setIdNivelFert(chequeo_metadatos.get(met).getIdNivelFert());
+                           metadato_actual.setRiego(chequeo_metadatos.get(met).getRiego());
+                           metadato_actual.setN(chequeo_metadatos.get(met).getN());
+                           metadato_actual.setNpk(chequeo_metadatos.get(met).getNpk());
+                           metadato_actual.setIdRangoEdades(chequeo_metadatos.get(met).getIdRangoEdades());
+                           metadato_actual.setCorte(chequeo_metadatos.get(met).getCorte());
+                           metadato_actual.setTecnolog(chequeo_metadatos.get(met).getTecnolog());
+                           metadato_actual.setTratamiento(chequeo_metadatos.get(met).getTratamiento());
+                           metadato_actual.setPresentation(chequeo_metadatos.get(met).getPresentation());
+                           metadato_actual.setCalidad(chequeo_metadatos.get(met).getCalidad());
+                           metadato_actual.setImport1(chequeo_metadatos.get(met).getImport1());
+                           metadato_actual.setFertilizado(chequeo_metadatos.get(met).getFertilizado());
+                           metadato_actual.setIdListadoTablaGeneradas(TablaCreada);
+
+                            MetadatosAlimentosTabla metadatoAgregado = metadatosAlimentosTablaRepo.saveAndFlush(metadato_actual);
+
+                            List<MetadatosAlimentosG> metadatosEvaluado = metadatosAlimentosRepo.metadatosAlimentosDeLaRegion(
+                                                            chequeo_metadatos.get(met).getIdAlimento(), 
+                                                            chequeo_metadatos.get(met).getIdRegion(), 
+                                                            chequeo_metadatos.get(met).getIdEpoca(), 
+                                                            chequeo_metadatos.get(met).getIdNivelFert(), 
+                                                            chequeo_metadatos.get(met), 
+                                                            chequeo_metadatos.get(met), 
+                                                            chequeo_metadatos.get(met), 
+                                                            chequeo_metadatos.get(met).getIdRangoEdades(), 
+                                                            chequeo_metadatos.get(met), 
+                                                            chequeo_metadatos.get(met),	
+                                                            chequeo_metadatos.get(met),
+                                                            chequeo_metadatos.get(met),
+                                                            chequeo_metadatos.get(met).getCalidad(),
+                                                            chequeo_metadatos.get(met).getImport1(),
+                                                            chequeo_metadatos.get(met).getFertilizado()
+                                                            );
+
+                            GenerarTablaCasoActual(metadatosEvaluado, metadatoAgregado);
+                        }
+                    }
                }
            } 
         }
+		
+        alimentoEvaluadoRepo.deleteAll();
         
         map.put("mensaje", "Tabla generada con nombre: "+lis.getNombre());
         return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+    
+    private void GenerarTablaCasoActual(List<MetadatosAlimentosG> chequeo_metadatos, MetadatosAlimentosTabla metadatoAgregado){
+        AlimentoEvaluado MetEvaluado = new AlimentoEvaluado();
+        if(chequeo_metadatos.size() == 1){
+
+            //Agragar Id de metadato evaluado			
+            MetEvaluado.setIdMetadatosEvaluado(chequeo_metadatos.get(0).getIdMetadatosAlimentosG());			
+            alimentoEvaluadoRepo.saveAndFlush(MetEvaluado);
+
+            List<TablaCnaGeneral> tabla_cna_general = cnaGeneralRepo.getTabla_cna_general(chequeo_metadatos.get(0));
+
+            if(tabla_cna_general.size() > 0){
+
+                for(int reg = 0; reg < tabla_cna_general.size(); reg++){
+
+                    float valor = 0;
+                    TablaCnaFinal tablaCnaFinal_tmp = new TablaCnaFinal(metadatoAgregado.getIdMetadatosAlimentosTabla(), tabla_cna_general.get(reg).getTablaCnaGeneralPK().getIdNutriente());
+                    //tablaCnaFinal_tmp.TablaCnaFinal(metadatoAgregado.getIdMetadatosAlimentosTabla());
+                    //tablaCnaFinal_tmp.setIdNutriente(tabla_cna_general.get(reg).getIdNutriente());				
+                    tablaCnaFinal_tmp.setTotal(1);
+                    tablaCnaFinal_tmp.setPromedio(tabla_cna_general.get(reg).getValor());
+                    tablaCnaFinal_tmp.setMinimo(tabla_cna_general.get(reg).getValor());
+                    tablaCnaFinal_tmp.setMaximo(tabla_cna_general.get(reg).getValor());
+                    tablaCnaFinal_tmp.setDesvEst(valor);
+                    tablaCnaFinal_tmp.setVarianza(valor);
+
+                    cnaFinalRepo.saveAndFlush(tablaCnaFinal_tmp);
+                }
+            }
+            /*
+            hay que chequear cuando no tiene nutrientes if(tabla_cna_general.size() == 0) y cuando se muestre la tabla final
+            generada el alimento va ha estar incompleto. En este caso se debe eliminar este alimento				
+            */			
+        }
+        else{
+            boolean ya_registrado_metadatos_evaluados = false; 
+            List<Float> valores = null;
+            for(int nut = 0; nut < ListaNutrientes.size(); nut++){
+                valores.clear();
+                for(int met = 0; met < chequeo_metadatos.size(); met++){
+                    if (ya_registrado_metadatos_evaluados == false) {
+                        //Agragar Id de metadato evaluado			
+                        MetEvaluado.setIdMetadatosEvaluado(chequeo_metadatos.get(met).getIdMetadatosAlimentosG());			
+                        alimentoEvaluadoRepo.saveAndFlush(MetEvaluado);
+                    }
+                    TablaCnaGeneralPK cnaGeneralPK = new TablaCnaGeneralPK(chequeo_metadatos.get(met).getIdMetadatosAlimentosG(), ListaNutrientes.get(nut).getIdNutriente());
+                    List<TablaCnaGeneral> tabla_cna_general = cnaGeneralRepo.getTabla_cna_general(cnaGeneralPK);
+
+                    if(tabla_cna_general.size() > 0){
+                        valores.add(tabla_cna_general.get(0).getValor());                        
+                    }					
+                }
+                ya_registrado_metadatos_evaluados = true;//para que lo registre una sola vez
+
+                int total = valores.size();
+
+                if (total != 0) {
+                    Estadistica estadistica = new Estadistica(valores);
+                    double promedio = estadistica.media();
+                    double minimo = estadistica.minimo();
+                    double maximo = estadistica.maximo();
+                    double desv_est = estadistica.desviacion_tipica();
+                    double varianza = estadistica.varianza();
+                    
+                    TablaCnaFinal tablaCnaFinal_tmp = new TablaCnaFinal(metadatoAgregado.getIdMetadatosAlimentosTabla(), ListaNutrientes.get(nut).getIdNutriente());
+                    //tablaCnaFinal_tmp.setIdMetadatosAlimentosTabla(metadatoAgregado.getIdMetadatosAlimentosTabla());
+                    //tablaCnaFinal_tmp.setIdNutriente(ListaNutrientes.get(nut).getIdNutriente());				
+                    tablaCnaFinal_tmp.setTotal(total);
+                    tablaCnaFinal_tmp.setPromedio((float) promedio);
+                    tablaCnaFinal_tmp.setMinimo((float) minimo);
+                    tablaCnaFinal_tmp.setMaximo((float) maximo);
+
+                    if (total == 1) {
+                        float valor = 0;    
+                        tablaCnaFinal_tmp.setDesvEst(valor);
+                        tablaCnaFinal_tmp.setVarianza(valor);
+                    }
+                    else {
+                        tablaCnaFinal_tmp.setDesvEst((float) desv_est);
+                        tablaCnaFinal_tmp.setVarianza((float) varianza);
+                    }					
+                    cnaFinalRepo.saveAndFlush(tablaCnaFinal_tmp);
+                }
+            }			
+        }
     }
 }

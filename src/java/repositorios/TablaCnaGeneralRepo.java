@@ -5,6 +5,9 @@
  */
 package repositorios;
 
+import java.util.List;
+import models.MetadatosAlimentosG;
+import models.Nutrientes;
 import models.TablaCnaGeneral;
 import models.TablaCnaGeneralPK;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +21,10 @@ public interface TablaCnaGeneralRepo extends JpaRepository<TablaCnaGeneral, Tabl
     
     @Query("SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK =?1 AND t.valor = ?2")
     public TablaCnaGeneral findThisRecord(TablaCnaGeneralPK cnaGeneralPK, Float valor);
+	
+    @Query("SELECT t FROM TablaCnaGeneral t WHERE t.metadatosAlimentosG =?1")
+    public List<TablaCnaGeneral> getTabla_cna_general(MetadatosAlimentosG idMetadatosAlimentosG);
+	
+    @Query("SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK = ?1")
+    public List<TablaCnaGeneral> getTabla_cna_general(TablaCnaGeneralPK cnaGeneralPK);
 }

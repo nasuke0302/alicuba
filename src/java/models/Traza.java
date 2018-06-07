@@ -26,9 +26,9 @@ public class Traza implements Serializable {
     private String url;
 
     @Column(name = "tiempo")
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonSerialize(using = SerializadorFechaTraza.class)
-    private Date tiempo;
+//    @Temporal(TemporalType.DATE)
+//    @JsonSerialize(using = SerializadorFechaTraza.class)
+    private String tiempo;
 
     @Column(name = "accion")
     private String accion;
@@ -51,7 +51,7 @@ public class Traza implements Serializable {
     public Traza() {
     }
 
-    public Traza(String url, Date tiempo, String accion, String usuario, String tipo) {
+    public Traza(String url, String tiempo, String accion, String usuario, String tipo) {
         this.url = url;
         this.tiempo = tiempo;
         this.accion = accion;
@@ -79,11 +79,11 @@ public class Traza implements Serializable {
         this.url = url;
     }
 
-    public Date getTiempo() {
+    public String getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(Date tiempo) {
+    public void setTiempo(String tiempo) {
         this.tiempo = tiempo;
     }
 

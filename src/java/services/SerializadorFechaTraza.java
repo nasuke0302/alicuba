@@ -21,7 +21,7 @@ public class SerializadorFechaTraza extends JsonSerializer<Date> {
 
     @Override
     public void serialize(Date value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("dd/mm/yyyy h:mm a");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         gen.writeString(timeFormat.format(value));
     }
 

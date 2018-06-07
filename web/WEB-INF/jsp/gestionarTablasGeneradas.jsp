@@ -8,7 +8,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib  prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
-<html data-ng-app="appAlimentos">
+<html data-ng-app="appTablasGeneradas">
     <head>
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
         <!-- PAGE LEVEL STYLES -->
@@ -24,7 +24,7 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/Alimentos.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
-    <body class="padTop53" data-ng-controller="GenerarTablaController">
+    <body class="padTop53" data-ng-controller="TablasGeneradasController">
         <!--MAIN WRAP-->
         <div id="wrap">
             <!-- HEADER SECTION -->
@@ -61,9 +61,10 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr data-ng-repeat="alimento in allAlimentos track by $index">                                                    
-                                                    <td>{{alimento.nombreCient}}</td>
-                                                    <td>{{alimento.nombre}}</td>
+                                                <tr data-ng-repeat="tg in allTablasGeneradas track by $index"> 
+                                                    <td>Acciones</td>
+                                                    <td>{{tg.nombre}}</td>
+                                                    <td>{{tg.fechaHora}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -75,100 +76,6 @@
                             </div>
                         </div>
                     </div>
-                    <!--CREATE OR EDIT MODAL-->
-                    <div class="col-lg-12">
-                        <div style="overflow-y: auto" class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
-                             role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="H2">Alimento</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditAlimento()" 
-                                              name="formAddAlimento" method="post">
-                                            <div class="form-group">
-                                                <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombreCient"
-                                                       required="" data-ng-model="indiceRegistro.nombreCient"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
-                                                <label>Nombre</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-Z]*$/" name="inputNombre"
-                                                       required="" data-ng-model="indiceRegistro.nombre"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
-                                                </div>
-                                                <label>Variedad</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputVariedad"
-                                                       data-ng-model="indiceRegistro.variedad"/>
-                                                <label>Parte</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputParte"
-                                                       data-ng-model="indiceRegistro.parte"/>
-                                                <label>Proceso</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputProceso"
-                                                       data-ng-model="indiceRegistro.proceso"/>
-
-                                                <label>Mezcla</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/" name="inputMezcla"
-                                                       data-ng-model="indiceRegistro.mezcla"/>
-                                                <label>Tipo en Cuba</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoCuba" 
-                                                        ng-options="tipoCuba.idTipoCuba as tipoCuba.tipoCuba for tipoCuba in allTipoCuba">
-                                                </select>
-                                                <label>Tipo en FAO</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoFao" 
-                                                        ng-options="tipoFao.idTipoFao as tipoFao.tipoFao for tipoFao in allTipoFao">
-                                                </select>
-                                                <label>Tipo en NRC</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoNrc" 
-                                                        ng-options="tipoNrc.idTipoNrc as tipoNrc.tipoNrc for tipoNrc in allTipoNrc">
-                                                </select>
-                                            </div>
-                                            <div class="text-right">
-                                                <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
-                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddAlimento.$invalid">Guardar</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--END EDIT MODAL-->
-                    <!--DELETE MODAL-->
-                    <div>
-                        <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                            <div class="modal-dialog" style="margin-top: 260.5px;">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
-                                        <div class="modal-body">
-                                            <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!--END DELETE MODAL-->
-                    </div>
-                    <!--END DLETE MODAL-->
                 </div>
             </div>
         </div>
@@ -177,7 +84,6 @@
         <!-- FOOTER -->
         <jsp:include page="/WEB-INF/includes/footer.jsp"/>
         <!--END FOOTER -->
-
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
