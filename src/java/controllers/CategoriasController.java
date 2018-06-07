@@ -111,7 +111,7 @@ public class CategoriasController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @Trazable(accion = "eliminar", eliminar = true, nombre = "modificarCategorías", timeLine = "", claseEntidad = "Categorías")
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarCategorías", timeLine = "", claseEntidad = "Categorías")
     @RequestMapping(value = "/categorias/deleteCategoria/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteCategorias(@PathVariable Integer id, ModelMap map) {
         categoriaRepo.delete(id);

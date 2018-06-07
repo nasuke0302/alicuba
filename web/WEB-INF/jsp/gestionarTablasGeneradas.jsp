@@ -61,7 +61,14 @@
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="tg in allTablasGeneradas track by $index"> 
-                                                    <td>Acciones</td>
+                                                    <td>
+                                                        <input type="hidden" value="{{tg.idListadoTablasGeneradas}}"/>
+                                                        <button class="btn btn-primary btn-xs">
+                                                            <i class="glyphicon glyphicon-pencil"></i></button>
+                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                data-ng-click="abrirEliminarModal($index)">
+                                                            <i class="glyphicon glyphicon-trash"></i></button>
+                                                    </td>
                                                     <td>{{tg.nombre}}</td>
                                                     <td>{{tg.fechaHora}}</td>
                                                     <td>{{tg.idUsuario.nombre}}</td>
@@ -71,41 +78,6 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-default">Listado de tablas generadas</div>
-                                <!--CREATE OR EDIT MODAL-->
-                                <div class="col-lg-12">
-                                    <div class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
-                                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                    <h4 class="modal-title" id="H2">Tabla</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form role="form" data-ng-submit="createOrEditTablaG()" 
-                                                          name="formAddTablaG" method="post">
-                                                        <div class="form-group">
-                                                            <label>Nombre</label>
-                                                            <input class="form-control" name="inputNombre"
-                                                                   required="" data-ng-model="tablaGenerada.nombre"/>
-                                                            <div class="text-center" data-ng-show="formAddTablaG.inputNombre.$invalid">
-                                                                <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                            </div>
-                                                            <br />
-                                                            <div class="text-right">
-                                                                <input type="hidden" data-ng-model="tablaGenerada.idListadoTablaGeneradas"/>
-                                                                <input type="hidden" data-ng-model="tablaGenerada.idUsuario"/>
-                                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddTablaG.$invalid">Guardar</button>
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--END EDIT MODAL-->
                                 <!--DELETE MODAL-->
                                 <div>
                                     <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
@@ -115,7 +87,9 @@
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
                                                     <div class="modal-body">
-                                                        <form role="form" method="post" data-ng-submit="eliminarCategoria()" id="delete_data" class="text-right">
+                                                        <form role="form" method="post" data-ng-submit="eliminarTablaGenerada()" id="delete_data" class="text-right">
+                                                            <p>{{tablaGenerada.nombre}}
+                                                                {{tablaGenerada.fechaHora}}</p>
                                                             <button type="submit" class="btn btn-danger">Eliminar</button>
                                                             <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                                         </form>

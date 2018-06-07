@@ -64,4 +64,24 @@ appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $ht
             $scope.mensaje = response.data.mensaje;
         });
     };
+
+    $scope.abrirEliminarModal = function (indice) {
+        var a = $scope.allTablasGeneradas[indice];
+        $scope.tablaGenerada = {
+            idListadoTablaGeneradas: a.idListadoTablaGeneradas,
+            nombre: a.nombre,
+            fechaHora: a.fechaHora,
+            idUsuario: a.idUsuario
+        };
+    };
+
+    $scope.eliminarTablaGenerada = function () {
+        $http.delete("deleteTablasGeneradas/" + $scope.tablaGenerada.idListadoTablaGeneradas, {}).then(function (res) {
+            $('#formModalEliminar').modal("toggle");
+            $window.alert(res.data.mensaje);
+            $http.get("getTablasGeneradas").then(function (data) {
+                $scope.allTablasGeneradas = data.data.data;
+            });
+        });
+    };
 });

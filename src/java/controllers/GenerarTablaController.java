@@ -14,7 +14,6 @@ import java.util.Map;
 import models.AlimentoEvaluado;
 import models.ListadoTablaGeneradas;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +34,8 @@ import models.TablaCnaGeneralPK;
 import models.Usuarios;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMethod;
 import repositorios.AlimentoEvaluadoRepo;
 import repositorios.MetadatosAlimentosRepo;
 import repositorios.MetadatosAlimentosTablaRepo;
@@ -42,6 +43,7 @@ import repositorios.NutrientesRepo;
 import repositorios.RegionRepo;
 import repositorios.TablaCnaFinalRepo;
 import repositorios.TablaCnaGeneralRepo;
+import services.Trazable;
 
 /**
  *
@@ -317,5 +319,13 @@ public class GenerarTablaController {
                 }
             }			
         }
+    }
+    
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarTablaGenerada", timeLine = "", claseEntidad = "ListadoTablasGeneradas")
+    @RequestMapping(value = "/tablasgeneradas/deleteTablasGeneradas/{id}", method = RequestMethod.DELETE)
+    public ModelAndView deleteTablasGeneradas(@PathVariable Integer id, ModelMap map) {
+        listadoTablaGeneradasRepo.delete(id);
+        map.put("mensaje", "Tabla eliminada correctamente");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }
