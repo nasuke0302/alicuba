@@ -67,19 +67,18 @@
                                                 <tr>
                                                     <th>Acciones</th>
                                                     <th>Alimento</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
-                                                    <th>Riego</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="mg in allMetadatosGenerados track by $index">
                                                     <td>Acciones</td>
-                                                    <td>{{mg.idAlimento.nombre}} {{mg.idAlimento.nombreCient}}</td>
+                                                    <td>
+                                                        {{mg.idAlimento.nombreCient}} {{mg.idAlimento.nombre}}
+                                                        {{mg.idEpoca.etiqueta}} - {{mg.fertilizado.etiqueta}} - 
+                                                        {{mg.calidad.etiqueta}} - {{mg.idNivelFert.etiqueta}} - 
+                                                        {{mg.idRangoEdades.etiqueta}} - {{mg.idRegion.etiqueta}} - 
+                                                        {{mg.import1.pais}}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
