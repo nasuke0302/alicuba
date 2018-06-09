@@ -1,4 +1,4 @@
-var appTrazas = angular.module("appTrazas", ['datatables', 'datatables.bootstrap']);
+var appTrazas = angular.module("appTrazas", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;

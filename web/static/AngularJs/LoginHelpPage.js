@@ -1,4 +1,4 @@
-var appLoginHelp = angular.module("appLoginHelpPage", []);
+var appLoginHelp = angular.module("appLoginHelpPage", [, 'angular-loading-bar']);
 appLoginHelp.controller("LoginHelpPageController", function ($scope, $http) {
     //Obtener el listado de usuarios con rol Administrador
     $http.get("../helpPage/getUsuariosAdministradores").then(function(data){

@@ -1,4 +1,4 @@
-var appCna = angular.module("AppCna", ['ui.select']);
+var appCna = angular.module("AppCna", ['ui.select', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -106,7 +106,7 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         idNutriente: "",
         idMetadatosAlimentosG: ""
     };
-   $scope.tiposRiego = {
+    $scope.tiposRiego = {
         tipo1: {
             valor: "Sí",
             etiqueta: "Rie"
@@ -146,13 +146,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
         $scope.referenciaEdit.autoresList = $scope.selectedAutores.selected;
         $scope.referenciaEdit.categoriaList = $scope.selectedCategoria.selected;
         $scope.referenciaEdit.fecha = $scope.selectedYear.selected;
-        console.log($scope.referenciaEdit);
+        $("#modalNuevaReferencia").modal("toggle");
         $http.post("../index/editReferencia", $scope.referenciaEdit).then(function (r) {
             window.localStorage.setItem("referencia", JSON.stringify($scope.referenciaEdit));
             $scope.referencia = JSON.parse(window.localStorage.getItem("referencia"));
             $window.alert(r.data.mensaje);
         });
-        $("#modalNuevaReferencia").modal("toggle");
     };
     //nuevo estudio
     $scope.nuevoEstudio = function () {
@@ -200,13 +199,13 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     //Crear un nuevo autor
     $scope.addAutor = function () {
+        $("#modalAddOrEditAutor").modal("toggle");
         $http.post("../autor/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
             $http.get("../autor/getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
-            $("#modalAddOrEditAutor").modal("toggle");
         });
     };
     //Limpiar modal abrir categoria
@@ -217,13 +216,13 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     // Crear una nueva categoria
     $scope.addCategoria = function () {
+        $("#modalAddOrEditCategoria").modal("toggle");
         $http.post("../categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
             $http.get("../categorias/getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
-            $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
     //Eliminar un estudio
@@ -261,7 +260,6 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     //Añadir un nuevo estudio
     $scope.addTablaCnaGeneral = function () {
-        console.log($scope.tablaCnaGeneral.valor);
         $scope.tablaCnaGeneral.idNutriente = $scope.selectedNutriente.selected.idNutriente;
         $scope.tablaCnaGeneral.idMetadatosAlimentosG = $scope.metadatoActual.idMetadatosAlimentosG;
         $scope.tablaCnaGeneralPK = {
@@ -288,12 +286,12 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
     //Editar un Nutriente
     $scope.editTablaCnaGeneral = function () {
+        $("#formModalEditNutriente").modal("toggle");
         $http.post("../estudio/editTablaCnaGeneral/" + $scope.estudioToEdit.valor,
                 $scope.estudioToEdit.tablaCnaGeneralPK, {}).then(function (res) {
             $window.alert(res.data.mensaje);
             $http.get("getEstudioPorReferencia/" + $scope.referencia.idReferencia).then(function (data) {
                 $scope.estudioPorReferencia = data.data.data;
-                $("#formModalEditNutriente").modal("toggle");
             });
         });
     };
@@ -346,11 +344,11 @@ appCna.controller("CnaController", function ($scope, $http, $window) {
     };
 
     $scope.editMetadatosAlimentosG = function () {
+        $("#formModalEditAlimento").modal("toggle");
         $scope.metadatoActual.npk = $scope.npk.n + "-" + $scope.npk.p + "-" + $scope.npk.k;
         $http.post("../estudio/editMetadatosAlimentosG", $scope.metadatoActual, {}).then(function (res) {
             $window.alert(res.data.mensaje);
             $scope.estudiosPorReferencia($scope.referencia.idReferencia);
-            $("#formModalEditAlimento").modal("toggle");
         });
     };
 });
@@ -386,4 +384,4 @@ appCna.directive('allowDecimalNumbers', function () {
             });
         }
     };
-});  
+});

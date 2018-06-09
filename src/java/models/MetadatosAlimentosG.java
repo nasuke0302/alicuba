@@ -87,7 +87,7 @@ public class MetadatosAlimentosG implements Serializable {
     @JoinColumn(name = "id_nivel_fert", referencedColumnName = "id_nivel_fert")
     @ManyToOne(optional = false)
     private NivelFert idNivelFert;
-    @JoinColumn(name = "import", referencedColumnName = "id_paises")
+    @JoinColumn(name = "import1", referencedColumnName = "id_paises")
     @ManyToOne(optional = false)
     private Paises import1;
     @JoinColumn(name = "id_provincia", referencedColumnName = "id_provincia")

@@ -22,8 +22,10 @@
         <link rel="stylesheet" href="<c:url value="/static/plugins/Font-Awesome/css/font-awesome.css"/>">
         <!--END GLOBAL STYLES --> 
         <link rel="icon" href="${pageContext.request.contextPath}/static/favicon.png" type="image/png">
-        
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
+
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/HelpPage.js"></script>
     </head>
     <body class="padTop53" data-ng-controller="helpPageController">

@@ -17,14 +17,21 @@ import org.springframework.data.jpa.repository.Query;
  *
  * @author albert
  */
-public interface TablaCnaGeneralRepo extends JpaRepository<TablaCnaGeneral, TablaCnaGeneralPK>{
-    
+public interface TablaCnaGeneralRepo extends JpaRepository<TablaCnaGeneral, TablaCnaGeneralPK> {
+
     @Query("SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK =?1 AND t.valor = ?2")
     public TablaCnaGeneral findThisRecord(TablaCnaGeneralPK cnaGeneralPK, Float valor);
-	
+
     @Query("SELECT t FROM TablaCnaGeneral t WHERE t.metadatosAlimentosG =?1")
     public List<TablaCnaGeneral> getTabla_cna_general(MetadatosAlimentosG idMetadatosAlimentosG);
-	
+
     @Query("SELECT t FROM TablaCnaGeneral t WHERE t.tablaCnaGeneralPK = ?1")
     public List<TablaCnaGeneral> getTabla_cna_general(TablaCnaGeneralPK cnaGeneralPK);
+
+//    @Query("SELECT t.tablaCnaGeneralPK.idNutriente, sum(t.tablaCnaGeneralPK.idNutriente)"
+//            + "FROM TablaCnaGeneral t group by t.tablaCnaGeneralPK.idNutriente")
+//    public List<TablaCnaGeneral> nutrientesUso();
+    
+    
+//    public List<TablaCnaGeneral> findByIdNutriente(Nutrientes n);
 }

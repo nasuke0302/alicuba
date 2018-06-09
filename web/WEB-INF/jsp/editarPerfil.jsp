@@ -13,9 +13,11 @@
         <!--GLOBAL STYLES-->
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
         <!-- PAGE LEVEL STYLES -->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
         <!--END PAGE LEVEL STYLES-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>        
         <script src="${pageContext.request.contextPath}/static/AngularJs/ui-validate_1.2.3.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/EditarPerfil.js"></script>
     </head>
 

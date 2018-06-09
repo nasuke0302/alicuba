@@ -1,4 +1,4 @@
-var appEditarPerfil = angular.module("appEditarPerfil", ['ui.validate']);
+var appEditarPerfil = angular.module("appEditarPerfil", ['ui.validate', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;

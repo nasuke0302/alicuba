@@ -14,15 +14,18 @@
         <!-- PAGE LEVEL STYLES -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/datatables.bootstrap.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
+        <!--END PAGE LEVEL STYLES-->
 
-
+        <!--PAGE LEVEL SCRIPTS-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Alimentos.js"></script>
-        <!--END PAGE LEVEL STYLES-->
+        <!--END PAGE LEVEL SCRIPTS-->
     </head>
     <body class="padTop53" data-ng-controller="AlimentosController">
         <!--MAIN WRAP-->

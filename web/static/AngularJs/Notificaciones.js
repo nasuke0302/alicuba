@@ -1,4 +1,4 @@
-var appNotificaciones = angular.module("appNotificaciones", ['datatables', 'datatables.bootstrap']);
+var appNotificaciones = angular.module("appNotificaciones", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
 function headerController($http, $scope) {
     $scope.noLeido = 0;
     $scope.allNotificaciones = {};

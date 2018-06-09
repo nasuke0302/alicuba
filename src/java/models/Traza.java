@@ -4,11 +4,8 @@ package models;
 //import org.hibernate.annotations.Cache;
 //import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import services.SerializadorFechaTraza;
 
 @Entity
 @Table(name = "traza")

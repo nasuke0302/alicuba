@@ -1,4 +1,4 @@
-var appAutores = angular.module("appAutores", ['datatables', 'datatables.bootstrap']);
+var appAutores = angular.module("appAutores", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;

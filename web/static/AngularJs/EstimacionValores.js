@@ -1,4 +1,4 @@
-var appEstimacion = angular.module("appEstimacion", ['ui.select', 'ngSanitize']);
+var appEstimacion = angular.module("appEstimacion", ['ui.select', 'ngSanitize', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -60,6 +60,7 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     });
     //Enviar una formula nueva al servidor para evaluar y guardar
     $scope.parseExp = function () {
+        $('#formModalCreateOrEditFormula').modal('toggle');
         $http.post("addVariables", $scope.arregloVars, {}).then(function (res) {
             $scope.nuevaFormula.variablesList = res.data.data;
             $http.post("parseExp", $scope.nuevaFormula).then(function (res) {
@@ -75,7 +76,6 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
                     variablesFormulasList: []
                 };
                 $scope.arregloVars = [];
-                $('#formModalCreateOrEditFormula').modal('toggle');
             });
         });
 

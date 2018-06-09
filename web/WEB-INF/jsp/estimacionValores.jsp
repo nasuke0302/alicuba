@@ -17,12 +17,14 @@
 
         <!--PAGE LEVEL STYLES-->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
         <!--END PAGE LEVEL STYLES-->
 
         <!--PAGE LEVEL SCRIPTS-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-sanitize-1.2.19.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/EstimacionValores.js"></script>
         <!--END PAGE LEVEL SCRIPTS-->
     </head>

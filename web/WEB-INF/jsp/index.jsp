@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/datatables.bootstrap.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
         <!--END PAGE LEVEL STYLES-->
 
         <!-- PAGE LEVEL SCRIPTS-->
@@ -24,6 +25,7 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/uiSelect/select.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/WebSockets/sockjs.js"></script>
         <script src="${pageContext.request.contextPath}/static/WebSockets/stomp.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Index.js"></script>
         <!--END PAGE LEVEL SCRIPTS-->
     </head>

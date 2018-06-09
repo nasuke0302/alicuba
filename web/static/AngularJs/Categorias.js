@@ -1,4 +1,4 @@
-var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap']);
+var appCategorias = angular.module("appCategorias", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;

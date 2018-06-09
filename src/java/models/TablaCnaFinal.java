@@ -5,6 +5,7 @@
  */
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -53,6 +54,7 @@ public class TablaCnaFinal implements Serializable {
     private Float varianza;
     @JoinColumn(name = "id_metadatos_alimentos_tabla", referencedColumnName = "id_metadatos_alimentos_tabla", insertable = false, updatable = false)
     @ManyToOne(optional = false)
+    @JsonIgnore
     private MetadatosAlimentosTabla metadatosAlimentosTabla;
     @JoinColumn(name = "id_nutriente", referencedColumnName = "id_nutriente", insertable = false, updatable = false)
     @ManyToOne(optional = false)

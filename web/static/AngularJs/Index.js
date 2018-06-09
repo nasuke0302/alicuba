@@ -1,4 +1,4 @@
-var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select']);
+var appIndex = angular.module("AppIndex", ['datatables', 'datatables.bootstrap', 'ui.select', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -89,7 +89,6 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     $http.get("index/getReferencias").then(function (data) {
         $scope.allReferencias = data.data.data;
         $scope.principal = data.data.principal;
-        console.log($scope.allReferencias);
     });
     //Obtener Lista de Autores
     $http.get("autores/getAutores").then(function (data) {
@@ -111,10 +110,10 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         $scope.referencia.fecha = $scope.selectedYear.selected;
         if ($scope.referencia.idReferencia === "") {
             $scope.referencia.fechaAd = new Date();
+            $("#modalNuevaReferencia").modal("toggle");
             $http.post("index/addReferencia", $scope.referencia, {}).then(function (res) {
                 $scope.referencia = res.data.data;
                 window.localStorage.setItem("referencia", JSON.stringify($scope.referencia));
-                $("#modalNuevaReferencia").modal("toggle");
                 $window.location.href = "cna/gestionar";
             });
         } else {
@@ -204,13 +203,13 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addAutor = function () {
+        $("#modalAddOrEditAutor").modal("toggle");
         $http.post("autores/addAutor", $scope.autor, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Autores
             $http.get("autores/getAutores").then(function (data) {
                 $scope.allAutores = data.data.data;
             });
-            $("#modalAddOrEditAutor").modal("toggle");
         });
     };
     $scope.abrirModalAddCategoria = function () {
@@ -219,13 +218,13 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
         };
     };
     $scope.addCategoria = function () {
+        $("#modalAddOrEditCategoria").modal("toggle");
         $http.post("categorias/addCategoria", $scope.categoria, {}).then(function (r) {
             $window.alert(r.data.mensaje);
             //Obtener Lista de Categorias
             $http.get("categorias/getCategorias").then(function (data) {
                 $scope.allCategorias = data.data.data;
             });
-            $("#modalAddOrEditCategoria").modal("toggle");
         });
     };
 });

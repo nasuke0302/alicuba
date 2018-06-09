@@ -1,4 +1,4 @@
-var appTablasGeneradas = angular.module("appTablasGeneradas", ['datatables', 'datatables.bootstrap']);
+var appTablasGeneradas = angular.module("appTablasGeneradas", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -44,8 +44,7 @@ appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $ht
         idUsuario: {}
     };
 
-    $scope.mensaje = "";
-    //Obtener Lista de Autores
+    //Obtener Lista de Tablas Generadas
     $http.get("getTablasGeneradas").then(function (data) {
         $scope.allTablasGeneradas = data.data.data;
     });
@@ -59,10 +58,20 @@ appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $ht
         };
     };
 
-    $scope.createOrEditTablaG = function () {
-        $http.post("generarTabla", $scope.tablaGenerada, {}).then(function (response) {
-            $scope.mensaje = response.data.mensaje;
+    $scope.createTablaG = function () {
+        $('#formModalCreate').modal('toggle');
+        $http.post("generarTabla", $scope.tablaGenerada, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $http.get("getTablasGeneradas").then(function (data) {
+                $scope.allTablasGeneradas = data.data.data;
+            });
         });
+    };
+
+    $scope.editarTablaG = function (indice) {
+        var a = $scope.allTablasGeneradas[indice];
+        window.localStorage.setItem("tablaGenerada", JSON.stringify(a));
+        $window.location.href = "../metadatosGenerados/gestionar";
     };
 
     $scope.abrirEliminarModal = function (indice) {
@@ -76,8 +85,8 @@ appTablasGeneradas.controller("TablasGeneradasController", function ($scope, $ht
     };
 
     $scope.eliminarTablaGenerada = function () {
+        $('#formModalEliminar').modal("toggle");
         $http.delete("deleteTablasGeneradas/" + $scope.tablaGenerada.idListadoTablaGeneradas, {}).then(function (res) {
-            $('#formModalEliminar').modal("toggle");
             $window.alert(res.data.mensaje);
             $http.get("getTablasGeneradas").then(function (data) {
                 $scope.allTablasGeneradas = data.data.data;

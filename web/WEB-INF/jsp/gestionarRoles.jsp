@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="<c:url value="/static/plugins/datepicker/css/datepicker.css"/>">
         <link rel="stylesheet" href="<c:url value="/static/plugins/timepicker/css/bootstrap-timepicker.min.css"/>">
         <link rel="stylesheet" href="<c:url value="/static/plugins/switch/static/stylesheets/bootstrap-switch.css"/>">
-
+        
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Roles.js"></script>
         <!--END PAGE LEVEL STYLES-->

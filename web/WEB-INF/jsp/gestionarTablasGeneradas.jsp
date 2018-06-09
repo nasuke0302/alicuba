@@ -14,13 +14,14 @@
         <!-- PAGE LEVEL STYLES -->
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/datatables.bootstrap.min.css">
-
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
 
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/TablasGeneradas.js"></script>
         <!--END PAGE LEVEL STYLES-->
     </head>
@@ -44,7 +45,7 @@
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
                                     <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevaTablaGeneradaModal()"
-                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Generar nueva tabla</button>
+                                            data-toggle="modal" data-target="#formModalCreate"> Generar nueva tabla</button>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
                                 <!--TABLA Alimentos-->
@@ -63,7 +64,7 @@
                                                 <tr data-ng-repeat="tg in allTablasGeneradas track by $index"> 
                                                     <td>
                                                         <input type="hidden" value="{{tg.idListadoTablasGeneradas}}"/>
-                                                        <button class="btn btn-primary btn-xs">
+                                                        <button class="btn btn-primary btn-xs" data-ng-click="editarTablaG($index)">
                                                             <i class="glyphicon glyphicon-pencil"></i></button>
                                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
                                                                 data-ng-click="abrirEliminarModal($index)">
@@ -78,6 +79,41 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-default">Listado de tablas generadas</div>
+                                <!--CREATE MODAL-->
+                                <div class="col-lg-12">
+                                    <div class="modal fade" id="formModalCreate" tabindex="-1" 
+                                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title" id="H2">Tabla</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form role="form" data-ng-submit="createTablaG()" 
+                                                          name="formAddTablaG" method="post">
+                                                        <div class="form-group">
+                                                            <label>Nombre</label>
+                                                            <input class="form-control" name="inputNombre"
+                                                                   required="" data-ng-model="tablaGenerada.nombre"/>
+                                                            <div class="text-center" data-ng-show="formAddTablaG.inputNombre.$invalid">
+                                                                <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                            </div>
+                                                            <br />
+                                                            <div class="text-right">
+                                                                <input type="hidden" data-ng-model="tablaGenerada.idListadoTablaGeneradas"/>
+                                                                <input type="hidden" data-ng-model="tablaGenerada.idUsuario"/>
+                                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddTablaG.$invalid">Guardar</button>
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--END CREATE MODAL-->
                                 <!--DELETE MODAL-->
                                 <div>
                                     <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
