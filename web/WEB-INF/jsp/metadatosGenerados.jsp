@@ -65,12 +65,21 @@
                                         <table  datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
+                                                    <th>Acciones</th>
+                                                    <th>Alimento</th>
+                                                    <th>Riego</th>
+                                                    <th>Riego</th>
+                                                    <th>Riego</th>
+                                                    <th>Riego</th>
+                                                    <th>Riego</th>
+                                                    <th>Riego</th>
                                                     <th>Riego</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="mg in allMetadatosGenerados track by $index">
-                                                    <td>{{mg.riego}}</td>
+                                                    <td>Acciones</td>
+                                                    <td>{{mg.idAlimento.nombre}} {{mg.idAlimento.nombreCient}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
