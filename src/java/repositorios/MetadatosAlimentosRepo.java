@@ -27,10 +27,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MetadatosAlimentosRepo extends JpaRepository<MetadatosAlimentosG, Integer> {
 
-    public MetadatosAlimentosG findByIdReferencia(Referencias referencia);
+    public List<MetadatosAlimentosG> findByIdReferencia(Referencias referencia);
 
     @Query("SELECT mat FROM MetadatosAlimentosG mat WHERE mat.idReferencia = ?1")
-    List<MetadatosAlimentosG> findEstudioByReferencia(Referencias IdReferencia);
+    List<MetadatosAlimentosG> findByReferencia(Referencias IdReferencia);
     
     public MetadatosAlimentosG findTopByOrderByIdMetadatosAlimentosGDesc();
     

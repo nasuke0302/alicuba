@@ -44,7 +44,7 @@ public class CnaController {
     @RequestMapping(value = "/cna/getEstudioPorReferencia/{idReferencia}")
     public ModelAndView getEstudioPorReferencia(@PathVariable Integer idReferencia, ModelMap map) {
         Referencias r = referenciasRepo.findOne(idReferencia);
-        map.put("data", metadatosAlimentosRepo.findEstudioByReferencia(r));
+        map.put("data", metadatosAlimentosRepo.findByIdReferencia(r));
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

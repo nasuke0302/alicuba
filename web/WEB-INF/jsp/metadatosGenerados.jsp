@@ -17,8 +17,8 @@
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
-        <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/MetadatosGenerados.js"></script>
         <!--END PAGE LEVEL STYLES-->
@@ -53,16 +53,9 @@
                                         <span class="glyphicon glyphicon-pencil"></span>
                                         Editar
                                     </button>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading  ">
-                                    <h5>Alimentos de la tabla seleccionada</h6>
-                                </div>
-                                <!--TABLA METADATOS GENERADOS-->
-                                <div class="panel-body">
+                                    <hr />
                                     <div class="table-responsive">
-                                        <table  datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
+                                        <table datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Datos</th>
@@ -76,8 +69,8 @@
                                                                 data-ng-click="verDatos($index)"></button>
                                                     </td>
                                                     <td>
-                                                       <strong> {{mg.idAlimento.nombreCient}}</strong> - 
-                                                               <strong>{{mg.idAlimento.nombre}}</strong>
+                                                        <strong> {{mg.idAlimento.nombreCient}}</strong> - 
+                                                        <strong>{{mg.idAlimento.nombre}}</strong>
                                                         {{mg.idEpoca.etiqueta}} - {{mg.fertilizado.etiqueta}} - 
                                                         {{mg.calidad.etiqueta}} - {{mg.idNivelFert.etiqueta}} - 
                                                         {{mg.idRangoEdades.etiqueta}} - {{mg.idRegion.etiqueta}} - 
