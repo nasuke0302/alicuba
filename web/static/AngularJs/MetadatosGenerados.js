@@ -36,13 +36,31 @@ function headerController($http, $scope) {
     });
 }
 appMetadatosGenerados.controller("headerController", headerController);
-appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scope, $http) {
+appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scope, $http, $window) {
 
+    $scope.tablaGenerada = {
+        idListadoTablaGeneradas: ""
+    };
     $scope.tablaGenerada = JSON.parse(window.localStorage.getItem("tablaGenerada"));
     $scope.tablaGeneradaEdit = JSON.parse(window.localStorage.getItem("tablaGenerada"));
+
     //Obtener Lista de Metadatos Generados
-    $http.get("getMetadatosGenerados").then(function (data) {
+    $http.get("getMetadatosGeneradosPorTablaGenerada/" + $scope.tablaGenerada.idListadoTablaGeneradas).then(function (data) {
         $scope.allMetadatosGenerados = data.data.data;
     });
+
+    //Ver datos del alimento seleccionado
+    $scope.verDatos = function (indice) {
+
+    };
+
+    $scope.editTabla = function () {
+        $('#formModalEdit').modal('toggle');
+        $http.post("../tablasgeneradas/editTabla", $scope.tablaGeneradaEdit, {}).then(function (res) {
+            $window.alert(res.data.mensaje);
+            $scope.tablaGenerada = res.data.data;
+            window.localStorage.setItem("tablaGenerada", JSON.stringify($scope.tablaGenerada));
+        });
+    };
 
 });

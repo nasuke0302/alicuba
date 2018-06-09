@@ -5,6 +5,8 @@
  */
 package repositorios;
 
+import java.util.List;
+import models.ListadoTablaGeneradas;
 import models.MetadatosAlimentosTabla;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +16,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface MetadatosAlimentosTablaRepo extends JpaRepository<MetadatosAlimentosTabla, Integer>{
     
+    public List<MetadatosAlimentosTabla> findByIdListadoTablaGeneradas(ListadoTablaGeneradas ltg);
 }

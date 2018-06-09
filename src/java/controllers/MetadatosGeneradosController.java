@@ -7,13 +7,16 @@ package controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import models.ListadoTablaGeneradas;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import repositorios.ListadoTablaGeneradasRepo;
 import repositorios.MetadatosAlimentosTablaRepo;
 import services.Trazable;
 
@@ -26,7 +29,9 @@ public class MetadatosGeneradosController {
 
     @Autowired
     MetadatosAlimentosTablaRepo metadatosAlimentosTablaRepo;
-
+    
+    @Autowired
+    ListadoTablaGeneradasRepo listadoTablaGeneradasRepo;
 
     @Trazable(accion = "listar", listar = true, nombre = "listarMetadatosGenerados", timeLine = "", claseEntidad = "MetadatosAlimentosTabla")
     @RequestMapping(value = "/metadatosGenerados/gestionar")
@@ -34,17 +39,13 @@ public class MetadatosGeneradosController {
         return new ModelAndView("metadatosGenerados");
     }
 
-    @RequestMapping(value = "/metadatosGenerados/getMetadatosGenerados")
+    @RequestMapping(value = "/metadatosGenerados/getMetadatosGeneradosPorTablaGenerada/{id}")
     public @ResponseBody
-    Map<String, ? extends Object> getCategorias(@AuthenticationPrincipal Usuarios usuario) {
+    Map<String, ? extends Object> getMetadatosGeneradosPorTablaGenerada(@PathVariable Integer id) {
         Map<String, Object> map = new HashMap<>();
-        try {
-            map.put("data", metadatosAlimentosTablaRepo.findAll());
-            map.put("success", Boolean.TRUE);
-            map.put("user", usuario.getEmail());
-        } catch (Exception e) {
-            map.put("success", Boolean.FALSE);
-        }
+        ListadoTablaGeneradas ltg = listadoTablaGeneradasRepo.findOne(id);
+        map.put("data", metadatosAlimentosTablaRepo.findByIdListadoTablaGeneradas(ltg));
+        map.put("success", Boolean.TRUE);
         return map;
     }
 }

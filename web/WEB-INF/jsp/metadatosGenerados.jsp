@@ -65,15 +65,19 @@
                                         <table  datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Acciones</th>
+                                                    <th>Datos</th>
                                                     <th>Alimento</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr data-ng-repeat="mg in allMetadatosGenerados track by $index">
-                                                    <td>Acciones</td>
                                                     <td>
-                                                        {{mg.idAlimento.nombreCient}} {{mg.idAlimento.nombre}}
+                                                        <button id="añadirButton" class="icon-eye-open btn btn-success" 
+                                                                data-ng-click="verDatos($index)"></button>
+                                                    </td>
+                                                    <td>
+                                                       <strong> {{mg.idAlimento.nombreCient}}</strong> - 
+                                                               <strong>{{mg.idAlimento.nombre}}</strong>
                                                         {{mg.idEpoca.etiqueta}} - {{mg.fertilizado.etiqueta}} - 
                                                         {{mg.calidad.etiqueta}} - {{mg.idNivelFert.etiqueta}} - 
                                                         {{mg.idRangoEdades.etiqueta}} - {{mg.idRegion.etiqueta}} - 
@@ -99,7 +103,7 @@
                                         <h4 class="modal-title" id="H2">Tabla</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <form role="form" data-ng-submit="EditTabla()" 
+                                        <form role="form" data-ng-submit="editTabla()" 
                                               name="formEditTabla" method="post">
                                             <div class="form-group">
                                                 <label>Nombre</label>

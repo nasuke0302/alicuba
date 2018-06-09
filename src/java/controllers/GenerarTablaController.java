@@ -84,6 +84,7 @@ public class GenerarTablaController {
 
     private List<Nutrientes> listaNutrientes;
 
+    @Trazable(accion = "listar", listar = true, nombre = "listarTablaGenerada", timeLine = "", claseEntidad = "ListadoTablaGeneradas")
     @RequestMapping(value = "/tablasgeneradas/gestionar")
     public ModelAndView showGestionarAlimentos() {
         return new ModelAndView("gestionarTablasGeneradas");
@@ -103,6 +104,7 @@ public class GenerarTablaController {
         return map;
     }
 
+    @Trazable(accion = "insertar", insertar = true, nombre = "insertarTabla", timeLine = "", claseEntidad = "ListadoTablaGeneradas")
     @RequestMapping(value = "/tablasgeneradas/generarTabla")
     @ResponseBody
     public ModelAndView generarTabla(@RequestBody ListadoTablaGeneradas lis, ModelMap map,
@@ -292,7 +294,23 @@ public class GenerarTablaController {
         }
     }
 
-    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarTablaGenerada", timeLine = "", claseEntidad = "ListadoTablasGeneradas")
+    @Trazable(accion = "modificar", modificar = true, nombre = "modificarTablaGenerada", timeLine = "", claseEntidad = "ListadoTablaGeneradas")
+    @RequestMapping(value = "/tablasgeneradas/editTabla")
+    public @ResponseBody
+    Map<String, ? extends Object> editTabla(@RequestBody ListadoTablaGeneradas ltg, @AuthenticationPrincipal Usuarios principal) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("data", listadoTablaGeneradasRepo.saveAndFlush(ltg));
+            map.put("mensaje", "Tabla editada correctamente");
+            map.put("success", Boolean.TRUE);
+        } catch (Exception e) {
+            map.put("error", e);
+            map.put("success", Boolean.FALSE);
+        }
+        return map;
+    }
+
+    @Trazable(accion = "eliminar", eliminar = true, nombre = "eliminarTablaGenerada", timeLine = "", claseEntidad = "ListadoTablaGeneradas")
     @RequestMapping(value = "/tablasgeneradas/deleteTablasGeneradas/{id}", method = RequestMethod.DELETE)
     public ModelAndView deleteTablasGeneradas(@PathVariable Integer id, ModelMap map) {
         listadoTablaGeneradasRepo.delete(id);
