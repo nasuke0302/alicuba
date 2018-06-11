@@ -62,12 +62,12 @@ public class IndexController {
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Trazable(accion = "listar", listar = true, nombre = "listarReferencias", timeLine = "", claseEntidad = "Referencias")
-    @RequestMapping(value = {"/", "/index"})
+    @RequestMapping(value = "/index")
     public ModelAndView showIndex() {
         return new ModelAndView("index");
     }
 
-    @RequestMapping(value = {"/index/createOrEditReferencia"})
+    @RequestMapping(value = "/index/createOrEditReferencia")
     public String showCreateOrEditReferencia() {
         return "createOrEditReferencia";
     }

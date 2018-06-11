@@ -51,7 +51,7 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
 
     //Ver datos del alimento seleccionado
     $scope.verDatos = function (indice) {
-
+        $scope.metadatoGenerado = $scope.allMetadatosGenerados[indice];
     };
 
     $scope.editTabla = function () {
@@ -62,5 +62,4 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
             window.localStorage.setItem("tablaGenerada", JSON.stringify($scope.tablaGenerada));
         });
     };
-
 });

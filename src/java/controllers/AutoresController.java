@@ -51,7 +51,7 @@ public class AutoresController {
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Trazable(accion = "listar", listar = true, nombre = "listarAutores", timeLine = "", claseEntidad = "Autores")
-    @RequestMapping(value = "/autores/gestionar")
+    @RequestMapping(value = {"/", "/autores/gestionar"})
     public ModelAndView showGestionarAutores() {
         return new ModelAndView("gestionarAutores");
     }

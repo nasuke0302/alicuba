@@ -65,8 +65,10 @@
                                             <tbody>
                                                 <tr data-ng-repeat="mg in allMetadatosGenerados track by $index">
                                                     <td>
-                                                        <button id="añadirButton" class="icon-eye-open btn btn-success" 
-                                                                data-ng-click="verDatos($index)"></button>
+                                                        <a class="btn btn-success" href="#tabla1"
+                                                           data-ng-click="verDatos($index)">
+                                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                                        </a>
                                                     </td>
                                                     <td>
                                                         <strong> {{mg.idAlimento.nombreCient}}</strong> - 
@@ -79,6 +81,47 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <br />
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading"> 
+                                            Datos del Alimento: <strong> {{metadatoGenerado.idAlimento.nombreCient}}</strong> - 
+                                            <strong>{{metadatoGenerado.idAlimento.nombre}}</strong>
+                                            {{metadatoGenerado.idEpoca.etiqueta}} - {{metadatoGenerado.fertilizado.etiqueta}} - 
+                                            {{metadatoGenerado.calidad.etiqueta}} - {{metadatoGenerado.idNivelFert.etiqueta}} - 
+                                            {{metadatoGenerado.idRangoEdades.etiqueta}} - {{metadatoGenerado.idRegion.etiqueta}} - 
+                                            {{metadatoGenerado.import1.pais}}
+                                        </div>
+                                        <div class="panel-body">
+                                            <table id="tabla1" class="table table-hover table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nutriente</th>
+                                                        <th>Total</th>
+                                                        <th>M&iacute;nimo</th>
+                                                        <th>M&aacute;ximo</th>
+                                                        <th>Promedio</th>
+                                                        <th>Desviaci&oacute;n Est&aacute;ndar</th>
+                                                        <th>Varianza</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr data-ng-repeat="tc in metadatoGenerado.tablaCnaFinalList track by $index">
+                                                        <td title="{{tc.nutrientes.nombre}}"> 
+                                                            {{tc.nutrientes.abreviatura}}
+                                                             {{tc.nutrientes.idUnidadMedida.unidadMedida}}
+                                                        </td>
+                                                        <td>{{tc.total}}</td>
+                                                        <td>{{tc.minimo}}</td>
+                                                        <td>{{tc.maximo}}</td>
+                                                        <td>{{tc.promedio| limitTo: 4}}</td>
+                                                        <td>{{tc.desvEst| limitTo: 4 }}</td>
+                                                        <td>{{tc.varianza| limitTo: 4}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>                                    
+                                        </div>
+                                        <div class="panel-footer"> Datos del Alimento</div>
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-default">Tabla Seleccionada</div>

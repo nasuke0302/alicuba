@@ -1,4 +1,4 @@
-var appAlimentos = angular.module("appAlimentos", ['datatables', 'datatables.bootstrap', 'angular-loading-bar']);
+var appAlimentos = angular.module("appAlimentos", ['datatables', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;

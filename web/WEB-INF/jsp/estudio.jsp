@@ -51,7 +51,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <em id="pAutores" data-ng-repeat="autor in referencia.autoresList">
-                                                {{autor.apellidos| limitTo: 1}}. {{autor.nombre}},
+                                                {{autor.apellidos}}. {{autor.nombre}},
                                             </em>
                                             <em> ({{referencia.fecha}}). {{referencia.title}}. 
                                                 2. {{referencia.nota}}. <em style="text-transform: capitalize">{{referencia.lugar}}. </em>

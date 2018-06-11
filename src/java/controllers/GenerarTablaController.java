@@ -317,4 +317,18 @@ public class GenerarTablaController {
         map.put("mensaje", "Tabla eliminada correctamente");
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+    
+    @RequestMapping(value = "/tablasgeneradas/getLastTablaGenerada")
+    public @ResponseBody
+    Map<String, ? extends Object> getLastTablaGenerada() {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            map.put("data", listadoTablaGeneradasRepo.findTopByOrderByIdListadoTablaGeneradasDesc());
+            map.put("success", Boolean.TRUE);
+
+        } catch (Exception e) {
+            map.put("success", Boolean.FALSE);
+        }
+        return map;
+    }
 }

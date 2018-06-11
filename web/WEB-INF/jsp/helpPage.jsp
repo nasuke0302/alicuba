@@ -44,7 +44,6 @@
                         <div class="col-md-12">
                             <div class="text-center">
                                 <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 110px;"/>
-                                <h1 style="color: #009933">Página de ayuda y contacto</h1>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">

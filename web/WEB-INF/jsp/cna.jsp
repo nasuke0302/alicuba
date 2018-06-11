@@ -55,11 +55,11 @@
                                     Referencia 
                                 </div>
                                 <div class="panel-body">
-                                    <em id="pAutores" data-ng-repeat="autor in referencia.autoresList">
-                                        {{autor.apellidos}}. {{autor.nombre}},
+                                    <em id="pAutores" data-ng-repeat="a in referencia.autoresList">
+                                        {{a.apellidos}}. {{a.nombre}},
                                     </em>
-                                    <em> ({{referencia.fecha}}). {{referencia.title}}. 
-                                        2. {{referencia.nota}}. <em style="text-transform: capitalize">{{referencia.lugar}}. </em>
+                                    <em> ({{referencia.fecha}}), {{referencia.title}}. 
+                                        {{referencia.nota}} <em>{{referencia.lugar}}. </em>
                                         {{referencia.idFuente.nombreFuente}}.  
                                         {{referencia.pages}}.</em>
                                     <p>                                    
@@ -134,7 +134,7 @@
                                                             </tr>
                                                             <tr data-ng-repeat="nut in e.tablaCnaGeneralList track by $index">
                                                                 <td>
-                                                                    <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>,
+                                                                    <abbr title="{{nut.nutrientes.nombre}}">{{nut.nutrientes.abreviatura}}</abbr>
                                                                     {{nut.nutrientes.idUnidadMedida.unidadMedida}}</td>
                                                                 <td> {{nut.valor}}</td>
                                                                 <td>
@@ -583,20 +583,6 @@
                                 <div class="modal-body">
                                     <form name="formEditEstudio" role="form" method="POST" data-ng-submit="editMetadatosAlimentosG()">
                                         <div class="form-group">
-                                            <h4>
-                                                <strong>Alimento: </strong> 
-                                                <br />
-                                                <em data-toggle="tooltip" data-placement="top" title="Nombre cient&iacute;fico">{{metadatoActual.idAlimento.nombreCient}}</em>,
-                                                <em data-toggle="tooltip" data-placement="top" title="Nombre com&uacute;n">{{metadatoActual.idAlimento.nombre}}</em>,
-                                                <em data-toggle="tooltip" data-placement="top" title="Variedad">{{metadatoActual.idAlimento.variedad}}</em>,
-                                                <em data-toggle="tooltip" data-placement="top" title="Parte">{{metadatoActual.idAlimento.parte}}</em>.
-                                                <em data-toggle="tooltip" data-placement="top" title="Proceso">{{metadatoActual.idAlimento.proceso}}</em>.
-                                                <em data-toggle="tooltip" data-placement="top" title="Mezcla">{{metadatoActual.idAlimento.mezcla}}</em>.
-                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en Cuba">{{metadatoActual.idAlimento.idTipoCuba.tipoCuba}}</em>.
-                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en la FAO">{{metadatoActual.idAlimento.idTipoFao.tipoFao}}</em>.
-                                                <em data-toggle="tooltip" data-placement="top" title="Clasificaci&oacute;n en NRC">{{metadatoActual.idAlimento.idTipoNrc.tipoNrc}}</em>.
-                                            </h4>
-
                                             <div id="div-1" class="accordion-body collapse in body">
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Riego</span>

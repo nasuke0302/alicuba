@@ -12,6 +12,9 @@
         <jsp:include page="/WEB-INF/includes/globalcss.jsp"/>
         <!--END GLOBAL STYLES-->
         <!--PAGE LEVEL STYLES-->
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/login.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/plugins/magic/magic.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/plugins/validationengine/css/validationEngine.jquery.css" />
@@ -19,115 +22,232 @@
         <!--END PAGE LEVEL STYLES-->
 
         <!--MY SCRIPTS-->
+        <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/ui-validate_1.2.3.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/Login.js"></script>
         <!--END MIS SCRIPTS-->
     </head>
 
-    <body data-ng-controller="LoginController">
-        <div class="container">
-            <div class="text-center">
-                <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 200px; height: 70px;"/>
-                <br />
-                <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com"><i class="icon-facebook"></i></a>
-                <a class="btn btn-social-icon btn-google-plus" href="http://www.plus.google.com"><i class="icon-google-plus"></i></a>
-                <a class="btn btn-social-icon btn-linkedin" href="http://www.linkedin.com"><i class="icon-linkedin"></i></a>
-                <a class="btn btn-social-icon btn-twitter" href="http://www.twitter.com"><i class="icon-twitter"></i></a>
+    <body class="padTop53" data-ng-controller="LoginController">
+        <div id="wrap">
+
+            <!--BEGIN NAV BAR-->
+            <div id="top">
+                <nav class="navbar navbar-inverse navbar-fixed-top " style="padding-top: 10px;">
+                    <a data-original-title="Show/Hide Menu" data-placement="bottom" 
+                       data-tooltip="tooltip" class="accordion-toggle btn btn-primary btn-sm visible-xs" 
+                       data-toggle="collapse" href="#menu" id="menu-toggle">
+                        <i class="icon-align-justify"></i>
+                    </a>
+                    <!--LOGO SECTION--> 
+                    <header class="navbar-header">
+                        <a class="navbar-brand">
+                            <img src="${pageContext.request.contextPath}/static/AlicubaLogoNav.png" style="width: 240px; height: 40px;"/>
+                        </a>
+                    </header>
+                    <!--END LOGO SECTION--> 
+                    <ul class="nav navbar-top-links navbar-right">
+                        <!--ADMIN SETTINGS SECTIONS--> 
+                        <li><a href="#login" data-toggle="tab" data-ng-click="showLogin1()">Acceder</a></li>
+                        <li><a href="#signup" data-toggle="tab" data-ng-click="showLogin1()">Crear cuenta</a></li>
+                        <li><a href="${pageContext.request.contextPath}/login/loginHelpPage">Ayuda y Contacto</a></li>
+                        <!--END ADMIN SETTINGS SECTIONS--> 
+                    </ul>
+                </nav>
             </div>
-            <div class="tab-content">
-                <div id="login" class="tab-pane active <c:if test="${param.error != null}"> has-error </c:if>">
-                    <form action="${loginUrl}" class="form-signin" method="post" name="loginForm">
-                        <a class="text-muted text-center btn-block btn btn-primary btn-rect" href="#signup" data-toggle="tab">
-                            Por favor reg&iacute;strese</a>
-                        <input type="email" id="username" name="username"
-                               data-ng-model="usuario.email" placeholder="email" 
-                               class="form-control" autofocus="" required=""/>
-                        <div data-ng-show="loginForm.username.$touched && loginForm.username.$invalid">
-                            <small style="color:red; display: block; text-align: center;"> Introduzca un email v&aacute;lido</small>
-                        </div>
+            <!--END NAV BAR-->
 
-                        <input type="password" id="password" name="password" 
-                               data-ng-model="usuario.password" placeholder="password" 
-                               class="form-control" required=""/>
-                        <div data-ng-show="loginForm.password.$touched && loginForm.password.$invalid">
-                            <small style="color:red; display: block; text-align: center;"> Introduzca su contraseña</small>
-                        </div>
-
-                        <div class="text-center">
-                            <c:if test="${param.error != null}">
-                                <span class="help-block">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</span>
-                            </c:if>
-                        </div>
-                        <button class="btn text-muted text-center btn-success" type="submit" data-ng-disabled="loginForm.$invalid">Acceder</button>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    </form>
-                </div>
-                <div id="signup" class="tab-pane">
-                    <form action="addUsuarios" class="form-signin" method="post" name="registerForm">
-                        <p class="text-muted text-center btn-block btn btn-primary btn-rect">Por favor llene los datos para el registro</p>
-                        <input type="email" name="email" id="email" 
-                               data-ng-model="usuario.email" placeholder="Correo electr&oacute;nico" class="form-control" required=""/>
-                        <div data-ng-show="registerForm.email.$touched && registerForm.email.$invalid">
-                            <small style="color:red; display: block; text-align: center;"> Introduzca un email v&aacute;lido</small>
-                        </div>
-
-                        <input type="text" name="nombre" id="nombre" 
-                               data-ng-model="usuario.nombre" placeholder="Nombre" class="form-control" required=""/>
-                        <div data-ng-show="registerForm.nombre.$touched && registerForm.nombre.$invalid">
-                            <small style="color:red; display: block; text-align: center;">El campo nombre es requerido</small>
-                        </div>
-
-                        <input type="text" name="apellidos" id="apellidos" 
-                               data-ng-model="usuario.apellidos" placeholder="Apellidos" class="form-control" required=""/>
-                        <div data-ng-show="registerForm.apellidos.$touched && registerForm.apellidos.$invalid">
-                            <small style="color:red; display: block; text-align: center;">El campo apellidos es requerido</small>
-                        </div>
-
-                        <input type="password" name="password" id="password"  
-                               data-ng-model="usuario.password"
-                               placeholder="Contrase&ntilde;a" class="form-control" required=""/>
-                        <div data-ng-show="registerForm.password.$touched && registerForm.password.$invalid">
-                            <small style="color:red; display: block; text-align: center;">El campo contraseña es requerido</small>
-                        </div>
-
-                        <input type="password" name="password2" id="password2" placeholder="Repetir Contrase&ntilde;a" 
-                               data-ng-model="usuario.password2" class="form-control" required=""
-                               ui-validate='"validarPasswords($value)"'
-                               ui-validate-watch="'usuario.password'"/>
-                        <div data-ng-show="registerForm.password2.$empty">
-                            <small style="color:red; display: block; text-align: center;">Este campo es requerido</small>
-                        </div>
-                        <div data-ng-show="registerForm.password2.$invalid
-                                                && !registerForm.password2.$validValidator">
-                            <small style="color:red; display: block; text-align: center;">Las contraseñas no coinciden</small>
-                        </div>
-
-                        <button class="btn text-muted text-center btn-success form-control" type="submit"
-                                data-ng-disabled="registerForm.$invalid">Crear cuenta</button>
-                    </form>
-                </div>
-            </div>
-            <div class="text-center">
-                <ul class="list-inline">
-                    <li><a href="#login" data-toggle="tab">Acceder</a></li>
-                    <li><a href="#signup" data-toggle="tab">Crear cuenta</a></li>
-                    <li><a href="${pageContext.request.contextPath}/login/loginHelpPage">Ayuda y Contacto</a></li>
+            <!--BEGIN LEFT MENU-->
+            <div id="left" data-ng-show="!showLogin">
+                <ul id="menu" class="collapse">
+                    <li class="panel">
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#tablas-nav">
+                            <i class="icon-table"></i> &Uacute;ltima Tabla Generada
+                        </a>
+                        <ul class="in" id="tablas-nav">
+                            <span>{{lastTablaGenerada.nombre}} - {{lastTablaGenerada.fechaHora}}</span>
+                        </ul>
+                    </li>
                 </ul>
             </div>
+            <!--END LEFT MENU-->
+            <!--BEGIN PAGE CONTENT-->
+            <div id="content" data-ng-show="!showLogin">
+                <div class="inner" style="min-height:800px;">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <br />
+                            <div class="table-responsive">
+                                <table datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Ver Datos</th>
+                                            <th>Alimento</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="mg in allMetadatosGenerados track by $index">
+                                            <td>
+                                                <a class="btn btn-success" href="#tabla1"
+                                                   data-ng-click="verDatos($index)">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <strong> {{mg.idAlimento.nombreCient}}</strong> - 
+                                                <strong>{{mg.idAlimento.nombre}}</strong>
+                                                {{mg.idEpoca.etiqueta}} - {{mg.fertilizado.etiqueta}} - 
+                                                {{mg.calidad.etiqueta}} - {{mg.idNivelFert.etiqueta}} - 
+                                                {{mg.idRangoEdades.etiqueta}} - {{mg.idRegion.etiqueta}} - 
+                                                {{mg.import1.pais}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading"> 
+                                    Datos del Alimento: <strong> {{metadatoGenerado.idAlimento.nombreCient}}</strong> - 
+                                    <strong>{{metadatoGenerado.idAlimento.nombre}}</strong>
+                                    {{metadatoGenerado.idEpoca.etiqueta}} - {{metadatoGenerado.fertilizado.etiqueta}} - 
+                                    {{metadatoGenerado.calidad.etiqueta}} - {{metadatoGenerado.idNivelFert.etiqueta}} - 
+                                    {{metadatoGenerado.idRangoEdades.etiqueta}} - {{metadatoGenerado.idRegion.etiqueta}} - 
+                                    {{metadatoGenerado.import1.pais}}
+                                </div>
+                                <div class="panel-body">
+                                    <table id="tabla1" class="table table-hover table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nutriente</th>
+                                                <th>Total</th>
+                                                <th>M&iacute;nimo</th>
+                                                <th>M&aacute;ximo</th>
+                                                <th>Promedio</th>
+                                                <th>Desviaci&oacute;n Est&aacute;ndar</th>
+                                                <th>Varianza</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-ng-repeat="tc in metadatoGenerado.tablaCnaFinalList track by $index">
+                                                <td title="{{tc.nutrientes.nombre}}">
+                                                    {{tc.nutrientes.abreviatura}}
+                                                    {{tc.nutrientes.idUnidadMedida.unidadMedida}}
+                                                        
+                                                </td>
+                                                <td>{{tc.total}}</td>
+                                                <td>{{tc.minimo}}</td>
+                                                <td>{{tc.maximo}}</td>
+                                                <td>{{tc.promedio| limitTo: 4}}</td>
+                                                <td>{{tc.desvEst| limitTo: 4 }}</td>
+                                                <td>{{tc.varianza| limitTo: 4}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                    
+                                </div>
+                                <div class="panel-footer"> Datos del Alimento</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--END PAGE CONTENT-->
+            <!--BEGIN LOGIN CONTENT-->
+            <div class="container" data-ng-show="showLogin">
+                <div class="tab-content">
+                    <div id="login" class="tab-pane active <c:if test="${param.error != null}"> has-error </c:if>">
+                        <form action="${loginUrl}" class="form-signin" method="post" name="loginForm">
+                            <a class="text-muted text-center btn-block btn btn-primary btn-rect" href="#signup" data-toggle="tab">
+                                Por favor reg&iacute;strese</a>
+                            <input type="email" id="username" name="username"
+                                   data-ng-model="usuario.email" placeholder="email" 
+                                   class="form-control" autofocus="" required=""/>
+                            <div data-ng-show="loginForm.username.$touched && loginForm.username.$invalid">
+                                <small style="color:red; display: block; text-align: center;"> Introduzca un email v&aacute;lido</small>
+                            </div>
+
+                            <input type="password" id="password" name="password" 
+                                   data-ng-model="usuario.password" placeholder="password" 
+                                   class="form-control" required=""/>
+                            <div data-ng-show="loginForm.password.$touched && loginForm.password.$invalid">
+                                <small style="color:red; display: block; text-align: center;"> Introduzca su contraseña</small>
+                            </div>
+
+                            <div class="text-center">
+                                <c:if test="${param.error != null}">
+                                    <span class="help-block">${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}</span>
+                                </c:if>
+                            </div>
+                            <button class="btn text-muted text-center btn-success" type="submit" data-ng-disabled="loginForm.$invalid">Acceder</button>
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        </form>
+                    </div>
+                    <div id="signup" class="tab-pane">
+                        <form action="addUsuarios" class="form-signin" method="post" name="registerForm">
+                            <p class="text-muted text-center btn-block btn btn-primary btn-rect">Por favor llene los datos para el registro</p>
+                            <input type="email" name="email" id="email" 
+                                   data-ng-model="usuario.email" placeholder="Correo electr&oacute;nico" class="form-control" required=""/>
+                            <div data-ng-show="registerForm.email.$touched && registerForm.email.$invalid">
+                                <small style="color:red; display: block; text-align: center;"> Introduzca un email v&aacute;lido</small>
+                            </div>
+
+                            <input type="text" name="nombre" id="nombre" 
+                                   data-ng-model="usuario.nombre" placeholder="Nombre" class="form-control" required=""/>
+                            <div data-ng-show="registerForm.nombre.$touched && registerForm.nombre.$invalid">
+                                <small style="color:red; display: block; text-align: center;">El campo nombre es requerido</small>
+                            </div>
+
+                            <input type="text" name="apellidos" id="apellidos" 
+                                   data-ng-model="usuario.apellidos" placeholder="Apellidos" class="form-control" required=""/>
+                            <div data-ng-show="registerForm.apellidos.$touched && registerForm.apellidos.$invalid">
+                                <small style="color:red; display: block; text-align: center;">El campo apellidos es requerido</small>
+                            </div>
+
+                            <input type="password" name="password" id="password"  
+                                   data-ng-model="usuario.password"
+                                   placeholder="Contrase&ntilde;a" class="form-control" required=""/>
+                            <div data-ng-show="registerForm.password.$touched && registerForm.password.$invalid">
+                                <small style="color:red; display: block; text-align: center;">El campo contraseña es requerido</small>
+                            </div>
+
+                            <input type="password" name="password2" id="password2" placeholder="Repetir Contrase&ntilde;a" 
+                                   data-ng-model="usuario.password2" class="form-control" required=""
+                                   ui-validate='"validarPasswords($value)"'
+                                   ui-validate-watch="'usuario.password'"/>
+                            <div data-ng-show="registerForm.password2.$empty">
+                                <small style="color:red; display: block; text-align: center;">Este campo es requerido</small>
+                            </div>
+                            <div data-ng-show="registerForm.password2.$invalid
+                                                    && !registerForm.password2.$validValidator">
+                                <small style="color:red; display: block; text-align: center;">Las contraseñas no coinciden</small>
+                            </div>
+
+                            <button class="btn text-muted text-center btn-success form-control" type="submit"
+                                    data-ng-disabled="registerForm.$invalid">Crear cuenta</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--END LOGIN CONTENT-->
+        </div>
+        <div id="footer">
+            <p>&copy;  AliCuba &nbsp;2018 &nbsp;</p>
         </div>
         <!-- PAGE LEVEL SCRIPTS -->
         <script src="${pageContext.request.contextPath}/static/plugins/jquery-2.0.3.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/js/login.js"></script>
         <script>
-                                            if (Notification.permission === "default") {
-                                                Notification.requestPermission(function (p) {
-                                                    if (p === "granted") {
-                                                        alert("Usted recibirá notificaciones de esta página");
-                                                    }
-                                                });
-                                            }
+                                                if (Notification.permission === "default") {
+                                                    Notification.requestPermission(function (p) {
+                                                        if (p === "granted") {
+                                                            alert("Usted recibirá notificaciones de esta página");
+                                                        }
+                                                    });
+                                                }
 
         </script>
         <!--END PAGE LEVEL SCRIPTS-->

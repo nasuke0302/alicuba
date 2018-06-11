@@ -40,7 +40,6 @@ public class MetadatosAlimentosG implements Serializable {
     @Column(name = "riego")
     private String riego;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "metadatosAlimentosG")
     private List<TablaCnaGeneral> tablaCnaGeneralList;
 

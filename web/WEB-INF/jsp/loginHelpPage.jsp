@@ -18,9 +18,11 @@
         <link rel="stylesheet" href="<c:url value="/static/css/theme.css"/>">
         <link rel="stylesheet" href="<c:url value="/static/css/MoneAdmin.css"/>">
         <link rel="stylesheet" href="<c:url value="/static/plugins/Font-Awesome/css/font-awesome.css"/>">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
         <!--END GLOBAL STYLES --> 
         <link rel="icon" href="${pageContext.request.contextPath}/static/favicon.png" type="image/png">
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/LoginHelpPage.js"></script>
     </head>
     <body data-ng-controller="LoginHelpPageController">
@@ -31,7 +33,6 @@
                     <div class="row">
                         <div class="text-center">
                             <img src="${pageContext.request.contextPath}/static/AlicubaLogo.png" style="width: 300px; height: 110px;"/>
-                            <h1 style="color: #009933">Página de ayuda y contacto</h1>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">

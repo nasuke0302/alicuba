@@ -47,13 +47,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
+//                .antMatchers("/addUsuarios", "/helpPage/**", "/login/**").permitAll()
+                .antMatchers("/addUsuarios", "/helpPage/**", "/login/**",
+                        "/tablasgeneradas/**", "/metadatosGenerados/**").permitAll()
                 .antMatchers("/roles/**", "/usuarios/**", "/trazas/**").hasAuthority("Administrador")
-                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", "/autores/**", 
-                        "/categorias/**", "/estimacion/**")
-                .hasAnyAuthority("Editor", "Colaborador")
-                .antMatchers("/editarPerfil/**" ,"/notificaciones/**").authenticated()
-                .antMatchers("/tablasgeneradas/**", "/metadatosGenerados/**").hasAuthority("Editor")
+                .antMatchers("/alimentos/**", "/index/**", "/cna/**", "/estudio/**", 
+                        "/categorias/**", "/autores/**", "/estimacion/**").hasAnyAuthority("Editor", "Colaborador")
+                .antMatchers("/editarPerfil/**", "/notificaciones/**").authenticated()
+//                .antMatchers("/tablasgeneradas/**", "/metadatosGenerados/**").hasAuthority("Editor")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

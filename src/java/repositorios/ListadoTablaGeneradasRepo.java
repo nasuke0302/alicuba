@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ListadoTablaGeneradasRepo extends JpaRepository<ListadoTablaGeneradas, Integer>{
-    ///public List<ListadoTablaGeneradas> findAllOrderByIdListadoTablaGeneradasDesc();
-    
+
+    public ListadoTablaGeneradas findTopByOrderByIdListadoTablaGeneradasDesc();
 }
