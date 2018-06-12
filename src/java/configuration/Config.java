@@ -32,7 +32,7 @@ public class Config {
 
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "albert123");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource("jdbc:postgresql://localhost:5432/Alicuba", "postgres", "123");
         dataSource.setDriverClassName("org.postgresql.Driver");
         return dataSource;
     }
