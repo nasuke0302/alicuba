@@ -73,6 +73,7 @@ public class AlimentosController {
                 map.put("data", alimentosRepo.findAll());
             }
             map.put("success", Boolean.TRUE);
+            map.put("principal", principal.getEmail());
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);
             map.put("error", e);

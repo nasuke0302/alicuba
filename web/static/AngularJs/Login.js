@@ -4,6 +4,7 @@ appLogin.controller("LoginController", function ($scope, $http) {
         password: ""
     };
     $scope.showLogin = false;
+    $scope.verFormulas = false;
     $scope.lastTablaGenerada = {
         idListadoTablaGeneradas: ""
     };
@@ -20,6 +21,14 @@ appLogin.controller("LoginController", function ($scope, $http) {
         }
     };
 
+    $scope.listarFormulas = function () {
+        $scope.verFormulas = true;
+    };
+
+    $scope.listarAlimentos = function () {
+        $scope.verFormulas = false;
+    };
+
     //Obtener Lista de Tablas Generadas
     $http.get("tablasgeneradas/getLastTablaGenerada").then(function (data) {
         $scope.lastTablaGenerada = data.data.data;
@@ -31,4 +40,8 @@ appLogin.controller("LoginController", function ($scope, $http) {
     $scope.verDatos = function (indice) {
         $scope.metadatoGenerado = $scope.allMetadatosGenerados[indice];
     };
+
+    $http.get("estimacion/getFormulas").then(function (res) {
+        $scope.allFormulas = res.data.data;
+    });
 });

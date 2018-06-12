@@ -69,7 +69,13 @@
                             <i class="icon-table"></i> &Uacute;ltima Tabla Generada
                         </a>
                         <ul class="in" id="tablas-nav">
-                            <span>{{lastTablaGenerada.nombre}} - {{lastTablaGenerada.fechaHora}}</span>
+                            <a data-ng-click="listarAlimentos()">  <span>{{lastTablaGenerada.nombre}} - {{lastTablaGenerada.fechaHora}}</span></a>
+                        </ul>
+                        <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#tablas-nav">
+                            <i class="icon-table"></i>F&oacute;rmulas de Estimación
+                        </a>
+                        <ul class="in" id="tablas-nav">
+                            <a data-ng-click="listarFormulas()"> Listar f&oacute;rmulas</a>
                         </ul>
                     </li>
                 </ul>
@@ -81,12 +87,18 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <br />
-                            <div class="table-responsive">
-                                <table datatable="ng" id="tablaCategorias" class="table table-striped table-hover">
+                            <div class="table-responsive" data-ng-show="!verFormulas">
+                                <table datatable="ng" id="tablaCategorias" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>Ver Datos</th>
-                                            <th>Alimento</th>
+                                            <th>Nombre Cient&iacute;fico</th>
+                                            <th>Nombre Com&uacute;n</th>
+                                            <th>Variedad</th>
+                                            <th>Parte</th>
+                                            <th>Proceso</th>
+                                            <th>Mezcla</th>
+                                            <th>Otros</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,9 +109,13 @@
                                                     <span class="glyphicon glyphicon-eye-open"></span>
                                                 </a>
                                             </td>
+                                            <td>{{mg.idAlimento.nombreCient}}</td>
+                                            <td>{{mg.idAlimento.nombre}}</td>
+                                            <td>{{mg.idAlimento.variedad}}</td>
+                                            <td>{{mg.idAlimento.parte}}</td>
+                                            <td>{{mg.idAlimento.proceso}}</td>
+                                            <td>{{mg.idAlimento.mezcla}}</td>
                                             <td>
-                                                <strong> {{mg.idAlimento.nombreCient}}</strong> - 
-                                                <strong>{{mg.idAlimento.nombre}}</strong>
                                                 {{mg.idEpoca.etiqueta}} - {{mg.fertilizado.etiqueta}} - 
                                                 {{mg.calidad.etiqueta}} - {{mg.idNivelFert.etiqueta}} - 
                                                 {{mg.idRangoEdades.etiqueta}} - {{mg.idRegion.etiqueta}} - 
@@ -109,16 +125,41 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" data-ng-show="!verFormulas">
                                 <div class="panel-heading"> 
-                                    Datos del Alimento: <strong> {{metadatoGenerado.idAlimento.nombreCient}}</strong> - 
-                                    <strong>{{metadatoGenerado.idAlimento.nombre}}</strong>
+                                    Alimento Seleccionado: 
+                                </div>
+                                <div class="panel-body">
+                                    <strong>Nombre Cient&iacute;fico: </strong>
+                                    {{metadatoGenerado.idAlimento.nombreCient}}
+                                    <br />
+                                    <strong>Nombre Com&uacute;n: </strong>
+                                    {{metadatoGenerado.idAlimento.nombre}}
+                                    <br />
+                                    <strong>Variedad: </strong>
+                                    {{metadatoGenerado.idAlimento.variedad}}
+                                    <br />
+                                    <strong>Parte: </strong>
+                                    {{metadatoGenerado.idAlimento.parte}}
+                                    <br />
+                                    <strong>Proceso: </strong>
+                                    {{metadatoGenerado.idAlimento.proceso}}
+                                    <br />
+                                    <strong>Mezcla: </strong>
+                                    {{metadatoGenerado.idAlimento.mezcla}}
+                                    <br />
+                                    <strong>Otros: </strong>
+                                    {{metadatoGenerado.presentation}} -
                                     {{metadatoGenerado.idEpoca.etiqueta}} - {{metadatoGenerado.fertilizado.etiqueta}} - 
                                     {{metadatoGenerado.calidad.etiqueta}} - {{metadatoGenerado.idNivelFert.etiqueta}} - 
                                     {{metadatoGenerado.idRangoEdades.etiqueta}} - {{metadatoGenerado.idRegion.etiqueta}} - 
-                                    {{metadatoGenerado.import1.pais}}
-                                </div>
-                                <div class="panel-body">
+                                    {{metadatoGenerado.corte}} - 
+                                    {{metadatoGenerado.n}} - 
+                                    {{metadatoGenerado.npk}} - 
+                                    {{metadatoGenerado.import1.alpha3}} - 
+                                    {{metadatoGenerado.tratamiento}} - 
+                                    {{metadatoGenerado.tecnolog}}
+                                    <br />
                                     <table id="tabla1" class="table table-hover table-striped">
                                         <thead>
                                             <tr>
@@ -136,7 +177,7 @@
                                                 <td title="{{tc.nutrientes.nombre}}">
                                                     {{tc.nutrientes.abreviatura}}
                                                     {{tc.nutrientes.idUnidadMedida.unidadMedida}}
-                                                        
+
                                                 </td>
                                                 <td>{{tc.total}}</td>
                                                 <td>{{tc.minimo}}</td>
@@ -150,6 +191,35 @@
                                 </div>
                                 <div class="panel-footer"> Datos del Alimento</div>
                             </div>
+                            
+                            <!--BEGIN TABLE FORMULAS-->
+                            <div class="table-responsive" data-ng-show="verFormulas">
+                                <table datatable="ng" class="table table-condensed table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Nutriente resultado</th>
+                                            <th>F&oacute;rmula</th>
+                                            <th>Variables</th>
+                                        <tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="f in allFormulas track by $index">
+                                            <td>{{f.nombreFormula}}</td>
+                                            <td>{{f.idNutriente.abreviatura}}, <small>{{f.idNutriente.nombre}}</small></td>
+                                            <td>{{f.formula}}</td>
+                                            <td>
+                                                <span data-ng-repeat="v in f.variablesList">
+                                                    <strong> {{v.nombreVariable}}: </strong>
+                                                    {{v.idNutriente.abreviatura}} - <small>{{v.idNutriente.nombre}}</small>
+                                                    <br>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--END TABLE FORMULAS-->
                         </div>
                     </div>
                 </div>

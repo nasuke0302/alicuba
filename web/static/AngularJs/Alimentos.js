@@ -57,6 +57,7 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
     //Obtener Lista de alimentos
     $http.get("getAlimentos").then(function (data) {
         $scope.allAlimentos = data.data.data;
+        $scope.principal = data.data.principal;
     });
     //Obtener Lista de TipoCuba
     $http.get("getAllTipoCuba").then(function (data) {
@@ -98,7 +99,7 @@ appAlimentos.controller("AlimentosController", function ($scope, $http, $window)
     $scope.eliminarAlimento = function () {
         $("#formModalEliminar").modal("toggle");
         $http.delete("deleteAlimento/" + $scope.indiceRegistro.idAlimento).then(function (r) {
-            $window.alert(r);
+            $window.alert(r.data.mensaje);
             $http.get("getAlimentos").then(function (data) {
                 $scope.allAlimentos = data.data.data;
             });

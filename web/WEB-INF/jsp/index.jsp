@@ -75,6 +75,7 @@
                                                                             <i class="glyphicon glyphicon-pencil"></i>
                                                                         </button>
                                                                         <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                                data-ng-show="r.idUsuario.email === principal"
                                                                                 data-ng-click="abrirEliminarModal($index)">
                                                                             <i class="glyphicon glyphicon-trash"></i>
                                                                         </button>

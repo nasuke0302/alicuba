@@ -43,7 +43,6 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
     };
     $scope.tablaGenerada = JSON.parse(window.localStorage.getItem("tablaGenerada"));
     $scope.tablaGeneradaEdit = JSON.parse(window.localStorage.getItem("tablaGenerada"));
-
     //Obtener Lista de Metadatos Generados
     $http.get("getMetadatosGeneradosPorTablaGenerada/" + $scope.tablaGenerada.idListadoTablaGeneradas).then(function (data) {
         $scope.allMetadatosGenerados = data.data.data;
@@ -61,5 +60,9 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
             $scope.tablaGenerada = res.data.data;
             window.localStorage.setItem("tablaGenerada", JSON.stringify($scope.tablaGenerada));
         });
+    };
+
+    $scope.abrirEditarModal = function () {
+        $scope.tablaGeneradaEdit = JSON.parse(window.localStorage.getItem("tablaGenerada"));
     };
 });

@@ -46,10 +46,8 @@
                             <div class="panel panel-default">
                                 <!--ABRIR MODAL AÑADIR-->
                                 <div class="panel-heading  ">
-                                    <sec:authorize access="hasAuthority('Colaborador')">
-                                        <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
-                                                data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
-                                    </sec:authorize>
+                                    <button id="añadirButton" class="icon-plus btn btn-success" data-ng-click="abrirNuevoAlimentoModal()"
+                                            data-toggle="modal" data-target="#formModalCreateOrEdit"> Nuevo Alimento</button>
                                     <!--END ABRIR MODAL AÑADIR-->
                                 </div>
                                 <!--TABLA Alimentos-->
@@ -65,9 +63,7 @@
                                                     <th>Parte</th>
                                                     <th>Proceso</th>
                                                     <th>Mezcla</th>
-                                                        <sec:authorize access="hasAuthority('Editor')">
-                                                        <th>Colaborador</th>
-                                                        </sec:authorize>
+                                                    <th>Colaborador</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -75,132 +71,130 @@
                                                     <td>
                                                         <input type="hidden" value="{{alimento.idAlimento}}"/>
                                                         <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#formModalCreateOrEdit" 
-                                                                data-ng-click="abrirEditarModal($index)">
-                                                            <i class="glyphicon glyphicon-pencil"></i></button>
+                                                                <sec:authorize access="hasAuthority('Colaborador')"> data-ng-show="r.idUsuario.email === principal" </sec:authorize>
+                                                                    data-ng-click="abrirEditarModal($index)">
+                                                                    <i class="glyphicon glyphicon-pencil"></i></button>
 
-                                                        <sec:authorize access="hasAuthority('Colaborador')">
-                                                            <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
-                                                                    data-ng-click="abrirEliminarModal($index)">
-                                                                <i class="glyphicon glyphicon-trash"></i></button>
-                                                            </sec:authorize>
-                                                    </td>
-                                                    <td>{{alimento.nombreCient}}</td>
-                                                    <td>{{alimento.nombre}}</td>
-                                                    <td>{{alimento.variedad}}</td>
-                                                    <td>{{alimento.parte}}</td>
-                                                    <td>{{alimento.proceso}}</td>
-                                                    <td>{{alimento.mezcla}}</td>
-                                                    <sec:authorize access="hasAuthority('Editor')">
+                                                                <button class="btn btn-danger btn-xs" data-toggle="modal" data-target="#formModalEliminar"
+                                                                        data-ng-show="alimento.idUsuario.email === principal"
+                                                                        data-ng-click="abrirEliminarModal($index)">
+                                                                    <i class="glyphicon glyphicon-trash"></i></button>
+                                                        </td>
+                                                        <td>{{alimento.nombreCient}}</td>
+                                                        <td>{{alimento.nombre}}</td>
+                                                        <td>{{alimento.variedad}}</td>
+                                                        <td>{{alimento.parte}}</td>
+                                                        <td>{{alimento.proceso}}</td>
+                                                        <td>{{alimento.mezcla}}</td>
                                                         <td>{{alimento.idUsuario.nombre}}</td>
-                                                    </sec:authorize>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="panel-footer panel-default">Alimentos</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--CREATE OR EDIT MODAL-->
-                    <div class="col-lg-12">
-                        <div style="overflow-y: auto" class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
-                             role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="H2">Alimento</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form role="form" data-ng-submit="createOrEditAlimento()" 
-                                              name="formAddAlimento" method="post">
-                                            <div class="form-group">
-                                                <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
-                                                       data-ng-model="indiceRegistro.nombreCient" name="inputNombreCient"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o  especiales</span>
-                                                </div>
-                                                <label>Nombre</label>
-                                                <input class="form-control"  name="inputNombre" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
-                                                       required="" data-ng-model="indiceRegistro.nombre"/>
-                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
-                                                    <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o especiales</span>
-                                                </div>
-                                                <label>Variedad</label>
-                                                <input class="form-control"
-                                                       data-ng-model="indiceRegistro.variedad"/>
-                                                <label>Parte</label>
-                                                <input class="form-control"
-                                                       data-ng-model="indiceRegistro.parte"/>
-                                                <label>Proceso</label>
-                                                <input class="form-control"
-                                                       data-ng-model="indiceRegistro.proceso"/>
-                                                <label>Mezcla</label>
-                                                <input class="form-control" 
-                                                       data-ng-model="indiceRegistro.mezcla"/>
-                                                <label>Tipo en Cuba</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoCuba" 
-                                                        ng-options="tipoCuba.idTipoCuba as tipoCuba.tipoCuba for tipoCuba in allTipoCuba">
-                                                </select>
-                                                <label>Tipo en FAO</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoFao" 
-                                                        ng-options="tipoFao.idTipoFao as tipoFao.tipoFao for tipoFao in allTipoFao">
-                                                </select>
-                                                <label>Tipo en NRC</label>
-                                                <br>
-                                                <select class="form-control" 
-                                                        ng-model="selectedTipoNrc" 
-                                                        ng-options="tipoNrc.idTipoNrc as tipoNrc.tipoNrc for tipoNrc in allTipoNrc">
-                                                </select>
-                                            </div>
-                                            <div class="text-right">
-                                                <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
-                                                <input type="hidden" data-ng-model="indiceRegistro.idUsuario"/>
-                                                <button type="submit" class="btn btn-success" data-ng-disabled="formAddAlimento.$invalid">Guardar</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                    <div class="panel-footer panel-default">Alimentos</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--END EDIT MODAL-->
-                    <!--DELETE MODAL-->
-                    <div>
-                        <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
-                            <div class="modal-dialog" style="margin-top: 260.5px;">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                        <!--CREATE OR EDIT MODAL-->
+                        <div class="col-lg-12">
+                            <div style="overflow-y: auto" class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
+                                 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="H2">Alimento</h4>
+                                        </div>
                                         <div class="modal-body">
-                                            <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
-                                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            <form role="form" data-ng-submit="createOrEditAlimento()" 
+                                                  name="formAddAlimento" method="post">
+                                                <div class="form-group">
+                                                    <label>Nombre Cient&iacute;fico</label>
+                                                    <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
+                                                           data-ng-model="indiceRegistro.nombreCient" name="inputNombreCient"/>
+                                                    <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
+                                                        <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o  especiales</span>
+                                                    </div>
+                                                    <label>Nombre</label>
+                                                    <input class="form-control"  name="inputNombre" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
+                                                           required="" data-ng-model="indiceRegistro.nombre"/>
+                                                    <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
+                                                        <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                        <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o especiales</span>
+                                                    </div>
+                                                    <label>Variedad</label>
+                                                    <input class="form-control"
+                                                           data-ng-model="indiceRegistro.variedad"/>
+                                                    <label>Parte</label>
+                                                    <input class="form-control"
+                                                           data-ng-model="indiceRegistro.parte"/>
+                                                    <label>Proceso</label>
+                                                    <input class="form-control"
+                                                           data-ng-model="indiceRegistro.proceso"/>
+                                                    <label>Mezcla</label>
+                                                    <input class="form-control" 
+                                                           data-ng-model="indiceRegistro.mezcla"/>
+                                                    <label>Tipo en Cuba</label>
+                                                    <br>
+                                                    <select class="form-control" 
+                                                            ng-model="selectedTipoCuba" 
+                                                            ng-options="tipoCuba.idTipoCuba as tipoCuba.tipoCuba for tipoCuba in allTipoCuba">
+                                                    </select>
+                                                    <label>Tipo en FAO</label>
+                                                    <br>
+                                                    <select class="form-control" 
+                                                            ng-model="selectedTipoFao" 
+                                                            ng-options="tipoFao.idTipoFao as tipoFao.tipoFao for tipoFao in allTipoFao">
+                                                    </select>
+                                                    <label>Tipo en NRC</label>
+                                                    <br>
+                                                    <select class="form-control" 
+                                                            ng-model="selectedTipoNrc" 
+                                                            ng-options="tipoNrc.idTipoNrc as tipoNrc.tipoNrc for tipoNrc in allTipoNrc">
+                                                    </select>
+                                                </div>
+                                                <div class="text-right">
+                                                    <input type="hidden" data-ng-model="indiceRegistro.idAlimento"/>
+                                                    <input type="hidden" data-ng-model="indiceRegistro.idUsuario"/>
+                                                    <button type="submit" class="btn btn-success" data-ng-disabled="formAddAlimento.$invalid">Guardar</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <!--END DELETE MODAL-->
+                        <!--END EDIT MODAL-->
+                        <!--DELETE MODAL-->
+                        <div>
+                            <div class="modal fade" id="formModalEliminar" role="dialog" style="display: none;">
+                                <div class="modal-dialog" style="margin-top: 260.5px;">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">¿Seguro que desea eliminar este registro?</h4>
+                                            <div class="modal-body">
+                                                <form role="form" method="post" data-ng-submit="eliminarAlimento()" id="delete_data" class="text-right">
+                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!--END DELETE MODAL-->
+                        </div>
+                        <!--END DLETE MODAL-->
                     </div>
-                    <!--END DLETE MODAL-->
                 </div>
             </div>
-        </div>
-        <!--END PAGE CONTENT -->
-        <!--END MAIN WRAP-->
-        <!-- FOOTER -->
+            <!--END PAGE CONTENT -->
+            <!--END MAIN WRAP-->
+            <!-- FOOTER -->
         <jsp:include page="/WEB-INF/includes/footer.jsp"/>
         <!--END FOOTER -->
 
