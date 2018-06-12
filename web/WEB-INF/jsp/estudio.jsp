@@ -302,35 +302,40 @@
                                         <div class="modal-body">
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputNombreCientAlimento"
-                                                       data-ng-model="alimento.nombreCient"/>
+                                                <input class="form-control"  data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
+                                                       name="inputNombreCient" data-ng-model="alimento.nombreCient"/>
+                                            </div>
+                                            <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
+                                                <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o  especiales</span>
                                             </div>
                                             <div class="form-group">
                                                 <label>Nombre Com&uacute;n</label>
-                                                <input class="form-control" style="text-transform: capitalize" name="inputNombreAlimento"
+                                                <input class="form-control" name="inputNombreAlimento"
+                                                       data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                        data-ng-model="alimento.nombre" required="" />
                                                 <div data-ng-show="formAddAlimento.inputNombreAlimento.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o  especiales</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Variedad</label>
-                                                <input class="form-control" name="inputVariedadAlimento"
+                                                <input class="form-control"
                                                        data-ng-model="alimento.variedad" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Parte</label>
-                                                <input class="form-control" name="inputParteAlimento"
+                                                <input class="form-control"
                                                        data-ng-model="alimento.parte" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Proceso</label>
-                                                <input class="form-control" name="inputProcesoAlimento"
+                                                <input class="form-control"
                                                        data-ng-model="alimento.proceso" />
                                             </div>
                                             <div class="form-group">
                                                 <label>Mezla</label>
-                                                <input class="form-control" name="inputMezclaAlimento"
+                                                <input class="form-control"
                                                        data-ng-model="alimento.mezcla" />
                                             </div>
                                             <label>Tipo en Cuba</label>

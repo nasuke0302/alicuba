@@ -70,15 +70,15 @@ public class LoginController {
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
-        mensaje.setMensaje(u.getNombre() + " se ha unido a AliCuba");
-        mensaje.setTitulo("Nuevo colaborador");
+        mensaje.setMensaje(u.getNombre() + " " + u.getApellidos() + " se ha unido a AliCuba");
+        mensaje.setTitulo("Nuevo Colaborador");
         mensaje.setSender(u.getNombre());
         mensaje.setReceiver("todos");
         mensajeRepo.saveAndFlush(mensaje);
         messagingTemplate.convertAndSend("/topic/notifications", mensaje);
         return "redirect:/login";
     }
-    
+
     @RequestMapping(value = "/login/loginHelpPage", method = RequestMethod.GET)
     public String showLoginHelpPage() {
         return "loginHelpPage";

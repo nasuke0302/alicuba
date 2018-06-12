@@ -15,7 +15,6 @@ import models.Mensaje;
 import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -82,7 +81,7 @@ public class AutoresController {
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
         mensaje.setLeido(Boolean.FALSE);
-        mensaje.setMensaje(principal.getNombre() + " ha insertado un autor: " + a.getNombre());
+        mensaje.setMensaje(principal.getNombre() + " ha insertado un autor: " + a.getNombre() + " " + a.getApellidos());
         mensaje.setTitulo("Autor insertado");
         mensaje.setSender(principal.getNombre());
         mensaje.setReceiver("todos");
@@ -104,7 +103,7 @@ public class AutoresController {
             Date fecha = new Date();
             mensaje.setFecha(dateFormat.format(fecha));
             mensaje.setLeido(Boolean.FALSE);
-            mensaje.setMensaje(principal.getNombre() + " ha editado el autor: " + a1.getNombre());
+            mensaje.setMensaje(principal.getNombre() + " ha editado el autor: " + a1.getNombre() + " " + a1.getApellidos());
             mensaje.setReceiver("colaboradores");
             mensaje.setTitulo("Autor editado");
             mensajeRepo.saveAndFlush(mensaje);

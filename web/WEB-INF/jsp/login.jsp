@@ -194,16 +194,18 @@
                                 <small style="color:red; display: block; text-align: center;"> Introduzca un email v&aacute;lido</small>
                             </div>
 
-                            <input type="text" name="nombre" id="nombre" 
+                            <input type="text" name="nombre" id="nombre" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                    data-ng-model="usuario.nombre" placeholder="Nombre" class="form-control" required=""/>
                             <div data-ng-show="registerForm.nombre.$touched && registerForm.nombre.$invalid">
                                 <small style="color:red; display: block; text-align: center;">El campo nombre es requerido</small>
+                                <small style="color:red; display: block; text-align: center;">El campo nombre no admite carateres num&eacute;ricos o especiales</small>
                             </div>
 
-                            <input type="text" name="apellidos" id="apellidos" 
+                            <input type="text" name="apellidos" id="apellidos" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                    data-ng-model="usuario.apellidos" placeholder="Apellidos" class="form-control" required=""/>
                             <div data-ng-show="registerForm.apellidos.$touched && registerForm.apellidos.$invalid">
                                 <small style="color:red; display: block; text-align: center;">El campo apellidos es requerido</small>
+                                <small style="color:red; display: block; text-align: center;">El campo apellidos no admite carateres num&eacute;ricos o especiales</small>
                             </div>
 
                             <input type="password" name="password" id="password"  

@@ -96,6 +96,7 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.selectedPais = {
         selected: {idPaises: 895, pais: "Sin Definir", alpha2: "SDPais", alpha3: "SDPais"}
     };
+
     $scope.selectedProvincia = 17;
     $scope.selectedRangoEdad = 5;
     $scope.allNutrientes = {};

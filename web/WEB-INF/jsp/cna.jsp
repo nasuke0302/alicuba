@@ -167,7 +167,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="H3">Nueva Referencia</h4>
+                                        <h4 class="modal-title" id="H3">Editar Referencia</h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
@@ -193,6 +193,9 @@
                                                     {{a.nombre}} {{a.apellidos}}
                                                 </ui-select-choices>
                                             </ui-select> 
+                                            <div data-ng-show="selectedAutores.selected === ''">
+                                                <span style="color:red; display: block; text-align: left;">Selecciones al menos un autor</span>
+                                            </div>
                                             <button class="btn btn-success" data-toggle="modal" 
                                                     data-ng-click="abrirModalAddAutor()" data-target="#modalAddOrEditAutor">
                                                 <span class="glyphicon glyphicon-plus"></span>Nuevo Autor</button>
@@ -210,10 +213,7 @@
                                             <label>Nota</label>
                                             <textarea class="form-control" name="inputNota" 
                                                       placeholder="Breve descripci&oacute;n sobre la referencia"
-                                                      data-ng-model="referenciaEdit.nota" required=""></textarea>
-                                            <div data-ng-show="formAddReferencias.inputNota.$invalid">
-                                                <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                            </div>
+                                                      data-ng-model="referenciaEdit.nota"></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>A&ntilde;o</label>
@@ -226,9 +226,6 @@
                                                     {{y}}
                                                 </ui-select-choices>
                                             </ui-select> 
-                                            <div data-ng-show="formAddReferencias.inputYear.$invalid">
-                                                <span style="color:red; display: block; text-align: left;">Este año es requerido</span>
-                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label>P&aacute;ginas</label>
@@ -251,6 +248,9 @@
                                                     {{a.categoria}}
                                                 </ui-select-choices>
                                             </ui-select> 
+                                            <div data-ng-show="selectedCategoria.selected === ''">
+                                                <span style="color:red; display: block; text-align: left;">Selecciones al menos una categoría</span>
+                                            </div>
                                             <button class="btn btn-success" data-toggle="modal" 
                                                     data-ng-click="abrirModalAddCategoria()" data-target="#modalAddOrEditCategoria">
                                                 <span class="glyphicon glyphicon-plus"></span>Nueva Categor&iacute;a</button>
@@ -263,7 +263,7 @@
                                         </div>
                                         <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>Tipo de Informe</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.informeTipo" name="inputTipoInf"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputTipoInf.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -271,7 +271,7 @@
                                         </div>
                                         <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>Instituci&oacute;n</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.informeInstitution" name="inputinstiInf"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputinstiInf.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -280,7 +280,7 @@
 
                                         <div class="form-group"  data-ng-show="selectedFuente.selected.idFuente === 1">
                                             <label>T&iacute;tulo de la serie</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.informeSerie" name="inputInformeSerie"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputInformeSerie.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -288,7 +288,7 @@
                                         </div>
                                         <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 2">
                                             <label>Publicaci&oacute;n</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.arcPublication" name="inputArcPublication"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputArcPublication.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -316,7 +316,7 @@
                                                                      selectedFuente.selected.idFuente === 4 ||
                                                                      selectedFuente.selected.idFuente === 5">
                                             <label>Editorial</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.editorial" name="inputEditorial"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputEditorial.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -330,7 +330,7 @@
                                         </div>
                                         <div class="form-group" data-ng-show="selectedFuente.selected.idFuente === 4">
                                             <label>T&iacute;tulo del Libro</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.secclTitle" name="inputSecclTitle"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputSecclTitle.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -338,7 +338,7 @@
                                         </div>
                                         <div class="form-group"data-ng-show="selectedFuente.selected.idFuente === 5">
                                             <label>Universidad</label>
-                                            <input class="form-control" data-ng-pattern="/^[a-zA-z]*$/"
+                                            <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                    data-ng-model="referenciaEdit.tesisUniversidad" name="inputTesisUniversidad"/>
                                             <div class="text-center" data-ng-show="formAddReferencias.inputTesisUniversidad.$invalid">
                                                 <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
@@ -350,7 +350,10 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary" data-ng-disabled="formAddReferencias.$invalid || formAddReferencias.$pristine">Aceptar</button>
+                                        <button type="submit" class="btn btn-primary" 
+                                                data-ng-disabled="formAddReferencias.$invalid || formAddReferencias.$pristine ||
+                                                                    selectedYear.selected === '' || selectedCategoria.selected === '' ||
+                                                                    selectedAutores.selected === ''">Aceptar</button>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                                     </div>                            
                                 </div>

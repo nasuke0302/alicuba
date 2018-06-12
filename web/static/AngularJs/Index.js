@@ -47,7 +47,9 @@ appIndex.controller("IndexController", function ($scope, $http, $window) {
     $scope.fuente = {
         nombreFuente: ""
     };
-    $scope.selectedYear = {};
+    $scope.selectedYear = {
+        selected: $scope.years[78]
+    };
     $scope.selectedAutores = {};
     $scope.autor = {
         nombre: "",

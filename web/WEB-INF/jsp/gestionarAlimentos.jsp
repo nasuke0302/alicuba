@@ -117,25 +117,27 @@
                                               name="formAddAlimento" method="post">
                                             <div class="form-group">
                                                 <label>Nombre Cient&iacute;fico</label>
-                                                <input class="form-control"
-                                                       data-ng-model="indiceRegistro.nombreCient"/>
+                                                <input class="form-control" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
+                                                       data-ng-model="indiceRegistro.nombreCient" name="inputNombreCient"/>
+                                                <div class="text-center" data-ng-show="formAddAlimento.inputNombreCient.$invalid">
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o  especiales</span>
+                                                </div>
                                                 <label>Nombre</label>
-                                                <input class="form-control"  name="inputNombre"
+                                                <input class="form-control"  name="inputNombre" data-ng-pattern="/^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/"
                                                        required="" data-ng-model="indiceRegistro.nombre"/>
                                                 <div class="text-center" data-ng-show="formAddAlimento.inputNombre.$invalid">
                                                     <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
-                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos</span>
+                                                    <span style="color:red; display: block; text-align: left;">Este campo no admite caracteres numéricos o especiales</span>
                                                 </div>
                                                 <label>Variedad</label>
-                                                <input class="form-control" 
+                                                <input class="form-control"
                                                        data-ng-model="indiceRegistro.variedad"/>
                                                 <label>Parte</label>
-                                                <input class="form-control" 
+                                                <input class="form-control"
                                                        data-ng-model="indiceRegistro.parte"/>
                                                 <label>Proceso</label>
                                                 <input class="form-control"
                                                        data-ng-model="indiceRegistro.proceso"/>
-
                                                 <label>Mezcla</label>
                                                 <input class="form-control" 
                                                        data-ng-model="indiceRegistro.mezcla"/>

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import models.Alimentos;
 import models.Mensaje;
 import models.MetadatosAlimentosG;
 import models.Nutrientes;
@@ -291,19 +292,23 @@ public class EstudioController {
     @RequestMapping(value = "/estudio/addEstudio")
     public ModelAndView addEstudio(@RequestBody MetadatosAlimentosG mag, ModelMap map,
             @AuthenticationPrincipal Usuarios principal) {
+
+        Integer idProv = mag.getIdProvincia().getIdProvincia();
+        Provincia prov = provinciaRepo.findOne(idProv);
+        
+        Integer idAlimento = mag.getIdAlimento().getIdAlimento();
+        Alimentos alimento = alimentosRepo.findOne(idAlimento);
         try {
-            //mag.setIdRegion(mag.getIdProvincia().getIdRegion());
-            
+            mag.setIdRegion(prov.getIdRegion());
             MetadatosAlimentosG magSaved = metadatosAlimentosRepo.saveAndFlush(mag);
             map.put("mensaje", "Estudio insertado correctamente");
             map.put("data", magSaved);
-
             Mensaje mensaje = new Mensaje();
             Date fecha = new Date();
             mensaje.setFecha(dateFormat.format(fecha));
             mensaje.setLeido(Boolean.FALSE);
             mensaje.setMensaje(principal.getNombre() + " ha insertado un estudio para el alimento: "
-                    + magSaved.getIdAlimento().getNombre());
+                    + alimento.getNombre());
             mensaje.setTitulo("Estudio insertado");
             mensaje.setSender(principal.getNombre());
             mensaje.setReceiver("todos");
@@ -335,7 +340,7 @@ public class EstudioController {
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
-    
+
     @Trazable(accion = "modificar", modificar = true, nombre = "modificar Tabla Cna General", timeLine = "", claseEntidad = "TablaCnaGeneral")
     @ResponseBody
     @RequestMapping(value = "/estudio/editTablaCnaGeneral/{valor:.+}")
