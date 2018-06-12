@@ -1,4 +1,4 @@
-var estudioApp = angular.module('AppEstudio', ['ui.select', 'angular-loading-bar']);
+var appEstudio = angular.module('AppEstudio', ['ui.select', 'angular-loading-bar']);
 function headerController($http, $scope) {
     //Obtener Lista de notificaciones
     $scope.noLeido = 0;
@@ -35,8 +35,8 @@ function headerController($http, $scope) {
         });
     });
 }
-estudioApp.controller("headerController", headerController);
-estudioApp.controller('EstudioController', function ($scope, $http, $window) {
+appEstudio.controller("headerController", headerController);
+appEstudio.controller('EstudioController', function ($scope, $http, $window) {
     $scope.tablaCnaGeneral = {
         valor: "",
         idNutriente: "",
@@ -239,6 +239,39 @@ estudioApp.controller('EstudioController', function ($scope, $http, $window) {
     $scope.refreshNutrientesList = function () {
         for (var i = 0; i < $scope.tablaCnaGeneralInsertada.length; i++) {
             $scope.allNutrientes.pop($scope.tablaCnaGeneralInsertada[i].nutriente);
+        }
+    };
+});
+appEstudio.directive('allowDecimalNumbers', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs, ctrl) {
+            elm.on('keydown', function (event) {
+                var $input = $(this);
+                var value = $input.val();
+                value = value.replace(/[^0-9\.]/g, '');
+                $input.val(value);
+                if (event.which === 64 || event.which === 16) {
+                    // numbers  
+                    return false;
+                }
+                if ([8, 13, 27, 37, 38, 39, 40, 110].indexOf(event.which) > -1) {
+                    // backspace, enter, escape, arrows  
+                    return true;
+                } else if (event.which >= 48 && event.which <= 57) {
+                    // numbers  
+                    return true;
+                } else if (event.which >= 96 && event.which <= 105) {
+                    // numpad number  
+                    return true;
+                } else if ([46, 110, 190].indexOf(event.which) > -1) {
+                    // dot and numpad dot  
+                    return true;
+                } else {
+                    event.preventDefault();
+                    return false;
+                }
+            });
         }
     };
 });

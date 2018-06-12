@@ -255,8 +255,12 @@
                                                     <div class="input-group tooltip-demo">
                                                         <span class="input-group-addon" data-toggle="tooltip" data-placement="left" 
                                                               title="{{selectedNutriente.selected.nombre}}">{{selectedNutriente.selected.abreviatura}}</span>
-                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""/>
+                                                        <input type="text" class="form-control" data-ng-model="tablaCnaGeneral.valor" required=""
+                                                               allow-decimal-numbers name="inputValor"/>
                                                         <span class="input-group-addon">{{selectedNutriente.selected.idUnidadMedida.unidadMedida}}</span>
+                                                    </div>
+                                                    <div data-ng-show="formAddTablaCnaGeneral.inputValor.$invalid">
+                                                        <span style="color:red; display: block; text-align: left;">Este campo es requerido</span>
                                                     </div>
                                                     <button class="icon-pencil btn btn-success" type="submit" 
                                                             data-ng-disabled="formAddTablaCnaGeneral.$invalid || formAddTablaCnaGeneral.$pristine"> Guardar</button> 
