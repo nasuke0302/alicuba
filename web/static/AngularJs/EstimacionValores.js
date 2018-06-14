@@ -57,6 +57,7 @@ appEstimacion.controller("EstimacionController", function ($scope, $http, $windo
     //Obtener lista de todas las formulas
     $http.get("getFormulas").then(function (res) {
         $scope.allFormulas = res.data.data;
+        $scope.principal = res.data.principal;
     });
     //Enviar una formula nueva al servidor para evaluar y guardar
     $scope.parseExp = function () {

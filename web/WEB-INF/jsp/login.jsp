@@ -23,7 +23,7 @@
 
         <!--MY SCRIPTS-->
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
-        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.js"></script>
@@ -53,7 +53,7 @@
                     <ul class="nav navbar-top-links navbar-right">
                         <!--ADMIN SETTINGS SECTIONS--> 
                         <li><a href="#login" data-toggle="tab" data-ng-click="showLogin1()">Acceder</a></li>
-                        <li><a href="#signup" data-toggle="tab" data-ng-click="showLogin1()">Crear cuenta</a></li>
+                        <li><a href="#signup" data-toggle="tab" data-ng-click="showRegister1()">Crear cuenta</a></li>
                         <li><a href="${pageContext.request.contextPath}/login/loginHelpPage">Ayuda y Contacto</a></li>
                         <!--END ADMIN SETTINGS SECTIONS--> 
                     </ul>
@@ -62,32 +62,32 @@
             <!--END NAV BAR-->
 
             <!--BEGIN LEFT MENU-->
-            <div id="left" data-ng-show="!showLogin">
+            <div id="left" data-ng-show="showTabla || showFormulas">
                 <ul id="menu" class="collapse">
                     <li class="panel">
                         <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#tablas-nav">
                             <i class="icon-table"></i> &Uacute;ltima Tabla Generada
                         </a>
                         <ul class="in" id="tablas-nav">
-                            <a data-ng-click="listarAlimentos()">  <span>{{lastTablaGenerada.nombre}} - {{lastTablaGenerada.fechaHora}}</span></a>
+                            <a data-ng-click="showTabla1()">  <span>{{lastTablaGenerada.nombre}} - {{lastTablaGenerada.fechaHora}}</span></a>
                         </ul>
                         <a href="#" data-parent="#menu" data-toggle="collapse" class="accordion-toggle" data-target="#tablas-nav">
-                            <i class="icon-table"></i>F&oacute;rmulas de Estimación
+                            <i class="icon-table"></i> F&oacute;rmulas de Estimación
                         </a>
                         <ul class="in" id="tablas-nav">
-                            <a data-ng-click="listarFormulas()"> Listar f&oacute;rmulas</a>
+                            <a data-ng-click="showFormulas1()"> Listar f&oacute;rmulas</a>
                         </ul>
                     </li>
                 </ul>
             </div>
             <!--END LEFT MENU-->
             <!--BEGIN PAGE CONTENT-->
-            <div id="content" data-ng-show="!showLogin">
+            <div id="content" data-ng-show="showTabla || showFormulas">
                 <div class="inner" style="min-height:800px;">
                     <div class="row">
                         <div class="col-lg-12">
                             <br />
-                            <div class="table-responsive" data-ng-show="!verFormulas">
+                            <div class="table-responsive" data-ng-show="showTabla">
                                 <table datatable="ng" id="tablaCategorias" class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
@@ -125,7 +125,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="panel panel-default" data-ng-show="!verFormulas">
+                            <!--BEGIN ESTADISTICA ALIMENTOS-->
+                            <div class="panel panel-default" data-ng-show="showTabla">
                                 <div class="panel-heading"> 
                                     Alimento Seleccionado: 
                                 </div>
@@ -149,16 +150,19 @@
                                     {{metadatoGenerado.idAlimento.mezcla}}
                                     <br />
                                     <strong>Otros: </strong>
-                                    {{metadatoGenerado.presentation}} -
-                                    {{metadatoGenerado.idEpoca.etiqueta}} - {{metadatoGenerado.fertilizado.etiqueta}} - 
-                                    {{metadatoGenerado.calidad.etiqueta}} - {{metadatoGenerado.idNivelFert.etiqueta}} - 
-                                    {{metadatoGenerado.idRangoEdades.etiqueta}} - {{metadatoGenerado.idRegion.etiqueta}} - 
-                                    {{metadatoGenerado.corte}} - 
-                                    {{metadatoGenerado.n}} - 
-                                    {{metadatoGenerado.npk}} - 
-                                    {{metadatoGenerado.import1.alpha3}} - 
-                                    {{metadatoGenerado.tratamiento}} - 
-                                    {{metadatoGenerado.tecnolog}}
+                                    <em data-toggle="tooltip" data-placement="top" title="Presentaci&oacute;n">{{metadatoGenerado.presentation}}</em>-
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idEpoca.nombre}}">{{metadatoGenerado.idEpoca.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.fertilizado.fertilizado}}">{{metadatoGenerado.fertilizado.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.calidad.calidad}}">{{metadatoGenerado.calidad.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idNivelFert.nivel}}">{{metadatoGenerado.idNivelFert.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idRangoEdades.rango}}">{{metadatoGenerado.idRangoEdades.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idRegion.region}}">{{metadatoGenerado.idRegion.etiqueta}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="Corte">{{metadatoGenerado.corte}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="Nitrógeno">{{metadatoGenerado.n}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="N-P-K">{{metadatoGenerado.npk}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.import1.pais}}">{{metadatoGenerado.import1.alpha3}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="Tratamiento">{{metadatoGenerado.tratamiento}}</em> - 
+                                    <em data-toggle="tooltip" data-placement="top" title="Tecnología">{{metadatoGenerado.tecnolog}}</em>
                                     <br />
                                     <table id="tabla1" class="table table-hover table-striped">
                                         <thead>
@@ -177,7 +181,6 @@
                                                 <td title="{{tc.nutrientes.nombre}}">
                                                     {{tc.nutrientes.abreviatura}}
                                                     {{tc.nutrientes.idUnidadMedida.unidadMedida}}
-
                                                 </td>
                                                 <td>{{tc.total}}</td>
                                                 <td>{{tc.minimo}}</td>
@@ -189,11 +192,16 @@
                                         </tbody>
                                     </table>                                    
                                 </div>
-                                <div class="panel-footer"> Datos del Alimento</div>
+                                <!--                                <div class="panel-footer"> 
+                                                                    <a id="botonGenerar" data-ng-click="generarXLS()" class="btn btn-success">
+                                                                        <i class="glyphicon glyphicon-export"></i>
+                                                                        Exportar a Excel
+                                                                    </a>
+                                                                </div>-->
                             </div>
-                            
+                            <!--END ESTADISTICA ALIMENTOS-->
                             <!--BEGIN TABLE FORMULAS-->
-                            <div class="table-responsive" data-ng-show="verFormulas">
+                            <div class="table-responsive" data-ng-show="showFormulas">
                                 <table datatable="ng" class="table table-condensed table-hover">
                                     <thead>
                                         <tr>
@@ -201,18 +209,22 @@
                                             <th>Nutriente resultado</th>
                                             <th>F&oacute;rmula</th>
                                             <th>Variables</th>
-                                        <tr>
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         <tr data-ng-repeat="f in allFormulas track by $index">
                                             <td>{{f.nombreFormula}}</td>
-                                            <td>{{f.idNutriente.abreviatura}}, <small>{{f.idNutriente.nombre}}</small></td>
+                                            <td>
+                                                {{f.idNutriente.abreviatura}}, 
+                                                <small>
+                                                    {{f.idNutriente.nombre}}
+                                                </small>
+                                            </td>
                                             <td>{{f.formula}}</td>
                                             <td>
                                                 <span data-ng-repeat="v in f.variablesList">
                                                     <strong> {{v.nombreVariable}}: </strong>
                                                     {{v.idNutriente.abreviatura}} - <small>{{v.idNutriente.nombre}}</small>
-                                                    <br>
                                                 </span>
                                             </td>
                                         </tr>
@@ -226,7 +238,7 @@
             </div>
             <!--END PAGE CONTENT-->
             <!--BEGIN LOGIN CONTENT-->
-            <div class="container" data-ng-show="showLogin">
+            <div class="container" data-ng-show="showLogin || showRegister">
                 <div class="tab-content">
                     <div id="login" class="tab-pane active <c:if test="${param.error != null}"> has-error </c:if>">
                         <form action="${loginUrl}" class="form-signin" method="post" name="loginForm">
@@ -254,6 +266,9 @@
                             <button class="btn text-muted text-center btn-success" type="submit" data-ng-disabled="loginForm.$invalid">Acceder</button>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
+                        <button class="btn text-muted text-center btn-success" data-ng-click="volver()">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                            Volver</button>
                     </div>
                     <div id="signup" class="tab-pane">
                         <form action="addUsuarios" class="form-signin" method="post" name="registerForm">
@@ -300,6 +315,9 @@
                             <button class="btn text-muted text-center btn-success form-control" type="submit"
                                     data-ng-disabled="registerForm.$invalid">Crear cuenta</button>
                         </form>
+                        <button class="btn text-muted text-center btn-success" data-ng-click="volver()">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                            Volver</button>
                     </div>
                 </div>
             </div>
@@ -313,13 +331,13 @@
         <script src="${pageContext.request.contextPath}/static/plugins/bootstrap/js/bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/js/login.js"></script>
         <script>
-                                                if (Notification.permission === "default") {
-                                                    Notification.requestPermission(function (p) {
-                                                        if (p === "granted") {
-                                                            alert("Usted recibirá notificaciones de esta página");
-                                                        }
-                                                    });
-                                                }
+                                    if (Notification.permission === "default") {
+                                        Notification.requestPermission(function (p) {
+                                            if (p === "granted") {
+                                                alert("Usted recibirá notificaciones de esta página");
+                                            }
+                                        });
+                                    }
 
         </script>
         <!--END PAGE LEVEL SCRIPTS-->

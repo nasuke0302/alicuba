@@ -42,4 +42,27 @@ appTrazas.controller("trazasController", function ($scope, $http) {
     $http.get("getTrazas").then(function (data) {
         $scope.allTrazas = data.data.data;
     });
+
+    function fnExcelReport() {
+        var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
+        tab_text = tab_text + '<head><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>';
+
+        tab_text = tab_text + '<x:Name>Trazas</x:Name>';
+
+        tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes><x:WorksheetOptions></x:ExcelWorkSheet>';
+        tab_text = tab_text + '</x:ExcelWorksheets></x:ExcelWorkbook></xml></head><body>';
+
+        tab_text = tab_text + "<table border='1px'>";
+        tab_text = tab_text + $('#tablaTrazas').html();
+        tab_text = tab_text + '</table></body></html>';
+
+        var data_type = 'data:application/vnd.ms-excel';
+
+        $('#botonGenerar').attr('href', data_type + ', ' + encodeURIComponent(tab_text));
+        $('#botonGenerar').attr('download', 'Reporte_trazas.xls');
+    }
+
+    $scope.generarXLS = function () {
+        fnExcelReport();
+    };
 });

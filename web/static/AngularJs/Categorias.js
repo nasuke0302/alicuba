@@ -46,6 +46,7 @@ appCategorias.controller("CategoriasController", function ($scope, $http, $windo
     //Obtener Lista de Categorias
     $http.get("getCategorias").then(function (data) {
         $scope.allCategorias = data.data.data;
+        JSONToCSVConvertor($scope.allCategorias, "Calidades", true);
     });
     //Crear o Editar Categoria
     $scope.createOrEditCategoria = function () {

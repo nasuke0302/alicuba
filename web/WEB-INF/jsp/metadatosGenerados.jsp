@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
 
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
-        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
@@ -118,16 +118,19 @@
                                             {{metadatoGenerado.idAlimento.mezcla}}
                                             <br />
                                             <strong>Otros: </strong>
-                                            {{metadatoGenerado.presentation}} -
-                                            {{metadatoGenerado.idEpoca.etiqueta}} - {{metadatoGenerado.fertilizado.etiqueta}} - 
-                                            {{metadatoGenerado.calidad.etiqueta}} - {{metadatoGenerado.idNivelFert.etiqueta}} - 
-                                            {{metadatoGenerado.idRangoEdades.etiqueta}} - {{metadatoGenerado.idRegion.etiqueta}} - 
-                                            {{metadatoGenerado.corte}} - 
-                                            {{metadatoGenerado.n}} - 
-                                            {{metadatoGenerado.npk}} - 
-                                            {{metadatoGenerado.import1.alpha3}} - 
-                                            {{metadatoGenerado.tratamiento}} - 
-                                            {{metadatoGenerado.tecnolog}}
+                                            <em data-toggle="tooltip" data-placement="top" title="Presentaci&oacute;n">{{metadatoGenerado.presentation}}</em>-
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idEpoca.nombre}}">{{metadatoGenerado.idEpoca.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.fertilizado.fertilizado}}">{{metadatoGenerado.fertilizado.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.calidad.calidad}}">{{metadatoGenerado.calidad.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idNivelFert.nivel}}">{{metadatoGenerado.idNivelFert.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idRangoEdades.rango}}">{{metadatoGenerado.idRangoEdades.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.idRegion.region}}">{{metadatoGenerado.idRegion.etiqueta}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="Corte">{{metadatoGenerado.corte}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="Nitrógeno">{{metadatoGenerado.n}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="N-P-K">({{metadatoGenerado.npk}})</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="{{metadatoGenerado.import1.pais}}">{{metadatoGenerado.import1.alpha3}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="Tratamiento">{{metadatoGenerado.tratamiento}}</em> - 
+                                            <em data-toggle="tooltip" data-placement="top" title="Tecnología">{{metadatoGenerado.tecnolog}}</em>
                                             <br />
                                             <table id="tabla1" class="table table-hover table-striped">
                                                 <thead>

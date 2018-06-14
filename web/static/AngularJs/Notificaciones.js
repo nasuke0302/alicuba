@@ -52,7 +52,7 @@ appNotificaciones.controller("NotificacionesController", function ($scope, $http
         $scope.allNotificaciones = data.data.data;
         $http.post("setNotificacionesLeidas", $scope.allNotificaciones);
     });
-    
+
     // Eliminar Notificaciones
     $scope.eliminarNotificacion = function () {
         $("#formModalEliminar").modal("toggle");
@@ -77,4 +77,5 @@ appNotificaciones.controller("NotificacionesController", function ($scope, $http
             titulo: a.titulo
         };
     };
+
 });

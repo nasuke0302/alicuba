@@ -16,6 +16,7 @@ import models.Usuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,10 +38,15 @@ public class gestionarUsuariosController {
 
     @Autowired
     UsuariosRepo repo;
+
     @Autowired
     SimpMessagingTemplate messagingTemplate;
+
     @Autowired
     MensajeRepo mensajeRepo;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     String username = "";
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -91,8 +97,13 @@ public class gestionarUsuariosController {
     @ResponseBody
     @RequestMapping(value = "/usuarios/deleteUsuario/{idUsuario}")
     public ModelAndView deleteUsuario(@PathVariable Integer idUsuario, ModelMap map) {
-        repo.delete(idUsuario);
-        map.put("mensaje", "Usuario eliminado correctamente");
+        try {
+            repo.delete(idUsuario);
+            map.put("mensaje", "Usuario eliminado correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al eliminar usuario");
+            map.put("error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -110,6 +121,22 @@ public class gestionarUsuariosController {
         u.setActivo(Boolean.TRUE);
         repo.saveAndFlush(u);
         map.put("mensaje", "Usuario activado");
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @Trazable(accion = "modificar", modificar = true, nombre = "cambiarContraseñaUsuarios", timeLine = "", claseEntidad = "Usuarios")
+    @ResponseBody
+    @RequestMapping(value = "/usuarios/changePassword/{idUsuario}")
+    public ModelAndView changePassword(@PathVariable Integer idUsuario, @RequestBody String pass, ModelMap map) {
+        try {
+            Usuarios u = repo.findOne(idUsuario);
+            u.setPassword(passwordEncoder.encode(pass));
+            repo.saveAndFlush(u);
+            map.put("mensaje", "Contraseña cambiada correctamente");
+        } catch (Exception e) {
+            map.put("mensaje", "Error al cambiar la contraseña");
+            map.put("error", e);
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

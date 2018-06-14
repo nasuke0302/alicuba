@@ -74,11 +74,12 @@ public class EstimacionController {
 
     @RequestMapping(value = "/estimacion/getFormulas")
     public @ResponseBody
-    Map<String, ? extends Object> getFormulas() {
+    Map<String, ? extends Object> getFormulas(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         List<Formulas> allFormulas = formulasRepo.findAll();
         try {
             map.put("data", allFormulas);
+            map.put("principal", principal.getEmail());
             map.put("success", Boolean.TRUE);
         } catch (Exception e) {
             map.put("success", Boolean.FALSE);

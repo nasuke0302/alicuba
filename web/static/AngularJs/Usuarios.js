@@ -55,7 +55,18 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
     $http.get("../roles/getRoles").then(function (data) {
         $scope.allRoles = data.data.data;
     });
-    //Enviar Usuario editado al Servidor
+
+    //Cambiar Constraseña Usuario
+    $scope.changePassword = function () {
+        $http.post("changePassword/" + $scope.indiceRegistro.idUsuario, $scope.indiceRegistro.password, {})
+                .then(function (r) {
+                    $window.alert(r.data.mensaje);
+                    $http.get("getUsuarios").then(function (data) {
+                        $scope.allUsuarios = data.data.data;
+                    });
+                });
+    };
+    //Editar Usuario
     $scope.addOrEditUsuario = function () {
         $("#formModalCreateOrEdit").modal("toggle");
         $scope.indiceRegistro.idRol = $scope.selectedRol;
@@ -67,7 +78,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             });
         });
     };
-    // Eliminar Usuario
+    //Bloquear Usuario
     $scope.lockUser = function () {
         $("#formModalLockUser").modal("toggle");
         $http.post("lockUser/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
@@ -77,6 +88,17 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             });
         });
     };
+    //Eliminar Usuario
+    $scope.deleteUser = function () {
+        $("#formModalDelete").modal("toggle");
+        $http.post("deleteUsuario/" + $scope.indiceRegistro.idUsuario, {}).then(function (r) {
+            $window.alert(r.data.mensaje);
+            $http.get("getUsuarios").then(function (data) {
+                $scope.allUsuarios = data.data.data;
+            });
+        });
+    };
+
     //Enviar Usuarios al Modal Editar
     $scope.abrirEditarModal = function (indice) {
         var a = $scope.allUsuarios[indice];
@@ -91,8 +113,8 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
         };
         $scope.selectedRol = $scope.indiceRegistro.idRol.idRoles;
     };
-    //Enviar Usuario al Modal Eliminar
-    $scope.abrirEliminarModal = function (indice) {
+    //Enviar Usuario al Modal Bloquear
+    $scope.abrirLockModal = function (indice) {
         var a = $scope.allUsuarios[indice];
         $scope.indiceRegistro = {
             idUsuario: a.idUsuario,
@@ -100,6 +122,18 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
             nombre: a.nombre,
             activo: a.activo,
             apellidos: a.apellidos
+        };
+    };
+
+    $scope.abrirEditPassModal = function (indice) {
+        var a = $scope.allUsuarios[indice];
+        $scope.indiceRegistro = {
+            idUsuario: a.idUsuario,
+            email: a.email,
+            nombre: a.nombre,
+            activo: a.activo,
+            apellidos: a.apellidos,
+            password: ""
         };
     };
 });

@@ -41,6 +41,16 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
     $scope.tablaGenerada = {
         idListadoTablaGeneradas: ""
     };
+
+    $scope.metadatoGenerado = {
+        presentation: "",
+        tratamiento: "",
+        tecnolog: "",
+        corte: "",
+        npk: "",
+        n: ""
+    };
+
     $scope.tablaGenerada = JSON.parse(window.localStorage.getItem("tablaGenerada"));
     $scope.tablaGeneradaEdit = JSON.parse(window.localStorage.getItem("tablaGenerada"));
     //Obtener Lista de Metadatos Generados
@@ -51,6 +61,24 @@ appMetadatosGenerados.controller("MetadatosGeneradosController", function ($scop
     //Ver datos del alimento seleccionado
     $scope.verDatos = function (indice) {
         $scope.metadatoGenerado = $scope.allMetadatosGenerados[indice];
+        if ($scope.metadatoGenerado.corte === '') {
+            $scope.metadatoGenerado.corte = "SDCorte";
+        }
+        if ($scope.metadatoGenerado.npk === 'null-null-null') {
+            $scope.metadatoGenerado.npk = "0-0-0";
+        }
+        if ($scope.metadatoGenerado.presentation === '') {
+            $scope.metadatoGenerado.presentation = "SDPre";
+        }
+        if ($scope.metadatoGenerado.tratamiento === '') {
+            $scope.metadatoGenerado.tratamiento = "SDTra";
+        }
+        if ($scope.metadatoGenerado.tecnolog === '') {
+            $scope.metadatoGenerado.tecnolog = "SDTec";
+        }
+        if (!$scope.metadatoGenerado.n) {
+            $scope.metadatoGenerado.n = "0";
+        }
     };
 
     $scope.editTabla = function () {

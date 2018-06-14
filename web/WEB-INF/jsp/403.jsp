@@ -34,11 +34,16 @@
                 <br/>
                 <div class="col-lg-6  col-lg-offset-3">
                     <div class="btn-group btn-group-justified">
-                        <a href="${pageContext.request.contextPath}/index" class="btn btn-primary">Página Principal</a>
+                        <a onclick="regresar()"class="btn btn-primary">Página Principal</a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END PAGE CONTENT --> 
+        <script>
+            function regresar() {
+                window.history.back();
+            }
+        </script>
     </body>
 </html>

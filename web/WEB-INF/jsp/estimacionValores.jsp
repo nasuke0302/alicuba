@@ -68,17 +68,19 @@
                                                 <td>
                                                     <input type="hidden" value="{{f.idFormula}}"/>
                                                     <button class="btn btn-primary btn-xs"
+                                                            <sec:authorize access="hasAuthority('Colaborador')"> 
+                                                                data-ng-show="f.idUsuario.email === principal"
+                                                            </sec:authorize>
                                                             data-toggle="modal" data-target="#formModalCreateOrEditFormula" 
                                                             data-ng-click="abrirEditarModal($index)">
                                                         <i class="glyphicon glyphicon-pencil"></i>
                                                     </button>
-                                                    <sec:authorize access="hasAuthority('Colaborador')">
-                                                        <button class="btn btn-danger btn-xs" data-toggle="modal" 
-                                                                data-target="#formModalEliminarFormula"
-                                                                data-ng-click="abrirEliminarModal($index)">
-                                                            <i class="glyphicon glyphicon-trash"></i>
-                                                        </button>
-                                                    </sec:authorize>
+                                                    <button class="btn btn-danger btn-xs" data-toggle="modal" 
+                                                            data-ng-show="f.idUsuario.email === principal"
+                                                            data-target="#formModalEliminarFormula"
+                                                            data-ng-click="abrirEliminarModal($index)">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </button>
                                                 </td>
                                                 <td>{{f.nombreFormula}}</td>
                                                 <td>{{f.idNutriente.abreviatura}}, <small>{{f.idNutriente.nombre}}</small></td>

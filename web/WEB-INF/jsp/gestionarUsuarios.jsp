@@ -20,7 +20,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/static/AngularJs/loadingBar/loading-bar.min.css">
 
         <script src="${pageContext.request.contextPath}/static/AngularJs/jQuery-3.3.1.js"></script>
-        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.min.js"></script>
+        <script src="${pageContext.request.contextPath}/static/AngularJs/jquery.dataTables.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.min.js"></script>
         <script src="${pageContext.request.contextPath}/static/AngularJs/angular-datatables.bootstrap.min.js"></script>
@@ -63,17 +63,23 @@
                                                 <tr data-ng-repeat="usuarios in allUsuarios track by $index">
                                                     <td>
                                                         <input type="hidden" value="{{usuarios.idUsuario}}"/>
+                                                        <button class="btn btn-success" data-toggle="modal" data-target="#formModalEditPass" 
+                                                                data-ng-click="abrirEditPassModal($index)">
+                                                            <i class="glyphicon glyphicon-user"></i></button>
                                                         <button class="btn btn-primary" data-toggle="modal" data-target="#formModalCreateOrEdit" 
                                                                 data-ng-click="abrirEditarModal($index)">
                                                             <i class="glyphicon glyphicon-pencil"></i></button>
-                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#formModalLockUser"
-                                                                data-ng-click="abrirEliminarModal($index)"
+                                                        <button class="btn btn-warning" data-toggle="modal" data-target="#formModalLockUser"
+                                                                data-ng-click="abrirLockModal($index)"
                                                                 data-ng-show="usuarios.activo">
                                                             <i class="glyphicon glyphicon-lock"></i></button>
                                                         <button class="btn btn-success" data-toggle="modal" data-target="#formModalLockUser"
-                                                                data-ng-click="abrirEliminarModal($index)"
+                                                                data-ng-click="abrirLockModal($index)"
                                                                 data-ng-show="!usuarios.activo">
                                                             <i class="glyphicon glyphicon-ok"></i></button>
+                                                        <button class="btn btn-danger" data-toggle="modal" data-target="#formModalDelete" 
+                                                                data-ng-click="abrirLockModal($index)">
+                                                            <i class="glyphicon glyphicon-trash"></i></button>
                                                     </td>
                                                     <td>{{usuarios.email}}</td>
                                                     <td>{{usuarios.nombre}} {{usuarios.apellidos}}</td>
@@ -90,7 +96,29 @@
                                 <div class="panel-default panel-footer">Usuarios</div>
                             </div>
                         </div>
-                        <!--CREATE OR EDIT MODAL-->
+                         <!--DELETE MODAL-->
+                        <div class="modal fade" id="formModalEditPass" role="dialog" style="display: none;">
+                            <div class="modal-dialog" style="margin-top: 260.5px;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Cambiar Contraseña</h4>
+                                        <div class="modal-body">
+                                            <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
+                                            <p>email: {{indiceRegistro.email}} </p>
+                                            <form role="form" method="post" data-ng-submit="changePassword()" id="delete_data" class="text-right">
+                                                <input data-ng-model="indiceRegistro.password" type="text" class="form-control" placeholder="Nueva contraseña">
+                                                <br />
+                                                <button type="submit" class="btn btn-success">Cambiar contraseña</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END DELETE MODAL-->
+                        <!--EDIT MODAL-->
                         <div class="col-lg-12">
                             <div class="modal fade" id="formModalCreateOrEdit" tabindex="-1" 
                                  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -122,28 +150,52 @@
                             </div>
                         </div>
                         <!--END EDIT MODAL-->
+                        <!--END EDIT MODAL-->
+                        <!--LOCK MODAL-->
+                        <div class="modal fade" id="formModalLockUser" role="dialog" style="display: none;">
+                            <div class="modal-dialog" style="margin-top: 260.5px;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title" data-ng-show="indiceRegistro.activo">
+                                            ¿Bloquear la cuenta de este usuario?
+                                        </h4>
+                                        <h4 class="modal-title" data-ng-show="!indiceRegistro.activo">
+                                            ¿Habilitar la cuenta este usuario?
+                                        </h4>
+                                        <div class="modal-body">
+                                            <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
+                                            <p>email: {{indiceRegistro.email}} </p>
+                                            <form role="form" method="post" data-ng-submit="lockUser()" id="delete_data" class="text-right">
+                                                <button type="submit" class="btn btn-danger"data-ng-show="indiceRegistro.activo">Bloquear cuenta</button>
+                                                <button type="submit" class="btn btn-success" data-ng-show="!indiceRegistro.activo">Habilitar cuenta</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--END LOCK MODAL-->
                         <!--DELETE MODAL-->
-                        <div>
-                            <div class="modal fade" id="formModalLockUser" role="dialog" style="display: none;">
-                                <div class="modal-dialog" style="margin-top: 260.5px;">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title" data-ng-show="indiceRegistro.activo">
-                                                ¿Bloquear la cuenta de este usuario?
-                                            </h4>
-                                            <h4 class="modal-title" data-ng-show="!indiceRegistro.activo">
-                                                ¿Habilitar la cuenta este usuario?
-                                            </h4>
-                                            <div class="modal-body">
-                                                <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
-                                                <p>email: {{indiceRegistro.email}} </p>
-                                                <form role="form" method="post" data-ng-submit="lockUser()" id="delete_data" class="text-right">
-                                                    <button type="submit" class="btn btn-danger"data-ng-show="indiceRegistro.activo">Bloquear cuenta</button>
-                                                    <button type="submit" class="btn btn-success" data-ng-show="!indiceRegistro.activo">Habilitar cuenta</button>
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                </form>
+                        <div class="modal fade" id="formModalDelete" role="dialog" style="display: none;">
+                            <div class="modal-dialog" style="margin-top: 260.5px;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">
+                                            ¿Eliminar la cuenta de este usuario?
+                                        </h4>
+                                        <div class="modal-body">
+                                            <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
+                                            <p>email: {{indiceRegistro.email}} </p>
+                                            <div class="text-left">
+                                                <div class="alert alert-danger"> ¡ADVERTENCIA! Al eliminar un usuario se eliminarán todas sus contribuciones!</div>
                                             </div>
+                                            <form role="form" method="post" data-ng-submit="deleteUser()" id="delete_data" class="text-right">
+                                                <button type="submit" class="btn btn-danger">Eliminar cuenta</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +215,5 @@
         <!--GLOBAL SCRIPTS-->
         <jsp:include page="/WEB-INF/includes/globalScripts.jsp"/>
         <!--END GLOBAL SCRIPTS-->
-        <!--PAGE LEVEL SCRIPTS-->
-        <!--END PAGE LEVEL SCRIPTS-->
     </body>
 </html>
