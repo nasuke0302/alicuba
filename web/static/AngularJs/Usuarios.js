@@ -58,6 +58,7 @@ appUsuarios.controller("UsuariosController", function ($scope, $http, $window) {
 
     //Cambiar Constraseña Usuario
     $scope.changePassword = function () {
+        $("#formModalEditPass").modal("toggle");
         $http.post("changePassword/" + $scope.indiceRegistro.idUsuario, $scope.indiceRegistro.password, {})
                 .then(function (r) {
                     $window.alert(r.data.mensaje);

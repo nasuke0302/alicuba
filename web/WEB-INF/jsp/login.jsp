@@ -253,9 +253,12 @@
 
                             <input type="password" id="password" name="password" 
                                    data-ng-model="usuario.password" placeholder="password" 
+                                   data-ng-pattern="/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/"
                                    class="form-control" required=""/>
                             <div data-ng-show="loginForm.password.$touched && loginForm.password.$invalid">
                                 <small style="color:red; display: block; text-align: center;"> Introduzca su contraseña</small>
+                                <small style="color:red; display: block; text-align: center;">La contraseña debe contener un m&iacute;nimo de 8 caracteres</small>
+                                <small style="color:red; display: block; text-align: center;">La contraseña debe contener al menos 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial (!@#$%^&*)</small>
                             </div>
 
                             <div class="text-center">
@@ -294,10 +297,14 @@
                             </div>
 
                             <input type="password" name="password" id="password"  
-                                   data-ng-model="usuario.password"
+                                   data-ng-model="usuario.password" 
+                                   data-ng-pattern="/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/"
                                    placeholder="Contrase&ntilde;a" class="form-control" required=""/>
+
                             <div data-ng-show="registerForm.password.$touched && registerForm.password.$invalid">
                                 <small style="color:red; display: block; text-align: center;">El campo contraseña es requerido</small>
+                                <small style="color:red; display: block; text-align: center;">La contraseña debe contener un m&iacute;nimo de 8 caracteres</small>
+                                <small style="color:red; display: block; text-align: center;">La contraseña debe contener al menos 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial (!@#$%^&*)</small>
                             </div>
 
                             <input type="password" name="password2" id="password2" placeholder="Repetir Contrase&ntilde;a" 

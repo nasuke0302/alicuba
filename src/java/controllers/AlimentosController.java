@@ -67,11 +67,7 @@ public class AlimentosController {
     Map<String, ? extends Object> getAlimentos(@AuthenticationPrincipal Usuarios principal) {
         Map<String, Object> map = new HashMap<>();
         try {
-            if ("Colaborador".equals(principal.getIdRol().toString())) {
-                map.put("data", alimentosRepo.findAllByIdUsuario(principal));
-            } else {
-                map.put("data", alimentosRepo.findAll());
-            }
+            map.put("data", alimentosRepo.findAll());
             map.put("success", Boolean.TRUE);
             map.put("principal", principal.getEmail());
         } catch (Exception e) {
@@ -127,7 +123,7 @@ public class AlimentosController {
         r.setIdUsuario(principal);
         alimentosRepo.saveAndFlush(r);
         map.put("mensaje", "Alimento insertado correctamente");
-        
+
         Mensaje mensaje = new Mensaje();
         Date fecha = new Date();
         mensaje.setFecha(dateFormat.format(fecha));
@@ -154,7 +150,7 @@ public class AlimentosController {
             if ("Editor".equals(principal.getIdRol().toString())) {
                 Mensaje mensaje = new Mensaje();
                 Date fecha = new Date();
-                mensaje.setFecha( dateFormat.format(fecha));
+                mensaje.setFecha(dateFormat.format(fecha));
                 mensaje.setLeido(Boolean.FALSE);
                 mensaje.setMensaje(principal.getNombre() + " ha editado el alimento: "
                         + r1.getNombreCient());

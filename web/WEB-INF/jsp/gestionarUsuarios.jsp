@@ -96,7 +96,7 @@
                                 <div class="panel-default panel-footer">Usuarios</div>
                             </div>
                         </div>
-                         <!--DELETE MODAL-->
+                        <!--DELETE MODAL-->
                         <div class="modal fade" id="formModalEditPass" role="dialog" style="display: none;">
                             <div class="modal-dialog" style="margin-top: 260.5px;">
                                 <div class="modal-content">
@@ -106,8 +106,16 @@
                                         <div class="modal-body">
                                             <p>{{indiceRegistro.nombre}} {{indiceRegistro.apellidos}}</p>
                                             <p>email: {{indiceRegistro.email}} </p>
-                                            <form role="form" method="post" data-ng-submit="changePassword()" id="delete_data" class="text-right">
-                                                <input data-ng-model="indiceRegistro.password" type="text" class="form-control" placeholder="Nueva contraseña">
+                                            <form role="form" method="post" data-ng-submit="changePassword()" 
+                                                  name="formChangePass"
+                                                  id="delete_data" class="text-right">
+                                                <input data-ng-model="indiceRegistro.password" type="text"  name="password"
+                                                       data-ng-pattern="/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/"
+                                                       class="form-control" placeholder="Nueva contraseña" required="">
+                                                <div data-ng-show="formChangePass.password.$touched && formChangePass.password.$invalid">
+                                                    <small style="color:red; display: block; text-align: center;">La contraseña debe contener un m&iacute;nimo de 8 caracteres</small>
+                                                    <small style="color:red; display: block; text-align: center;">La contraseña debe contener al menos 1 mayúscula, 1 minúscula, 1 número y 1 caracter especial (!@#$%^&*)</small>
+                                                </div>
                                                 <br />
                                                 <button type="submit" class="btn btn-success">Cambiar contraseña</button>
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
